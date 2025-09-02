@@ -1,6 +1,9 @@
-﻿namespace Expenses.API.Models;
+﻿using Expenses.API.Models.Base;
 
-public class User
+namespace Expenses.API.Models;
+
+public class User: BaseEntity
 {
-    
+ public string Email { get; set; }
+ public string Password { get; set; }
 }

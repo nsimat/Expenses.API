@@ -1,6 +1,10 @@
-﻿namespace Expenses.API.Models;
+﻿using Expenses.API.Models.Base;
 
-public class Transaction
+namespace Expenses.API.Models;
+
+public class Transaction: BaseEntity
 {
-    
+    public string Type { get; set; }
+    public double Amount { get; set; }
+    public string Category { get; set; }
 }
