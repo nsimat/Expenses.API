@@ -1,6 +1,6 @@
-# Welcome to our project: Full-stack web application using Angular and ASP.NET Core Web API
+# Full-stack web application using Angular and ASP.NET Core Web API
 
-By this project we try to practically buil a modern full-stack web applications using ASP.NET Web API and Angular. 
+By this project we try to practically build a modern full-stack web applications using ASP.NET Web API and Angular. 
 
 ## Objectives
 
@@ -9,7 +9,7 @@ By this project we try to practically buil a modern full-stack web applications 
 - Integrate thoses endpoints with an Angular frontend including authentication using JSON Web Tpkens
 - Deploy application to a production environment to make it ready for real-world use
 
-## Technologies employed
+## Technologies
 
 - ASP.NET Core 9
 - Angular 20
