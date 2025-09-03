@@ -80,4 +80,19 @@ public class TransactionsController : ControllerBase
         
         return Ok("Transaction updated!");
     }
+
+    [HttpDelete("Delete/{id}")]
+    public IActionResult DeleteTransaction(int id)
+    {
+        _logger.LogInformation("Deleting transaction with ID: {Id}...", id);
+        var existingTransaction = _expensesDbContext.Transactions.Find(id);
+        
+        if (existingTransaction == null)
+            return NotFound("Transaction not found!");
+        
+        _expensesDbContext.Transactions.Remove(existingTransaction);
+        _expensesDbContext.SaveChanges();
+        
+        return Ok("Transaction deleted!");
+    }
 }
