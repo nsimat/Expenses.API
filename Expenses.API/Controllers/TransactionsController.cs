@@ -17,6 +17,15 @@ public class TransactionsController : ControllerBase
         _expensesDbContext = expensesDbContext ?? throw new ArgumentNullException(nameof(expensesDbContext));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
+
+    [HttpGet]
+    public IActionResult GetAllTransactions()
+    {
+        _logger.LogInformation("Fetching all transactions...");
+        
+        var transactions = _expensesDbContext.Transactions.ToList();
+        return Ok(transactions);
+    }
     [HttpPost]
     public IActionResult CreateTransaction([FromBody] TransactionDto payload)
     {
