@@ -1,4 +1,5 @@
 using Expenses.API.Data;
+using Expenses.API.Data.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,8 +9,9 @@ builder.Services.AddDbContext<ExpensesDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ExpensesConnection"));
 });
-
+builder.Services.AddScoped<ITransactionsService, TransactionsService>();
 builder.Services.AddControllers();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -24,7 +26,5 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.MapControllers();
-
 app.Run();
