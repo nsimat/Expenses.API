@@ -7,7 +7,7 @@ public interface ITransactionsService
 {
     List<Transaction> GetAll();
     Transaction? GetById(int id);
-    void Add(PostTransactionDto transaction);
+    Transaction? Add(PostTransactionDto transaction);
     Transaction? Update(int id, PutTransactionDto transaction);
-    void Delete(int id);
+    bool Delete(int id);
 }

@@ -17,7 +17,7 @@ public class TransactionsService(ExpensesDbContext expensesDbContext): ITransact
         return transaction;
     }
 
-    public void Add(PostTransactionDto transaction)
+    public Transaction? Add(PostTransactionDto transaction)
     {
         var newTransaction = new Transaction
         {
@@ -30,6 +30,14 @@ public class TransactionsService(ExpensesDbContext expensesDbContext): ITransact
         
         expensesDbContext.Transactions.Add(newTransaction);
         expensesDbContext.SaveChanges();
+        
+        var createdTransaction = expensesDbContext.Transactions.SingleOrDefault(t =>
+            t.Type == transaction.Type &&
+            t.Amount == transaction.Amount &&
+            t.Category == transaction.Category &&
+            t.CreatedAt == newTransaction.CreatedAt);
+
+        return createdTransaction;
     }
 
     public Transaction? Update(int id, PutTransactionDto transaction)
@@ -49,14 +57,17 @@ public class TransactionsService(ExpensesDbContext expensesDbContext): ITransact
         return existingTransaction;
     }
 
-    public void Delete(int id)
+    public bool Delete(int id)
     {
+        bool isDeleted = false;
         var existingTransaction = expensesDbContext.Transactions.Find(id);
 
         if (existingTransaction != null)
         {
             expensesDbContext.Transactions.Remove(existingTransaction);
             expensesDbContext.SaveChanges(); 
+            isDeleted = true;
         }
+        return isDeleted;
     }
 }
