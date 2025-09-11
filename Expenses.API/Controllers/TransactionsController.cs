@@ -13,6 +13,12 @@ public class TransactionsController : ControllerBase
     private readonly ILogger<TransactionsController> _logger;
     private readonly ITransactionsService _transactionsService;
 
+    /// <summary>
+    /// Private constructor to initialize the TransactionsController with required services.
+    /// </summary>
+    /// <param name="transactionsService"></param>
+    /// <param name="logger"></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public TransactionsController(ITransactionsService transactionsService, ILogger<TransactionsController> logger)
     {
         _transactionsService = transactionsService ?? throw new ArgumentNullException(nameof(transactionsService));
