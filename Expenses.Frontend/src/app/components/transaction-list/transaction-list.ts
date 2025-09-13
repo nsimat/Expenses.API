@@ -1,19 +1,42 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Itransaction } from '../../models/itransaction';
-import { CommonModule} from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { Transaction } from '../../services/transaction';
 
 @Component({
   selector: 'app-transaction-list',
   imports: [CommonModule],
   templateUrl: './transaction-list.html',
-  styleUrl: './transaction-list.css'
+  styleUrl: './transaction-list.css',
 })
-export class TransactionList {
+export class TransactionList implements OnInit {
+  transactions: Itransaction[] = [];
 
-  transactions: Itransaction[] = [
-    { id: 1, type: 'Expense', amount: 50, category: 'Food', createdAt: new Date(), updateAt: new Date() },
-    { id: 2, type: 'Income', amount: 1000, category: 'Salary', createdAt: new Date(), updateAt: new Date() },
-    { id: 3, type: 'Expense', amount: 20, category: 'Transport', createdAt: new Date(), updateAt: new Date() }
-  ];
+  constructor(private transactionService: Transaction) {}
 
+  ngOnInit(): void {
+    this.loadTransactions();
+  }
+
+  loadTransactions(): void {
+    this.transactionService.getAllTransactions().subscribe((data) => {
+      this.transactions = data;
+    });
+  }
+
+  getTotalIncome(): number {
+    return this.transactions
+      .filter(t => t.type === 'Income')
+      .reduce((sum, t) => sum + t.amount, 0);
+  }
+
+  getTotalExpenses(): number {
+    return this.transactions
+      .filter(t => t.type === 'Expense')
+      .reduce((sum, t) => sum + t.amount, 0);
+  }
+
+  getNetBalance(): number {
+    return this.getTotalIncome() - this.getTotalExpenses();
+  }
 }

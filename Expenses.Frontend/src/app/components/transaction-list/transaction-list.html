@@ -7,31 +7,31 @@
             <h5 class="card-title">Total Income</h5>
             <i class="bi bi-currency-euro fa-2x"></i>
           </div>
-          <h3 class="card-text">0</h3>
+          <h3 class="card-text">{{getTotalIncome() | currency: 'EUR'}}</h3>
         </div>
       </div>
     </div>
 
     <div class="col-md-4">
-      <div class="card h-100 bg-danger bg-opacity-75 text-white">
+      <div class="card h-100 bg-warning bg-opacity-75 text-white">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
             <h5 class="card-title">Total Expenses</h5>
             <i class="bi bi-calculator-fill fa-2x"></i>
           </div>
-          <h3 class="card-text">0</h3>
+          <h3 class="card-text">{{getTotalExpenses() | currency: 'EUR'}}</h3>
         </div>
       </div>
     </div>
 
     <div class="col-md-4">
-      <div class="card h-100 bg-success bg-opacity-75 text-white">
+      <div class="card h-100 text-white" [ngClass]="getNetBalance() < 0 ? 'bg-danger bg-opacity-75' : 'bg-success bg-opacity-75'">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-center">
             <h5 class="card-title">Net Balance</h5>
             <i class="bi bi-wallet fa-2x"></i>
           </div>
-          <h3 class="card-text">0</h3>
+          <h3 class="card-text fw-bold">{{getNetBalance() | currency: 'EUR'}}</h3>
         </div>
       </div>
     </div>
@@ -53,9 +53,9 @@
         @for(transaction of transactions; track transaction.id) {
         <tr>
           <td>{{ transaction.createdAt | date : 'dd/MM/yyyy' }}</td>
-          <td>{{ transaction.type }}</td>
+          <td [ngClass]="transaction.type === 'Income' ? 'text-success' : 'text-danger'">{{ transaction.type }}</td>
           <td>{{ transaction.category }}</td>
-          <td>{{ transaction.amount }}</td>
+          <td [ngClass]="transaction.type === 'Income' ? 'text-success' : 'text-danger'">{{ transaction.amount | currency: 'EUR'}}</td>
           <td>options</td>
         </tr>
         }
