@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Itransaction } from '../../models/itransaction';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-transaction-form',
@@ -19,7 +20,7 @@ export class TransactionForm implements OnInit {
     createdAt: new Date(),
     updateAt: new Date()
   };
-  
+
 
   incomeCategories = [
     'Salary',
@@ -42,7 +43,7 @@ export class TransactionForm implements OnInit {
 
   availableCategories: string[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.transactionForm = this.fb.group({
       type: ['Expense', Validators.required],
       category: ['', Validators.required],
@@ -56,7 +57,7 @@ export class TransactionForm implements OnInit {
   }
 
   cancel() {
-    throw new Error('Method not implemented.');
+    this.router.navigate(['/transactions']);
   }
 
   onTypeChange() {
