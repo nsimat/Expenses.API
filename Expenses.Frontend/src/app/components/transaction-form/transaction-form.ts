@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Itransaction } from '../../models/itransaction';
 import { Router } from '@angular/router';
+import { Transaction } from '../../services/transaction';
 
 @Component({
   selector: 'app-transaction-form',
@@ -12,20 +13,14 @@ import { Router } from '@angular/router';
 })
 export class TransactionForm implements OnInit {
   transactionForm: FormGroup;
-  newTransaction: Itransaction = {
-    id: 0,
-    type: 'Expense',
-    category: '',
-    amount: 0,
-    createdAt: new Date(),
-    updateAt: new Date()
-  };
-
 
   incomeCategories = [
     'Salary',
     'Business',
     'Investment',
+    'Freelance',
+    'Rental Income',
+    'Interest',
     'Gift',
     'Other'
   ];
@@ -43,7 +38,7 @@ export class TransactionForm implements OnInit {
 
   availableCategories: string[] = [];
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, private transactionService: Transaction) {
     this.transactionForm = this.fb.group({
       type: ['Expense', Validators.required],
       category: ['', Validators.required],
@@ -65,7 +60,21 @@ export class TransactionForm implements OnInit {
   }
 
   onSubmit() {
-    throw new Error('Method not implemented.');
+    // Handle form submission logic here
+    if (this.transactionForm.valid) {
+       const newTransaction = this.transactionForm.value;
+
+       console.log('Form Submitted!', newTransaction);
+        this.transactionService.createTransaction(newTransaction).subscribe({ next: (transaction) => {
+          console.log('Transaction created successfully: ', transaction);
+        }, error: (error) => {
+          console.error('Error creating transaction: ', error);
+        }});
+      // You can also reset the form here if needed
+      this.transactionForm.reset({ type: 'Expense', createdAt: new Date() });
+      this.changingType();
+      this.router.navigate(['/transactions']);
+    }
   }
 
   private changingType(): void {

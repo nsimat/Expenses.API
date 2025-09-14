@@ -24,7 +24,7 @@ public class TransactionsService(ExpensesDbContext expensesDbContext): ITransact
             Type = transaction.Type,
             Amount = transaction.Amount,
             Category = transaction.Category,
-            CreatedAt = DateTime.UtcNow,
+            CreatedAt = transaction.CreatedAt ?? DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
         
