@@ -25,6 +25,8 @@
               <select class="form-select form-select-lg" id="category" formControlName="category">
                 @for(category of availableCategories; track category) {
                   <option [value]="category">{{ category }}</option>
+                } @empty {
+                  <option disabled>No categories available</option>
                 }
               </select>
             </div>
@@ -38,12 +40,13 @@
               </div>
             </div>
 
-            <!-- Transaction Creation Date-->
+            <!-- Transaction Creation Date -->
             <div class="mb-4">
               <label for="createdAt" class="form-label fw-medium">Date</label>
                 <input type="date" class="form-control form-control-lg" id="createdAt" formControlName="createdAt"/>
             </div>
 
+            <!-- Form Actions -->
             <div class="d-flex gap-3 justify-content-end mt-4">
               <button type="button" class="btn btn-secondary btn-lg px-4" (click)="cancel()">
                 Cancel

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Itransaction } from '../../models/itransaction';
 
 @Component({
   selector: 'app-transaction-form',
@@ -10,6 +11,15 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 })
 export class TransactionForm implements OnInit {
   transactionForm: FormGroup;
+  newTransaction: Itransaction = {
+    id: 0,
+    type: 'Expense',
+    category: '',
+    amount: 0,
+    createdAt: new Date(),
+    updateAt: new Date()
+  };
+  
 
   incomeCategories = [
     'Salary',
@@ -42,9 +52,7 @@ export class TransactionForm implements OnInit {
   }
 
   ngOnInit(): void {
-    const type = this.transactionForm.get('type')?.value;
-    this.availableCategories = type === 'Expense' ? this.expenseCategories : this.incomeCategories;
-    this.transactionForm.patchValue({ category: ' ' });
+    this.changingType();
   }
 
   cancel() {
@@ -52,10 +60,18 @@ export class TransactionForm implements OnInit {
   }
 
   onTypeChange() {
-    ;
+    this.changingType();
   }
 
   onSubmit() {
     throw new Error('Method not implemented.');
+  }
+
+  private changingType(): void {
+    console.log('Changing type...');
+
+    const type = this.transactionForm.get('type')?.value;
+    this.availableCategories = type === 'Expense' ? this.expenseCategories : this.incomeCategories;
+    this.transactionForm.patchValue({ category: '' });
   }
 }
