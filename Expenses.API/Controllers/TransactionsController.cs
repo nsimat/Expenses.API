@@ -133,7 +133,7 @@ public class TransactionsController : ControllerBase
               _logger.LogWarning("Transaction with ID: {Id} not found!", id);
               return NotFound("Transaction not found!");
           }
-          return Ok("Transaction updated!");
+          return Ok(existingTransaction);
         }
         catch (Exception exception)
         {
@@ -164,7 +164,7 @@ public class TransactionsController : ControllerBase
                 _logger.LogWarning("Transaction with ID: {Id} not found!", id);
                 return NotFound("Transaction not found!");
             }
-            return Ok("Transaction deleted!");
+            return NoContent();
         }
         catch (Exception e)
         {
