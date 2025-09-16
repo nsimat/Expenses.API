@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Itransaction } from '../../models/itransaction';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Transaction } from '../../services/transaction';
 
