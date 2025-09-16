@@ -56,7 +56,15 @@
           <td [ngClass]="transaction.type === 'Income' ? 'text-success' : 'text-danger'">{{ transaction.type }}</td>
           <td>{{ transaction.category }}</td>
           <td [ngClass]="transaction.type === 'Income' ? 'text-success' : 'text-danger'">{{ transaction.amount | currency: 'EUR'}}</td>
-          <td>options</td>
+          <td>
+            <button class="btn btn-sm btn-outline-primary me-1" (click)="editTransaction(transaction)">
+              <i class="bi bi-pencil-fill"></i>
+            </button>
+
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteTransaction(transaction)">
+              <i class="bi bi-trash-fill"></i>
+            </button>
+          </td>
         </tr>
         }
       </tbody>

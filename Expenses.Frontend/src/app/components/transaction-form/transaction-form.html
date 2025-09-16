@@ -4,12 +4,12 @@
       <div class="card shadow">
         <div class="card-header bg-lighty py-3">
           <h3 class="card-title mb-0 fw-semibold">
-            Add New Transaction
+            {{ isEditMode ? 'Edit ' : 'Add New ' }} Transaction
           </h3>
         </div>
 
         <div class="card-body p-4">
-          <form action="" [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
+          <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
             <!-- Transaction Type -->
             <div class="mb-4">
               <label for="type" class="form-label fw-medium">Type</label>
@@ -43,7 +43,11 @@
             <!-- Transaction Creation Date -->
             <div class="mb-4">
               <label for="createdAt" class="form-label fw-medium">Date</label>
+              @if(isEditMode) {
+                <input type="date" class="form-control form-control-lg" id="createdAt" formControlName="createdAt" [value]="transactionForm.get('createdAt')?.value | date : 'yyyy-MM-dd'" />
+              } @else {
                 <input type="date" class="form-control form-control-lg" id="createdAt" formControlName="createdAt"/>
+              }
             </div>
 
             <!-- Form Actions -->
@@ -52,7 +56,7 @@
                 Cancel
               </button>
               <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="transactionForm.invalid">
-                Add Transaction
+                {{  isEditMode ? 'Update' : 'Save' }} Transaction
               </button>
             </div>
 
