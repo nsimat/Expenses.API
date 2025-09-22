@@ -1,6 +1,6 @@
 ﻿namespace Expenses.API.Dtos;
 
-public class PutTransactionDto
+public class TransactionUpdateDto
 {
     public string Type { get; set; }
     public double Amount { get; set; }
