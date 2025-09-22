@@ -5,9 +5,9 @@ namespace Expenses.API.Data.Services;
 
 public interface ITransactionsService
 {
-    List<Transaction> GetAll();
-    Transaction? GetById(int id);
-    Transaction? Add(PostTransactionDto transaction);
-    Transaction? Update(int id, PutTransactionDto transaction);
-    bool Delete(int id);
+    Task<IEnumerable<Transaction>> GetAllAsync();
+    Task<Transaction?> GetByIdAsync(int id);
+    Task<Transaction?> AddAsync(TransactionCreateDto transactionCreate);
+    Task<Transaction?> UpdateAsync(int id, TransactionUpdateDto transactionUpdate);
+    Task<bool> Delete(int id);
 }

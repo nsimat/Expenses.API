@@ -14,7 +14,7 @@ public class TransactionsController : ControllerBase
     private readonly ITransactionsService _transactionsService;
 
     /// <summary>
-    /// Private constructor to initialize the TransactionsController with required services.
+    /// Private constructor to initialize the TransactionsController with transaction service and logger.
     /// </summary>
     /// <param name="transactionsService"></param>
     /// <param name="logger"></param>
@@ -29,29 +29,30 @@ public class TransactionsController : ControllerBase
     [EndpointSummary("Get all transactions")]
     [EndpointDescription("Fetches all transactions from the database.")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Transaction>))]
-    public IActionResult GetAllTransactions()
+    public async Task<ActionResult> GetAllTransactions()
     {
         _logger.LogInformation("Fetching all transactions...");
         try
         {
-            var transactions = _transactionsService.GetAll();
+            var transactions = await _transactionsService.GetAllAsync();
             if (!transactions.Any())
             {
                 _logger.LogWarning("No transactions found!");
                 return NoContent();
             }
-            return Ok(_transactionsService.GetAll());
+
+            return Ok(transactions);
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "An error occurred while fetching transactions...");
+            _logger.LogError(exception, "An error occurred while retrieving all transactions!");
 
             return Problem(
                 detail: "An error occurred while processing your request. Please try again later.",
                 instance: HttpContext.TraceIdentifier,
                 statusCode: StatusCodes.Status500InternalServerError,
                 title: "Internal Server Error"
-           );
+            );
         }
     }
 
@@ -61,18 +62,20 @@ public class TransactionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Transaction))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-    public IActionResult GetTransactionById(int id)
+    public async Task<ActionResult> GetTransactionById(int id)
     {
         _logger.LogInformation("Fetching transaction with ID: {Id}...", id);
         try
         {
-            var transaction = _transactionsService.GetById(id);
-            if (transaction == null)
+            var transaction = await _transactionsService.GetByIdAsync(id);
+            if (transaction != null)
             {
-                _logger.LogWarning("Transaction with ID: {Id} not found!", id);
-                return NotFound("Transaction not found!");
+                _logger.LogInformation("Transaction with ID: {Id} found.", id);
+                return Ok(transaction);
             }
-            return Ok(transaction);
+
+            _logger.LogWarning("Transaction with ID: {Id} not found!", id);
+            return NotFound("Transaction not found!");
         }
         catch (Exception e)
         {
@@ -82,28 +85,27 @@ public class TransactionsController : ControllerBase
                 instance: HttpContext.TraceIdentifier,
                 statusCode: StatusCodes.Status500InternalServerError,
                 title: "Internal Server Error"
-           );
+            );
         }
     }
-    
+
     [HttpPost("Create")]
     [EndpointSummary("Create a new transaction")]
     [EndpointDescription("Creates a new transaction in the database.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-    public IActionResult CreateTransaction([FromBody] PostTransactionDto payload)
+    public async Task<ActionResult> CreateTransaction([FromBody] TransactionCreateDto payload)
     {
         _logger.LogInformation("Creating a new transaction...");
         try
         {
-            var createdTransaction = _transactionsService.Add(payload);
-            if (createdTransaction == null)
-            {
-                _logger.LogWarning("Failed to create transaction!");
-                return BadRequest("Failed to create transaction!");
-            }
-            return Ok(createdTransaction);
+            var createdTransaction = await _transactionsService.AddAsync(payload);
+            if (createdTransaction != null)
+                return Ok(createdTransaction);
+
+            _logger.LogWarning("Failed to create transaction!");
+            return BadRequest("Failed to create transaction!");
         }
         catch (Exception exception)
         {
@@ -113,27 +115,30 @@ public class TransactionsController : ControllerBase
                 instance: HttpContext.TraceIdentifier,
                 statusCode: StatusCodes.Status500InternalServerError,
                 title: "Internal Server Error"
-           );
+            );
         }
     }
-    
+
     [HttpPut("Update/{id}")]
     [EndpointSummary("Update an existing transaction")]
     [EndpointDescription("Updates an existing transaction in the database.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-    public IActionResult UpdateTransaction(int id, [FromBody] PutTransactionDto payload)
+    public async Task<ActionResult> UpdateTransaction(int id, [FromBody] TransactionUpdateDto payload)
     {
         _logger.LogInformation("Updating transaction with ID: {Id}...", id);
         try
         {
-          var existingTransaction = _transactionsService.Update(id, payload);
-          if (existingTransaction == null)
-          {
-              _logger.LogWarning("Transaction with ID: {Id} not found!", id);
-              return NotFound("Transaction not found!");
-          }
-          return Ok(existingTransaction);
+            var existingTransaction = await _transactionsService.UpdateAsync(id, payload);
+
+            if (existingTransaction != null)
+            {
+                _logger.LogInformation("Transaction with ID: {Id} updated successfully.", id);
+                return Ok(existingTransaction);
+            }
+
+            _logger.LogWarning("Transaction with ID: {Id} not found!", id);
+            return NotFound("Transaction not found!");
         }
         catch (Exception exception)
         {
@@ -143,7 +148,7 @@ public class TransactionsController : ControllerBase
                 instance: HttpContext.TraceIdentifier,
                 statusCode: StatusCodes.Status500InternalServerError,
                 title: "Internal Server Error"
-           );
+            );
         }
     }
 
@@ -153,18 +158,20 @@ public class TransactionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-    public IActionResult DeleteTransaction(int id)
+    public async Task<ActionResult> DeleteTransaction(int id)
     {
         _logger.LogInformation("Deleting transaction with ID: {Id}...", id);
         try
         {
-            var isDeleted = _transactionsService.Delete(id);
-            if (!isDeleted)
+            var isDeleted = await _transactionsService.Delete(id);
+            if (isDeleted)
             {
-                _logger.LogWarning("Transaction with ID: {Id} not found!", id);
-                return NotFound("Transaction not found!");
+                _logger.LogInformation("Transaction with ID: {Id} deleted successfully.", id);
+                return NoContent();
             }
-            return NoContent();
+
+            _logger.LogWarning("Transaction with ID: {Id} not found!", id);
+            return NotFound("Transaction not found!");
         }
         catch (Exception e)
         {
@@ -174,7 +181,7 @@ public class TransactionsController : ControllerBase
                 instance: HttpContext.TraceIdentifier,
                 statusCode: StatusCodes.Status500InternalServerError,
                 title: "Internal Server Error"
-           );
+            );
         }
     }
 }

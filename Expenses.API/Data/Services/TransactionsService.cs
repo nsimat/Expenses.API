@@ -1,73 +1,75 @@
 ﻿using Expenses.API.Dtos;
 using Expenses.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Expenses.API.Data.Services;
 
-public class TransactionsService(ExpensesDbContext expensesDbContext): ITransactionsService
+public class TransactionsService(ExpensesDbContext expensesDbContext) : ITransactionsService
 {
-    public List<Transaction> GetAll()
+    public async Task<IEnumerable<Transaction>> GetAllAsync()
     {
-        var transactions = expensesDbContext.Transactions.ToList();
+        var transactions = await expensesDbContext.Transactions.ToListAsync();
         return transactions;
     }
 
-    public Transaction? GetById(int id)
+    public async Task<Transaction?> GetByIdAsync(int id)
     {
-        var transaction = expensesDbContext.Transactions.Find(id);
+        var transaction = await expensesDbContext.Transactions.FindAsync(id);
         return transaction;
     }
 
-    public Transaction? Add(PostTransactionDto transaction)
+    public async Task<Transaction?> AddAsync(TransactionCreateDto transactionCreate)
     {
         var newTransaction = new Transaction
         {
-            Type = transaction.Type,
-            Amount = transaction.Amount,
-            Category = transaction.Category,
-            CreatedAt = transaction.CreatedAt ?? DateTime.UtcNow,
+            Type = transactionCreate.Type,
+            Amount = transactionCreate.Amount,
+            Category = transactionCreate.Category,
+            CreatedAt = transactionCreate.CreatedAt ?? DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
-        
-        expensesDbContext.Transactions.Add(newTransaction);
-        expensesDbContext.SaveChanges();
-        
-        var createdTransaction = expensesDbContext.Transactions.SingleOrDefault(t =>
-            t.Type == transaction.Type &&
-            t.Amount == transaction.Amount &&
-            t.Category == transaction.Category &&
+
+        await expensesDbContext.Transactions.AddAsync(newTransaction);
+        await expensesDbContext.SaveChangesAsync();
+
+        var createdTransaction = await expensesDbContext.Transactions.SingleOrDefaultAsync(t =>
+            t.Type == transactionCreate.Type &&
+            t.Amount == transactionCreate.Amount &&
+            t.Category == transactionCreate.Category &&
             t.CreatedAt == newTransaction.CreatedAt);
 
         return createdTransaction;
     }
 
-    public Transaction? Update(int id, PutTransactionDto transaction)
+    public async Task<Transaction?> UpdateAsync(int id, TransactionUpdateDto transactionUpdate)
     {
-        var existingTransaction = expensesDbContext.Transactions.Find(id);
+        var existingTransaction = await expensesDbContext.Transactions.FindAsync(id);
 
         if (existingTransaction != null)
         {
-            existingTransaction.Type = transaction.Type;
-            existingTransaction.Amount = transaction.Amount;
-            existingTransaction.Category = transaction.Category;
+            existingTransaction.Type = transactionUpdate.Type;
+            existingTransaction.Amount = transactionUpdate.Amount;
+            existingTransaction.Category = transactionUpdate.Category;
             existingTransaction.UpdatedAt = DateTime.UtcNow;
 
             expensesDbContext.Update(existingTransaction);
-            expensesDbContext.SaveChanges();
+            await expensesDbContext.SaveChangesAsync();
         }
+
         return existingTransaction;
     }
 
-    public bool Delete(int id)
+    public async Task<bool> Delete(int id)
     {
-        bool isDeleted = false;
-        var existingTransaction = expensesDbContext.Transactions.Find(id);
+        var isDeleted = false;
+        var existingTransaction = await expensesDbContext.Transactions.FindAsync(id);
 
-        if (existingTransaction != null)
-        {
-            expensesDbContext.Transactions.Remove(existingTransaction);
-            expensesDbContext.SaveChanges(); 
-            isDeleted = true;
-        }
+        if (existingTransaction == null) return isDeleted;
+
+        expensesDbContext.Transactions.Remove(existingTransaction);
+        await expensesDbContext.SaveChangesAsync();
+        isDeleted = true;
+
         return isDeleted;
     }
 }
