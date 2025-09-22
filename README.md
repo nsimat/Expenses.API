@@ -1,6 +1,5 @@
 # Expense Tracker
 
----
 ## Overview
 
 Expense Tracker is a project which aim is to practically build a full stack application using ASP.NET Core API and Angular. 
