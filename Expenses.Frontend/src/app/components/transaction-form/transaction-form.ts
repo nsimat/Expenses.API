@@ -13,25 +13,39 @@ import { Transaction } from '../../services/transaction';
 export class TransactionForm implements OnInit {
   transactionForm: FormGroup;
 
+  // Income sources
   incomeCategories = [
     'Salary',
-    'Business',
+    'Business Profits',
+    'Wages',
+    'Commissions',
     'Investment',
     'Freelance',
+    'Dividends',
     'Rental Income',
     'Interest',
+    'Taxes Refunds',
     'Gift',
     'Other',
   ];
 
+  // List of possible expenses
   expenseCategories = [
+    'Housing',
     'Food',
     'Rent',
     'Transportation',
     'Utilities',
-    'Entertainment',
+    'Entertainment & Recreation',
+    'Insurance',
     'Travel',
-    'Health',
+    'Personal Care',
+    'Healthcare',
+    'Pet Care',
+    'Savings & Investments',
+    'Gifts & Donations',
+    'Debt payments',
+    'Taxes',
     'Other',
   ];
 
