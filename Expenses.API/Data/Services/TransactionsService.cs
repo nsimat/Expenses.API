@@ -18,14 +18,14 @@ public class TransactionsService(ExpensesDbContext expensesDbContext) : ITransac
         return transaction;
     }
 
-    public async Task<Transaction?> AddAsync(TransactionCreateDto transactionCreate)
+    public async Task<Transaction?> AddAsync(TransactionForCreationDto transactionForCreation)
     {
         var newTransaction = new Transaction
         {
-            Type = transactionCreate.Type,
-            Amount = transactionCreate.Amount,
-            Category = transactionCreate.Category,
-            CreatedAt = transactionCreate.CreatedAt ?? DateTime.UtcNow,
+            Type = transactionForCreation.Type,
+            Amount = transactionForCreation.Amount,
+            Category = transactionForCreation.Category,
+            CreatedAt = transactionForCreation.CreatedAt ?? DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
 
@@ -33,26 +33,27 @@ public class TransactionsService(ExpensesDbContext expensesDbContext) : ITransac
         await expensesDbContext.SaveChangesAsync();
 
         var createdTransaction = await expensesDbContext.Transactions.SingleOrDefaultAsync(t =>
-            t.Type == transactionCreate.Type &&
-            t.Amount == transactionCreate.Amount &&
-            t.Category == transactionCreate.Category &&
+            t.Type == transactionForCreation.Type &&
+            t.Amount == transactionForCreation.Amount &&
+            t.Category == transactionForCreation.Category &&
             t.CreatedAt == newTransaction.CreatedAt);
 
         return createdTransaction;
     }
 
-    public async Task<Transaction?> UpdateAsync(int id, TransactionUpdateDto transactionUpdate)
+    public async Task<Transaction?> UpdateAsync(int id, TransactionForUpdateDto transactionForUpdate)
     {
         var existingTransaction = await expensesDbContext.Transactions.FindAsync(id);
 
         if (existingTransaction != null)
         {
-            existingTransaction.Type = transactionUpdate.Type;
-            existingTransaction.Amount = transactionUpdate.Amount;
-            existingTransaction.Category = transactionUpdate.Category;
+            existingTransaction.Type = transactionForUpdate.Type;
+            existingTransaction.Amount = transactionForUpdate.Amount;
+            existingTransaction.Category = transactionForUpdate.Category;
             existingTransaction.UpdatedAt = DateTime.UtcNow;
 
             expensesDbContext.Update(existingTransaction);
+            expensesDbContext.Entry(existingTransaction).State = EntityState.Modified;
             await expensesDbContext.SaveChangesAsync();
         }
 
