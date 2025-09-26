@@ -1,6 +1,6 @@
 ﻿namespace Expenses.API.Dtos;
 
-public class TransactionCreateDto
+public class TransactionForCreationDto
 {
     public string Type { get; set; }
     public double Amount { get; set; }
