@@ -26,10 +26,10 @@ public class TransactionsController : ControllerBase
     }
 
     [HttpGet("All")]
-    [EndpointSummary("Get all transactions")]
+    [EndpointSummary("Get all transactions.")]
     [EndpointDescription("Fetches all transactions from the database.")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Transaction>))]
-    public async Task<ActionResult> GetAllTransactions()
+    public async Task<IActionResult> GetAllTransactions()
     {
         _logger.LogInformation("Fetching all transactions...");
         try
@@ -56,13 +56,13 @@ public class TransactionsController : ControllerBase
         }
     }
 
-    [HttpGet("Details/{id}")]
-    [EndpointSummary("Get transaction by ID from the database")]
+    [HttpGet("Details/{id:int}")]
+    [EndpointSummary("Get transaction by ID from the database.")]
     [EndpointDescription("Fetches a specific transaction by its ID.")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Transaction))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-    public async Task<ActionResult> GetTransactionById(int id)
+    public async Task<IActionResult> GetTransactionById(int id)
     {
         _logger.LogInformation("Fetching transaction with ID: {Id}...", id);
         try
@@ -90,12 +90,12 @@ public class TransactionsController : ControllerBase
     }
 
     [HttpPost("Create")]
-    [EndpointSummary("Create a new transaction")]
+    [EndpointSummary("Create a new transaction.")]
     [EndpointDescription("Creates a new transaction in the database.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-    public async Task<ActionResult> CreateTransaction([FromBody] TransactionCreateDto payload)
+    public async Task<IActionResult> CreateTransaction([FromBody] TransactionForCreationDto payload)
     {
         _logger.LogInformation("Creating a new transaction...");
         try
@@ -105,7 +105,7 @@ public class TransactionsController : ControllerBase
                 return Ok(createdTransaction);
 
             _logger.LogWarning("Failed to create transaction!");
-            return BadRequest("Failed to create transaction!");
+            return BadRequest("TransactionForCreationDto object is null!");
         }
         catch (Exception exception)
         {
@@ -119,12 +119,12 @@ public class TransactionsController : ControllerBase
         }
     }
 
-    [HttpPut("Update/{id}")]
-    [EndpointSummary("Update an existing transaction")]
+    [HttpPut("Update/{id:int}")]
+    [EndpointSummary("Update an existing transaction.")]
     [EndpointDescription("Updates an existing transaction in the database.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
-    public async Task<ActionResult> UpdateTransaction(int id, [FromBody] TransactionUpdateDto payload)
+    public async Task<IActionResult> UpdateTransaction(int id, [FromBody] TransactionForUpdateDto payload)
     {
         _logger.LogInformation("Updating transaction with ID: {Id}...", id);
         try
@@ -138,7 +138,7 @@ public class TransactionsController : ControllerBase
             }
 
             _logger.LogWarning("Transaction with ID: {Id} not found!", id);
-            return NotFound("Transaction not found!");
+            return BadRequest("TransactionForUpdateDto object is null or invalid!");
         }
         catch (Exception exception)
         {
@@ -152,13 +152,13 @@ public class TransactionsController : ControllerBase
         }
     }
 
-    [HttpDelete("Delete/{id}")]
-    [EndpointSummary("Delete a transaction")]
+    [HttpDelete("Delete/{id:int}")]
+    [EndpointSummary("Delete a transaction.")]
     [EndpointDescription("Deletes a transaction from the database.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-    public async Task<ActionResult> DeleteTransaction(int id)
+    public async Task<IActionResult> DeleteTransaction(int id)
     {
         _logger.LogInformation("Deleting transaction with ID: {Id}...", id);
         try
