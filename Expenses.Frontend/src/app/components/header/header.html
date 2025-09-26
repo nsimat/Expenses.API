@@ -3,20 +3,23 @@
     <div class="d-flex align-items-center">
       <a class="navbar-brand me-4" href="">
         <img ngSrc="/accounting.png" alt="Expense Logo" height="47" width="47">
-        Expense Tracker
+        Expenses Tracker
       </a>
     </div>
     <div class="ms-auto">
       <a class="btn btn-outline-light me-2" [routerLink]="['/add']">
-        <i class="bi bi-plus-circle"></i>
+        <i class="fa-solid fa-circle-plus"></i>
+        <!--i class="bi bi-plus-circle"></i-->
         Add Transaction
       </a>
       <a class="btn btn-outline-light me-2" [routerLink]="['/logout']">
-        <i class="bi bi-box-arrow-left me-1"></i>
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <!--i class="bi bi-box-arrow-left me-1"></i-->
         Logout
       </a>
       <a class="btn btn-outline-light me-2" [routerLink]="['/login']">
-        <i class="bi bi-box-arrow-in-right me-1"></i>
+        <i class="fa-solid fa-right-to-bracket"></i>
+        <!--i class="bi bi-box-arrow-in-right me-1"></i-->
         Login
       </a>
     </div>
