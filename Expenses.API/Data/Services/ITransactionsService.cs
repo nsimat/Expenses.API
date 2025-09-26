@@ -7,7 +7,7 @@ public interface ITransactionsService
 {
     Task<IEnumerable<Transaction>> GetAllAsync();
     Task<Transaction?> GetByIdAsync(int id);
-    Task<Transaction?> AddAsync(TransactionCreateDto transactionCreate);
-    Task<Transaction?> UpdateAsync(int id, TransactionUpdateDto transactionUpdate);
+    Task<Transaction?> AddAsync(TransactionForCreationDto transactionForCreation);
+    Task<Transaction?> UpdateAsync(int id, TransactionForUpdateDto transactionForUpdate);
     Task<bool> Delete(int id);
 }
