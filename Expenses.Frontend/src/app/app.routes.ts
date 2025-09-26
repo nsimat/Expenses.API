@@ -3,6 +3,7 @@ import { Login } from './components/login/login';
 import { Signup } from './components/signup/signup';
 import { TransactionList } from './components/transaction-list/transaction-list';
 import { TransactionForm } from './components/transaction-form/transaction-form';
+import {PageNotFound} from './components/page-not-found/page-not-found';
 
 export const routes: Routes = [
   // Route mapping the URL '/login' to Login component
@@ -36,9 +37,9 @@ export const routes: Routes = [
     redirectTo: '/transactions',
     pathMatch: 'full',
   },
-  // Redirecting all unmatched URLs to the '/transactions'; Catching all to prevent errors
+  // Redirecting all unmatched URLs to the '404 Page'; Catching all to prevent errors
   {
     path: '**',
-    redirectTo: '/transactions',
+    component: PageNotFound
   },
 ];
