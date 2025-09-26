@@ -160,7 +160,6 @@ export class TransactionForm implements OnInit {
   private updateFormType(type: string): void {
     console.log('Changing type...');
 
-    //const type = this.transactionForm.get('type')?.value;
     this.availableCategories = type === 'Expense' ? this.expenseCategories : this.incomeCategories;
     this.transactionForm.patchValue({ category: '' });
   }
