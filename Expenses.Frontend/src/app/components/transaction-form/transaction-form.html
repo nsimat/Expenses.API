@@ -4,7 +4,7 @@
       <div class="card shadow">
         <div class="card-header bg-lighty py-3">
           <h3 class="card-title mb-0 fw-semibold">
-            {{ isEditMode ? 'Edit ' : 'Add New ' }} Transaction
+            <i>{{ isEditMode ? 'Edit ' : 'Add New ' }} Transaction</i>
           </h3>
         </div>
 
@@ -12,28 +12,28 @@
           <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()">
             <!-- Transaction Type -->
             <div class="mb-4">
-              <label for="type" class="form-label fw-medium">Type</label>
+              <label for="type" class="form-label fw-medium"><i>Type</i></label>
               <select class="form-select form-select-lg" id="type" formControlName="type" (change)="onTypeChange()">
-                <option value="Income">Income</option>
-                <option value="Expense">Expense</option>
+                <option value="Income"><i>Income</i></option>
+                <option value="Expense"><i>Expense</i></option>
               </select>
             </div>
 
             <!-- Transaction Category -->
             <div class="mb-4">
-              <label for="category" class="form-label fw-medium">Category</label>
+              <label for="category" class="form-label fw-medium"><i>Category</i></label>
               <select class="form-select form-select-lg" id="category" formControlName="category">
                 @for(category of availableCategories; track category) {
-                  <option [value]="category">{{ category }}</option>
+                  <option [value]="category"><i>{{ category }}</i></option>
                 } @empty {
-                  <option disabled>No categories available</option>
+                  <option disabled><i>No categories available</i></option>
                 }
               </select>
             </div>
 
             <!-- Transaction Amount -->
              <div class="mb-4">
-              <label for="amount" class="form-label fw-medium">Amount</label>
+               <label for="amount" class="form-label fw-medium"><i>Amount</i></label>
               <div class="input-group">
                 <span class="input-group-text">€</span>
                 <input type="number" class="form-control form-control-lg" id="amount" formControlName="amount" placeholder="0.00"/>
@@ -42,7 +42,7 @@
 
             <!-- Transaction Creation Date -->
             <div class="mb-4">
-              <label for="createdAt" class="form-label fw-medium">Date</label>
+              <label for="createdAt" class="form-label fw-medium"><i>Date</i></label>
               @if(isEditMode) {
                 <input type="date" class="form-control form-control-lg" id="createdAt" formControlName="createdAt" [value]="transactionForm.get('createdAt')?.value | date : 'yyyy-MM-dd'" />
               } @else {
@@ -53,10 +53,10 @@
             <!-- Form Actions -->
             <div class="d-flex gap-3 justify-content-end mt-4">
               <button type="button" class="btn btn-secondary btn-lg px-4" (click)="cancel()">
-                Cancel
+                <i><strong>Cancel</strong></i>
               </button>
               <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="transactionForm.invalid">
-                {{  isEditMode ? 'Update' : 'Save' }} Transaction
+                <i><strong>{{  isEditMode ? 'Update' : 'Save' }} Transaction</strong></i>
               </button>
             </div>
 
