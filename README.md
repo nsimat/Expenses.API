@@ -2,15 +2,15 @@
 
 ## Overview
 
-Expense Tracker is a project which aim is to practically build a full stack application using ASP.NET Core API and Angular. 
+**Expense Tracker** is a project which aim is to practically build a full stack application using ASP.NET Core API and Angular. 
 The application allows users to manage their expenses efficiently by providing features such as user authentication, expense tracking, and data visualization.
 
-The project is structured into two main parts: 
+Two separate projects are used for clear separation of concerns and easier deployment: 
 - the backend API built with ASP.NET Core 
 - and the frontend application developed using Angular.
 
-The ASPNET Core API houses the backend logic, including controllers,services, and data casses using EF Core to interact with a SQL Server database.
-Otherwise the Angular frontend handles the user interface and interacts with the backend API to perform various operations using HTTP requests.
+The ASPNET Core API houses the backend logic, including controllers,services, and data cases using EF Core to interact with a SQL Server database.
+Otherwise, the Angular frontend handles the user interface and interacts with the backend API to perform various operations using HTTP requests.
 
 
 ## Objectives
