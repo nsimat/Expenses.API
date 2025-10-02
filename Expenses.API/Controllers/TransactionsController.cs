@@ -10,9 +10,12 @@ namespace Expenses.API.Controllers;
 [ApiController]
 public class TransactionsController : ControllerBase
 {
+    #region Fields
     private readonly ILogger<TransactionsController> _logger;
     private readonly ITransactionsService _transactionsService;
+    #endregion
 
+    #region Constructor
     /// <summary>
     /// Private constructor to initialize the TransactionsController with transaction service and logger.
     /// </summary>
@@ -24,11 +27,15 @@ public class TransactionsController : ControllerBase
         _transactionsService = transactionsService ?? throw new ArgumentNullException(nameof(transactionsService));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
+    #endregion
 
+    #region Endpoints for Transactions
+    
     [HttpGet("All")]
     [EndpointSummary("Get all transactions.")]
     [EndpointDescription("Fetches all transactions from the database.")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Transaction>))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> GetAllTransactions()
     {
         _logger.LogInformation("Fetching all transactions...");
@@ -92,7 +99,7 @@ public class TransactionsController : ControllerBase
     [HttpPost("Create")]
     [EndpointSummary("Create a new transaction.")]
     [EndpointDescription("Creates a new transaction in the database.")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Transaction))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> CreateTransaction([FromBody] TransactionForCreationDto payload)
@@ -124,6 +131,8 @@ public class TransactionsController : ControllerBase
     [EndpointDescription("Updates an existing transaction in the database.")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> UpdateTransaction(int id, [FromBody] TransactionForUpdateDto payload)
     {
         _logger.LogInformation("Updating transaction with ID: {Id}...", id);
@@ -155,8 +164,9 @@ public class TransactionsController : ControllerBase
     [HttpDelete("Delete/{id:int}")]
     [EndpointSummary("Delete a transaction.")]
     [EndpointDescription("Deletes a transaction from the database.")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+    [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> DeleteTransaction(int id)
     {
@@ -184,4 +194,5 @@ public class TransactionsController : ControllerBase
             );
         }
     }
+    #endregion
 }
