@@ -30,6 +30,9 @@ public class TransactionsController : ControllerBase
     #endregion
 
     #region Endpoints for Transactions
+    // Actions should always be clean and simple, delegate complex logic to services.
+    // Each action should handle a single responsibility. Their main job is to handle HTTP requests,
+    // validate models, catch errors, and return responses.
     
     [HttpGet("All")]
     [EndpointSummary("Get all transactions.")]
@@ -107,11 +110,17 @@ public class TransactionsController : ControllerBase
         _logger.LogInformation("Creating a new transaction...");
         try
         {
+            if(!ModelState.IsValid)
+            {
+                _logger.LogWarning("Invalid model state for creating transaction!");
+                return BadRequest(ModelState);
+            }
+            
             var createdTransaction = await _transactionsService.AddAsync(payload);
             if (createdTransaction != null)
                 return Ok(createdTransaction);
 
-            _logger.LogWarning("Failed to create transaction!");
+            _logger.LogWarning("Failed to create transaction. TransactionForCreationDto object is null!");
             return BadRequest("TransactionForCreationDto object is null!");
         }
         catch (Exception exception)
@@ -139,7 +148,6 @@ public class TransactionsController : ControllerBase
         try
         {
             var existingTransaction = await _transactionsService.UpdateAsync(id, payload);
-
             if (existingTransaction != null)
             {
                 _logger.LogInformation("Transaction with ID: {Id} updated successfully.", id);
