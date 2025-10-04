@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using Expenses.API.Data;
 using Expenses.API.Models;
 using Microsoft.AspNetCore.Http;
@@ -25,7 +26,7 @@ namespace Expenses.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Register([FromBody] Dtos.UserCreationDto userCreationDto)
         {
-            if (userCreationDto == null || string.IsNullOrWhiteSpace(userCreationDto.Email) || string.IsNullOrWhiteSpace(userCreationDto.Password))
+            if (!ModelState.IsValid)
             {
                 logger.LogWarning("Invalid user registration attempt.");
                 return BadRequest("Email and password are required.");
@@ -68,7 +69,12 @@ namespace Expenses.API.Controllers
                );
             }
         }
-        
+        /// <summary>
+        ///  Generates a JWT token for the authenticated user.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>String representing the token</returns>
+        /// <exception cref="InvalidOperationException"></exception>
         private string GenerateJwtToken(User user)
         {
             var claims = new[]
@@ -78,17 +84,18 @@ namespace Expenses.API.Controllers
             };
             
             // Implement JWT token generation logic
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+            var secret = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 configuration["JwtSettings:SecurityKey"] ??
-                throw new InvalidOperationException("JWT Key not found in configuration."))); 
+                throw new InvalidOperationException("JWT Secret Key not found in configuration."))); 
             
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var credentials = new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
             
             var token = new JwtSecurityToken(
                 issuer: configuration["JwtSettings:Issuer"],
                 audience: configuration["JwtSettings:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
+                expires: DateTime.UtcNow.AddMinutes(Convert.
+                    ToDouble(configuration["JwtSettings:ExpirationTimeInMinutes"] ?? "60")),
                 signingCredentials: credentials
                 );
             
