@@ -2,8 +2,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Expenses.API.Data;
+using Expenses.API.Dtos;
 using Expenses.API.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -15,8 +17,80 @@ namespace Expenses.API.Controllers
     public class AuthController(
         ExpensesDbContext expensesDbContext, 
         ILogger<AuthController> logger,
-        IConfiguration configuration) : ControllerBase
+        IConfiguration configuration,
+        PasswordHasher<User> passwordHasher) : ControllerBase
     {
+        [HttpPost("Login")]
+        [EndpointSummary("Login a user.")]
+        [EndpointDescription("Authenticates a user with email and password.")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        public async Task<IActionResult> Login([FromBody] UserLoginDto userLogin)
+        {
+            logger.LogInformation("Attempting to log in user with email: {Email}...", userLogin.Email);
+            
+            // Validate the incoming user data
+            if (!ModelState.IsValid)
+            {
+                logger.LogWarning("Invalid login attempt.");
+                return BadRequest("Email and password are required.");
+            }
+
+            try
+            {
+                // Check if the user exists
+                var user = await expensesDbContext.Users.FirstOrDefaultAsync(u => u.Email == userLogin.Email);
+                
+                if (user == null)
+                {
+                    logger.LogWarning("Invalid credentials for email: {Email}.", userLogin.Email);
+                    return Unauthorized(new LoginResultDto()
+                    {
+                        Success = false,
+                        Message = "Invalid Email or Password."
+                    });
+                }
+
+                // Verify the password matches
+                var passwordVerificationResult = passwordHasher
+                    .VerifyHashedPassword(user, user.Password, userLogin.Password);
+
+                if (passwordVerificationResult == PasswordVerificationResult.Failed)
+                {
+                    logger.LogWarning("Invalid credentials for email: {Email}.", userLogin.Email);
+                    return Unauthorized(new LoginResultDto()
+                    {
+                        Success = false,
+                        Message = "Invalid Email or Password."
+                    });
+                }
+                
+                logger.LogInformation("User with email {Email} logged in successfully.", userLogin.Email);
+                
+                // Create a JWT as the given user credentials are valid.
+                var jwtToken = GenerateJwtToken(user);
+                
+                var loginResult = new
+                {
+                    Success = true,
+                    Message = "Login successful.",
+                    Token = jwtToken
+                };
+                // Return a JSON result containing the success status, message, and JWT in the response.
+                return Ok(loginResult);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "An error occurred while logging in!");
+                return Problem(
+                    detail:"An error occurred while processing your request.",
+                    instance: HttpContext.TraceIdentifier,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    title: "Internal Server Error"
+               );
+            }
+        }
         
         [HttpPost("Register")]
         [EndpointSummary("Register a new user.")]
@@ -26,25 +100,32 @@ namespace Expenses.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         public async Task<IActionResult> Register([FromBody] Dtos.UserCreationDto userCreationDto)
         {
+            logger.LogInformation("Registering a new user with email: {Email}...", userCreationDto.Email);
+            
+            // Validate the incoming user data
             if (!ModelState.IsValid)
             {
                 logger.LogWarning("Invalid user registration attempt.");
                 return BadRequest("Email and password are required.");
             }
 
+            // Check if the user already exists and create a new user
             try
             {
                 var existingUser = await expensesDbContext.Users.FirstOrDefaultAsync(u => u.Email == userCreationDto.Email);
                 if (existingUser != null)
                 {
-                    logger.LogWarning("User with email {Email} already exists.", userCreationDto.Email);
-                    return BadRequest("User with this email already exists.");
+                    logger.LogWarning("User with email {Email} already exists!", userCreationDto.Email);
+                    return BadRequest("User with this email already exists!");
                 }
 
+                // Create a new user and save to the database
+                var hashedPassword = passwordHasher.HashPassword(null!, userCreationDto.Password);
+                
                 var newUser = new User
                 {
                     Email = userCreationDto.Email,
-                    Password = userCreationDto.Password, // In a real application, ensure to hash the password before storing it.
+                    Password = hashedPassword,
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
                 };
@@ -54,8 +135,10 @@ namespace Expenses.API.Controllers
 
                 logger.LogInformation("User with email {Email} registered successfully.", userCreationDto.Email);
                 
+                // Create a JWT as the given user credentials are valid.
                 var token = GenerateJwtToken(newUser);
                 
+                // Return a JSON result containing the JWT in the response or a client-readable error message.
                 return Ok(new {Token = token});
             }
             catch (Exception ex)
@@ -69,6 +152,7 @@ namespace Expenses.API.Controllers
                );
             }
         }
+        
         /// <summary>
         ///  Generates a JWT token for the authenticated user.
         /// </summary>
