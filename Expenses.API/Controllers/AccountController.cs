@@ -9,24 +9,30 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Expenses.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(
+    public class AccountController(
         ExpensesDbContext expensesDbContext, 
-        ILogger<AuthController> logger,
+        ILogger<AccountController> logger,
         IConfiguration configuration,
         PasswordHasher<User> passwordHasher) : ControllerBase
     {
         [HttpPost("Login")]
-        [EndpointSummary("Login a user.")]
+        [EndpointSummary("Performs a user login.")]
         [EndpointDescription("Authenticates a user with email and password.")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [EndpointName("Login")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginResultDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BadRequestObjectResult))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(LoginResultDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Login([FromBody] UserLoginDto userLogin)
+        public async Task<IActionResult> Login(
+            [FromBody]
+            [SwaggerParameter("A DTO object containing the user's credentials.")] 
+            UserLoginDto userLogin)
         {
             logger.LogInformation("Attempting to log in user with email: {Email}...", userLogin.Email);
             
@@ -93,12 +99,16 @@ namespace Expenses.API.Controllers
         }
         
         [HttpPost("Register")]
-        [EndpointSummary("Register a new user.")]
-        [EndpointDescription("Registers a new user with email and password.")]
+        [EndpointSummary("Registers a new user.")]
+        [EndpointDescription("Registers a new user with email and password in the database.")]
+        [EndpointName("Register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Register([FromBody] Dtos.UserCreationDto userCreationDto)
+        public async Task<IActionResult> Register(
+            [FromBody]
+            [SwaggerParameter("A DTO object that can be used to create a new user account.")]
+            UserCreationDto userCreationDto)
         {
             logger.LogInformation("Registering a new user with email: {Email}...", userCreationDto.Email);
             
