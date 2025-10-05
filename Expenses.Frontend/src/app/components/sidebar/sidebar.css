@@ -1,0 +1,46 @@
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.nav-text {
+  vertical-align: middle;
+  margin-left: 10px;
+}
+
+.vertical-navbar {
+  /*width: 200px; /* Fixed width for the sidebar */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 16px;
+  overflow-y: auto; /* Scroll if content overflows */
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.vertical-navbar h1 {
+  padding-left: 20px;
+  font-weight: 400;
+  color: black;
+}
+
+.vertical-navbar ul li {
+  padding: 10px 0;
+  padding-left: 20px;
+}
+
+.vertical-navbar ul li a {
+  text-decoration: none;
+  color: black;
+  display: block;
+}
+
+.vertical-navbar ul li fa {
+  margin-right: 10px; /* spacing between icon and text */
+}

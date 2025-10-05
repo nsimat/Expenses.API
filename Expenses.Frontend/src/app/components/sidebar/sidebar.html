@@ -1,0 +1,35 @@
+<nav class="vertical-navbar">
+  <h2>Dashboard</h2>
+  <ul>
+    <li>
+      <a [routerLink]="['/transactions']">
+        <fa-icon [icon]="home"></fa-icon>
+        <span class="nav-text">Dashboard</span>
+      </a>
+    </li>
+    <li>
+      <a [routerLink]="['/add']">
+        <fa-icon [icon]="transaction"></fa-icon>
+        <span class="nav-text">Add transaction</span>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <fa-icon [icon]="chart"></fa-icon>
+        <span class="nav-text">Analytics</span>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <fa-icon [icon]="message"></fa-icon>
+        <span class="nav-text">Messages</span>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <fa-icon [icon]="bookmark"></fa-icon>
+        <span class="nav-text">Collections</span>
+      </a>
+    </li>
+  </ul>
+</nav>
