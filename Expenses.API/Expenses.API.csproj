@@ -4,6 +4,9 @@
         <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <DocumentationFile>Expenses.API.xml</DocumentationFile>
+        <IncludeOpenAPIAnalysers>true</IncludeOpenAPIAnalysers>
     </PropertyGroup>
 
     <ItemGroup>
