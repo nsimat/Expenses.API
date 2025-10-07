@@ -18,8 +18,7 @@ builder.Services.AddControllers();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(
-    options => options.EnableAnnotations());
+builder.Services.AddSwaggerGen(options => options.EnableAnnotations());
 
 builder.Services.AddCors(options => 
     options.AddPolicy(name: "AngularExpensesPolicy",
@@ -57,7 +56,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(setupAction =>
+    {
+        setupAction.DocumentTitle = "Expenses API";
+        setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Expenses API V1");
+        setupAction.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseCors("AngularExpensesPolicy");
