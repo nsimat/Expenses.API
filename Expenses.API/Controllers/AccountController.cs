@@ -4,12 +4,10 @@ using System.Text;
 using Expenses.API.Data;
 using Expenses.API.Dtos;
 using Expenses.API.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace Expenses.API.Controllers
 {
@@ -21,18 +19,25 @@ namespace Expenses.API.Controllers
         IConfiguration configuration,
         PasswordHasher<User> passwordHasher) : ControllerBase
     {
-        [HttpPost("Login")]
+        
+        /// <summary>
+        /// Authenticates a user and returns a JWT token if successful.
+        /// </summary>
+        /// <param name="userLogin">A DTO object containing the user's credentials.</param>
+        /// <returns>An ActionResult of type LoginResultDto</returns>
+        /// <response code="200">Returns a LoginResultDto object containing the success status, message, and JWT token.</response>
+        /// <response code="400">If the request is invalid, e.g., missing email or password.</response>
+        /// <response code="401">If the credentials are invalid.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [EndpointSummary("Performs a user login.")]
         [EndpointDescription("Authenticates a user with email and password.")]
         [EndpointName("Login")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LoginResultDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(BadRequestObjectResult))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(LoginResultDto))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Login(
-            [FromBody]
-            [SwaggerParameter("A DTO object containing the user's credentials.")] 
-            UserLoginDto userLogin)
+        [HttpPost("Login")]
+        public async Task<ActionResult<LoginResultDto>> Login([FromBody] UserLoginDto userLogin)
         {
             logger.LogInformation("Attempting to log in user with email: {Email}...", userLogin.Email);
             
@@ -98,6 +103,14 @@ namespace Expenses.API.Controllers
             }
         }
         
+        /// <summary>
+        /// Registers a new user with email and password.
+        /// </summary>
+        /// <param name="userCreationDto">A DTO object that can be used to create a new user account.</param>
+        /// <returns>An object containing the token created</returns>
+        /// <response code="201">Returns a JWT token if the registration is successful.</response>
+        /// <response code="400">If the request is invalid, e.g., missing email or password, or if the user already exists.</response>
+        /// <response code="500">If an internal server error occurs.</response>
         [HttpPost("Register")]
         [EndpointSummary("Registers a new user.")]
         [EndpointDescription("Registers a new user with email and password in the database.")]
@@ -105,10 +118,7 @@ namespace Expenses.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Register(
-            [FromBody]
-            [SwaggerParameter("A DTO object that can be used to create a new user account.")]
-            UserCreationDto userCreationDto)
+        public async Task<IActionResult> Register([FromBody] UserCreationDto userCreationDto)
         {
             logger.LogInformation("Registering a new user with email: {Email}...", userCreationDto.Email);
             
