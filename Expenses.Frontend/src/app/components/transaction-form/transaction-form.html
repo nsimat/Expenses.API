@@ -51,11 +51,11 @@
             </div>
 
             <!-- Form Actions -->
-            <div class="d-flex gap-3 justify-content-end mt-4">
-              <button type="button" class="btn btn-secondary btn-lg px-4" (click)="cancel()">
+            <div class="d-flex gap-3 justify-content-center mt-4">
+              <button type="button" class="btn btn-secondary btn-md px-4" (click)="cancel()">
                 <i><strong>Cancel</strong></i>
               </button>
-              <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="transactionForm.invalid">
+              <button type="submit" class="btn btn-primary btn-md px-4" [disabled]="transactionForm.invalid">
                 <i><strong>{{  isEditMode ? 'Update' : 'Save' }} Transaction</strong></i>
               </button>
             </div>
