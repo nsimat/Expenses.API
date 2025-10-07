@@ -32,10 +32,12 @@ export class TransactionForm implements OnInit {
   // List of possible expenses
   expenseCategories = [
     'Housing',
-    'Food',
+    'Food/Grocery',
+    'Car insurance',
+    'Car payment',
     'Rent',
     'Transportation',
-    'Utilities',
+    'Utilities Bills',
     'Entertainment & Recreation',
     'Insurance',
     'Travel',
@@ -65,7 +67,7 @@ export class TransactionForm implements OnInit {
       type: ['Expense', Validators.required],
       category: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(0)]],
-      createdAt: [new Date(), Validators.required],
+      createdAt: [new Date(), Validators.required]
     });
   }
 
@@ -107,7 +109,7 @@ export class TransactionForm implements OnInit {
         console.log('Loaded transaction for editing: ', transaction);
       },
       error: (error) => {
-        console.error('Error fetching transaction: ', error);
+        console.error('Error fetching transaction: - ', error);
       },
     });
   }
