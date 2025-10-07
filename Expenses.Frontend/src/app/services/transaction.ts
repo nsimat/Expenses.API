@@ -15,24 +15,28 @@ export class Transaction {
 
   constructor(private http: HttpClient) {}
 
+  // Retrieve all transactions
   getAllTransactions(): Observable<Itransaction[]>{
     return this.http.get<Itransaction[]>(`${this.apiUrl}/All`);
   }
 
+  // Retrieve a transactions by id
   getTransactionById(id: number): Observable<Itransaction>{
     return this.http.get<Itransaction>(`${this.apiUrl}/Details/` + id);
   }
 
+  // Create a new transaction
   createTransaction(transaction: Itransaction): Observable<Itransaction>{
     return this.http.post<Itransaction>(this.apiUrl + "/Create", transaction);
   }
 
+  // Update an existing transaction
   updateTransaction(id: number, transaction: Itransaction): Observable<Itransaction>{
     return this.http.put<Itransaction>(this.apiUrl + "/Update/" + id, transaction);
   }
 
+  // Delete a transaction by id
   deleteTransaction(id: number): Observable<void>{
     return this.http.delete<void>(this.apiUrl + "/Delete/" + id);
   }
-
 }
