@@ -24,4 +24,18 @@ export class Sidebar {
   user = faUser;
   transaction = faMoneyBillTransfer;
 
+  title?: string = 'Dashboard';
+
+  getTitle(): string {
+    return this.title || 'Dashboard';
+  }
+
+  setTitle(newTitle: string): void {
+    this.title = newTitle;
+  }
+
+  updateTitle(item: string): void {
+    this.setTitle(item);
+  }
+
 }

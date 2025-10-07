@@ -1,34 +1,40 @@
 <nav class="vertical-navbar">
-  <h2>Dashboard</h2>
+  <h2>{{ title }}</h2>
   <ul>
     <li>
-      <a [routerLink]="['/transactions']">
+      <a [routerLink]="['/transactions']" (click)="updateTitle('Dashboard')">
         <fa-icon [icon]="home"></fa-icon>
         <span class="nav-text">Dashboard</span>
       </a>
     </li>
     <li>
-      <a [routerLink]="['/add']">
+      <a [routerLink]="['/add']" (click)="updateTitle('Add Transaction')">
         <fa-icon [icon]="transaction"></fa-icon>
         <span class="nav-text">Add transaction</span>
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="#" (click)="updateTitle('Analytics')">
         <fa-icon [icon]="chart"></fa-icon>
         <span class="nav-text">Analytics</span>
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="#" (click)="updateTitle('Messages')">
         <fa-icon [icon]="message"></fa-icon>
         <span class="nav-text">Messages</span>
       </a>
     </li>
     <li>
-      <a href="#">
+      <a href="#" (click)="updateTitle('Collections')">
         <fa-icon [icon]="bookmark"></fa-icon>
         <span class="nav-text">Collections</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" (click)="updateTitle('User Profile')">
+        <fa-icon [icon]="user"></fa-icon>
+        <span class="nav-text">User Profile</span>
       </a>
     </li>
   </ul>
