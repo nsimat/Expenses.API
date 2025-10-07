@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Expenses.API</name>
+    </assembly>
+    <members>
+        <member name="M:Expenses.API.Controllers.AccountController.Login(Expenses.API.Dtos.UserLoginDto)">
+            <summary>
+            Authenticates a user and returns a JWT token if successful.
+            </summary>
+            <param name="userLogin">A DTO object containing the user's credentials.</param>
+            <returns>An ActionResult of type LoginResultDto</returns>
+            <response code="200">Returns a LoginResultDto object containing the success status, message, and JWT token.</response>
+            <response code="400">If the request is invalid, e.g., missing email or password.</response>
+            <response code="401">If the credentials are invalid.</response>
+            <response code="500">If an internal server error occurs.</response>
+        </member>
+        <member name="M:Expenses.API.Controllers.AccountController.Register(Expenses.API.Dtos.UserCreationDto)">
+            <summary>
+            Registers a new user with email and password.
+            </summary>
+            <param name="userCreationDto">A DTO object that can be used to create a new user account.</param>
+            <returns>An object containing the token created</returns>
+            <response code="201">Returns a JWT token if the registration is successful.</response>
+            <response code="400">If the request is invalid, e.g., missing email or password, or if the user already exists.</response>
+            <response code="500">If an internal server error occurs.</response>
+        </member>
+        <member name="M:Expenses.API.Controllers.AccountController.GenerateJwtToken(Expenses.API.Models.User)">
+            <summary>
+             Generates a JWT token for the authenticated user.
+            </summary>
+            <param name="user"></param>
+            <returns>String representing the token</returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:Expenses.API.Controllers.TransactionsController.#ctor(Expenses.API.Data.Services.ITransactionsService,Microsoft.Extensions.Logging.ILogger{Expenses.API.Controllers.TransactionsController})">
+            <summary>
+            Private constructor to initialize the TransactionsController with transaction service and logger.
+            </summary>
+            <param name="transactionsService"></param>
+            <param name="logger"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+        </member>
+        <member name="T:Expenses.API.Dtos.LoginResultDto">
+            <summary>
+            Strongly typed result class to inform the client of a login attempt result, sending it the JWT if successful.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.LoginResultDto.Success">
+            <summary>
+            TRUE if the login attempt is successful, FALSE otherwise.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.LoginResultDto.Message">
+            <summary>
+            Login attempt result message.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.LoginResultDto.Token">
+            <summary>
+            The JWT token generated for the user if the login attempt is successful, NULL otherwise.
+            </summary>
+        </member>
+        <member name="T:Expenses.API.Dtos.UserCreationDto">
+            <summary>
+            This DTO aims to receive the user's credentials for account creation from the client.
+            </summary>
+        </member>
+        <member name="T:Expenses.API.Dtos.UserLoginDto">
+            <summary>
+            A DTO to receive user credentials for login from the client.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.UserLoginDto.Email">
+            <summary>
+            A valid email address is required.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.UserLoginDto.Password">
+            <summary>
+            A password with a minimum length of 6 characters is required.
+            </summary>
+        </member>
+        <member name="T:Expenses.API.Migrations.InitialMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Migrations.InitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Migrations.InitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Migrations.InitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
