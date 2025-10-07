@@ -10,30 +10,45 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
+
+  // Dependency Injection using inject() function
   private readonly http = inject(HttpClient);
   private readonly apiAuthUrl = environment.apiAuthUrl;
   private readonly router = inject(Router);
 
-  public tokenKey: string = 'token';
+  public tokenKey: string = "token";
 
+  // check if the user is authenticated by checking if the token exists in local storage
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem(this.tokenKey);
+    return !!token; // Returns true if token exists, false otherwise
+  }
+
+  // Retrieve the token from local storage
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey);
+  }
+
+  // Authenticate the user and store the token
   login(credentials: User): Observable<LoginResult> {
     console.log('Login in the system...');
-    var url = this.apiAuthUrl + '/Login';
+    const url = this.apiAuthUrl + '/Login';
 
     return this.http.post<LoginResult>(url, credentials).pipe(
-      tap((LoginResult) => {
-        if (LoginResult.success && LoginResult.token) {
-          console.log('Login accepted.');
-          localStorage.setItem(this.tokenKey, LoginResult.token);
+      tap((loginResult) => {
+        if (loginResult.success && loginResult.token) {
+          console.log('Login accepted for: ', credentials.email);
+          localStorage.setItem(this.tokenKey, loginResult.token);
         }
       })
     );
   }
 
+  // Register by creating a new user and store the token
   register(credentials: User): Observable<any> {
     console.log('Registering user with credentials: ', credentials);
 
-    var url = this.apiAuthUrl + '/Register';
+    const url = this.apiAuthUrl + '/Register';
 
     return this.http.post<any>(url, credentials).pipe(
       tap((response) => {
@@ -43,6 +58,7 @@ export class AuthService {
     );
   }
 
+  // Logout by clearing the token and navigate to the login page
   logout(): void {
     // Implement logout logic if needed, e.g., clear tokens, notify server, etc.
     console.log('User logged out...');
