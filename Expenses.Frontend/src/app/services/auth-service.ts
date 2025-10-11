@@ -20,8 +20,7 @@ export class AuthService {
 
   // check if the user is authenticated by checking if the token exists in local storage
   isAuthenticated(): boolean {
-    const token = localStorage.getItem(this.tokenKey);
-    return !!token; // Returns true if token exists, false otherwise
+    return this.getToken() !== null; // Returns true if token exists, false otherwise
   }
 
   // Retrieve the token from local storage
