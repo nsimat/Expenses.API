@@ -4,6 +4,24 @@
         <name>Expenses.API</name>
     </assembly>
     <members>
+        <member name="T:Expenses.API.Controllers.AccountController">
+            <summary>
+            Controller responsible for handling user account-related operations such as login and registration.
+            </summary>
+            <param name="expensesDbContext">The EF Core database context property</param>
+            <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
+            <param name="configuration">Application configuration property</param>
+            <param name="passwordHasher">Identity password hashing property.</param>
+        </member>
+        <member name="M:Expenses.API.Controllers.AccountController.#ctor(Expenses.API.Data.ExpensesDbContext,Microsoft.Extensions.Logging.ILogger{Expenses.API.Controllers.AccountController},Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Identity.PasswordHasher{Expenses.API.Models.User})">
+            <summary>
+            Controller responsible for handling user account-related operations such as login and registration.
+            </summary>
+            <param name="expensesDbContext">The EF Core database context property</param>
+            <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
+            <param name="configuration">Application configuration property</param>
+            <param name="passwordHasher">Identity password hashing property.</param>
+        </member>
         <member name="M:Expenses.API.Controllers.AccountController.Login(Expenses.API.Dtos.UserLoginDto)">
             <summary>
             Authenticates a user and returns a JWT token if successful.
@@ -33,14 +51,46 @@
             <returns>String representing the token</returns>
             <exception cref="T:System.InvalidOperationException"></exception>
         </member>
+        <member name="T:Expenses.API.Controllers.TransactionsController">
+            <summary>
+            Controller for managing transactions CRUD operations.
+            </summary>
+        </member>
         <member name="M:Expenses.API.Controllers.TransactionsController.#ctor(Expenses.API.Data.Services.ITransactionsService,Microsoft.Extensions.Logging.ILogger{Expenses.API.Controllers.TransactionsController})">
             <summary>
             Private constructor to initialize the TransactionsController with transaction service and logger.
             </summary>
-            <param name="transactionsService"></param>
-            <param name="logger"></param>
-            <exception cref="T:System.ArgumentNullException"></exception>
+            <param name="transactionsService">Service to handle business logic related to transactions.</param>
+            <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
+            <exception cref="T:System.ArgumentNullException">Throws argument exception if injected objects are null.</exception>
         </member>
+        <!-- Badly formed XML comment ignored for member "M:Expenses.API.Controllers.TransactionsController.GetAllTransactions" -->
+        <!-- Badly formed XML comment ignored for member "M:Expenses.API.Controllers.TransactionsController.GetTransactionById(System.Int32)" -->
+        <member name="M:Expenses.API.Controllers.TransactionsController.CreateTransaction(Expenses.API.Dtos.TransactionForCreationDto)">
+            <summary>
+            Create a new transaction.
+            </summary>
+            <param name="payload">A DTO that represents parts of transaction to be created.</param>
+            <returns>The created transaction if creation is successful. Otherwise, an error is returned.</returns>
+            <response code="201">Transaction created successfully.</response>
+            <response code="400">The provided payload is null or invalid.</response>
+            <response code="500">An error occurred while processing the request.</response>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided payload is null.</exception>
+        </member>
+        <member name="M:Expenses.API.Controllers.TransactionsController.UpdateTransaction(System.Int32,Expenses.API.Dtos.TransactionForUpdateDto)">
+            <summary>
+            Updates an existing transaction.
+            </summary>
+            <param name="id">ID of transaction to update.</param>
+            <param name="payload">A DTO object representing the transaction to update</param>
+            <returns>Transaction updated from database.</returns>
+            <response code="200">Transaction updated successfully.</response>
+            <response code="400">The provided payload is null or invalid.</response>
+            <response code="404">Transaction with specified ID not found.</response>
+            <response code="500">An error occurred while processing the request.</response>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided payload is null.</exception>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Expenses.API.Controllers.TransactionsController.DeleteTransaction(System.Int32)" -->
         <member name="T:Expenses.API.Dtos.LoginResultDto">
             <summary>
             Strongly typed result class to inform the client of a login attempt result, sending it the JWT if successful.
