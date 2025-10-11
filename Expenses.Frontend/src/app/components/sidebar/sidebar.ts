@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
-  faBookmark,
   faChartBar,
-  faComment,
-  faHome,
-  faMoneyBillTransfer,
+  faComment, faEye, faGear,
+  faHome, faList, faMoneyBill1Wave,
   faUser
 } from '@fortawesome/free-solid-svg-icons';
 import {RouterLink} from '@angular/router';
@@ -20,9 +18,11 @@ export class Sidebar {
   home = faHome;
   chart = faChartBar;
   message = faComment;
-  bookmark = faBookmark;
+  overview = faEye;
+ settings = faGear;
   user = faUser;
-  transaction = faMoneyBillTransfer;
+  transactionsLog = faList;
+  transaction = faMoneyBill1Wave;
 
   title?: string = 'Dashboard';
 

@@ -1,40 +1,40 @@
 <nav class="vertical-navbar">
-  <h2>{{ title }}</h2>
+  <h4><i>{{ title }}</i></h4>
   <ul>
     <li>
-      <a [routerLink]="['/transactions']" (click)="updateTitle('Dashboard')">
-        <fa-icon [icon]="home"></fa-icon>
-        <span class="nav-text">Dashboard</span>
+      <a [routerLink]="['/transactions']" (click)="updateTitle('Transactions Log')">
+        <fa-icon [icon]="transactionsLog"></fa-icon>
+        <span class="nav-text"><strong><i>View all transactions</i></strong></span>
       </a>
     </li>
     <li>
-      <a [routerLink]="['/add']" (click)="updateTitle('Add Transaction')">
+      <a [routerLink]="['/add']" (click)="updateTitle('Transaction')">
         <fa-icon [icon]="transaction"></fa-icon>
-        <span class="nav-text">Add transaction</span>
+        <span class="nav-text"><strong><i>Add Transaction</i></strong></span>
       </a>
     </li>
     <li>
-      <a href="#" (click)="updateTitle('Analytics')">
+      <a href="#" (click)="updateTitle('Finances Analytics')">
         <fa-icon [icon]="chart"></fa-icon>
-        <span class="nav-text">Analytics</span>
+        <span class="nav-text"><strong><i>Month Monitor</i></strong></span>
       </a>
     </li>
     <li>
-      <a href="#" (click)="updateTitle('Messages')">
-        <fa-icon [icon]="message"></fa-icon>
-        <span class="nav-text">Messages</span>
+      <a href="#" (click)="updateTitle('Annual Overview')">
+        <fa-icon [icon]="overview"></fa-icon>
+        <span class="nav-text"><strong><i>Finances Overview</i></strong></span>
       </a>
     </li>
     <li>
-      <a href="#" (click)="updateTitle('Collections')">
-        <fa-icon [icon]="bookmark"></fa-icon>
-        <span class="nav-text">Collections</span>
+      <a href="#" (click)="updateTitle('Setup Income & Expenses')">
+        <fa-icon [icon]="settings"></fa-icon>
+        <span class="nav-text"><strong><i>Settings</i></strong></span>
       </a>
     </li>
     <li>
       <a href="#" (click)="updateTitle('User Profile')">
         <fa-icon [icon]="user"></fa-icon>
-        <span class="nav-text">User Profile</span>
+        <span class="nav-text"><strong><i>Profile</i></strong></span>
       </a>
     </li>
   </ul>
