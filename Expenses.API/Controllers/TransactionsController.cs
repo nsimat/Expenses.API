@@ -1,16 +1,19 @@
-﻿using Expenses.API.Data;
-using Expenses.API.Data.Services;
+﻿using Expenses.API.Data.Services;
 using Expenses.API.Dtos;
 using Expenses.API.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Expenses.API.Controllers;
 
+/// <summary>
+/// Controller for managing transactions CRUD operations.
+/// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class TransactionsController : ControllerBase
 {
     #region Fields
+    // readonly Fields to ensure immutability after construction.
     private readonly ILogger<TransactionsController> _logger;
     private readonly ITransactionsService _transactionsService;
     #endregion
@@ -19,9 +22,9 @@ public class TransactionsController : ControllerBase
     /// <summary>
     /// Private constructor to initialize the TransactionsController with transaction service and logger.
     /// </summary>
-    /// <param name="transactionsService"></param>
-    /// <param name="logger"></param>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <param name="transactionsService">Service to handle business logic related to transactions.</param>
+    /// <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
+    /// <exception cref="ArgumentNullException">Throws argument exception if injected objects are null.</exception>
     public TransactionsController(ITransactionsService transactionsService, ILogger<TransactionsController> logger)
     {
         _transactionsService = transactionsService ?? throw new ArgumentNullException(nameof(transactionsService));
@@ -34,9 +37,18 @@ public class TransactionsController : ControllerBase
     // Each action should handle a single responsibility. Their main job is to handle HTTP requests,
     // validate models, catch errors, and return responses.
     
+    /// <summary>
+    /// Retrieve all transactions.
+    /// </summary>
+    /// <returns>List of transactions from database</returns>
+    /// <response code="200">Successfully returns all transactions found in the database.</response>
+    /// <response code="204">If no transaction found in the database.</response>
+    /// <response code="500">If an error occurred while processing the request.</response>
+    /// <exception cref="Exception">Throws exception if an error occurs while retrieving transactions.</Exception>
     [HttpGet("All")]
     [EndpointSummary("Get all transactions.")]
     [EndpointDescription("Fetches all transactions from the database.")]
+    [EndpointName("All Transactions")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Transaction>))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> GetAllTransactions()
@@ -66,9 +78,19 @@ public class TransactionsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Retrieve a specific transaction by its ID.
+    /// </summary>
+    /// <param name="id">ID of transaction to retrieve.</param>
+    /// <returns>Transaction returned by database.</returns>
+    /// <response code="200">Transaction found and returned successfully.</response>
+    /// <response code="404">Transaction with specified ID not found.</response>
+    /// <response code="500">An error occurred while processing the request.</response>
+    /// <exception cref="Exception">Throws exception if an error occurs while retrieving the transaction.</Exception>
     [HttpGet("Details/{id:int}")]
     [EndpointSummary("Get transaction by ID from the database.")]
     [EndpointDescription("Fetches a specific transaction by its ID.")]
+    [EndpointName("Transaction Details")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Transaction))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
@@ -87,9 +109,9 @@ public class TransactionsController : ControllerBase
             _logger.LogWarning("Transaction with ID: {Id} not found!", id);
             return NotFound("Transaction not found!");
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
-            _logger.LogError("An error occurred while fetching the transaction with ID: {Id}.", id);
+            _logger.LogError(exception, "An error occurred while fetching the transaction with ID: {Id}.", id);
             return Problem(
                 detail: "An error occurred while processing your request. Please try again later.",
                 instance: HttpContext.TraceIdentifier,
@@ -99,9 +121,19 @@ public class TransactionsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Create a new transaction.
+    /// </summary>
+    /// <param name="payload">A DTO that represents parts of transaction to be created.</param>
+    /// <returns>The created transaction if creation is successful. Otherwise, an error is returned.</returns>
+    /// <response code="201">Transaction created successfully.</response>
+    /// <response code="400">The provided payload is null or invalid.</response>
+    /// <response code="500">An error occurred while processing the request.</response>
+    /// <exception cref="ArgumentNullException">Thrown when the provided payload is null.</exception>
     [HttpPost("Create")]
     [EndpointSummary("Create a new transaction.")]
     [EndpointDescription("Creates a new transaction in the database.")]
+    [EndpointName("Create Transaction")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Transaction))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
@@ -135,9 +167,21 @@ public class TransactionsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Updates an existing transaction.
+    /// </summary>
+    /// <param name="id">ID of transaction to update.</param>
+    /// <param name="payload">A DTO object representing the transaction to update</param>
+    /// <returns>Transaction updated from database.</returns>
+    /// <response code="200">Transaction updated successfully.</response>
+    /// <response code="400">The provided payload is null or invalid.</response>
+    /// <response code="404">Transaction with specified ID not found.</response>
+    /// <response code="500">An error occurred while processing the request.</response>
+    /// <exception cref="ArgumentNullException">Thrown when the provided payload is null.</exception>
     [HttpPut("Update/{id:int}")]
     [EndpointSummary("Update an existing transaction.")]
     [EndpointDescription("Updates an existing transaction in the database.")]
+    [EndpointName("Update Transaction")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -159,7 +203,7 @@ public class TransactionsController : ControllerBase
         }
         catch (Exception exception)
         {
-            _logger.LogError("An error occurred while updating the transaction with ID: {Id}.", id);
+            _logger.LogError(exception, "An error occurred while updating the transaction with ID: {Id}.", id);
             return Problem(
                 detail: "An error occurred while processing your request. Please try again later.",
                 instance: HttpContext.TraceIdentifier,
@@ -169,9 +213,20 @@ public class TransactionsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Deletes a transaction by its ID.
+    /// </summary>
+    /// <param name="id">ID of transaction to delete.</param>
+    /// <returns>No content if deletion is successful. Otherwise, an error is returned.</returns>
+    /// <response code="204">Transaction deleted successfully.</response>
+    /// <response code="404">Transaction with specified ID not found.</response>
+    /// <response code="403">Forbidden. User does not have permission to delete the transaction.</response>
+    /// <response code="500">An error occurred while processing the request.</response>
+    /// <exception cref="Exception">Throws exception if an error occurs while deleting the transaction.</Exception>
     [HttpDelete("Delete/{id:int}")]
     [EndpointSummary("Delete a transaction.")]
     [EndpointDescription("Deletes a transaction from the database.")]
+    [EndpointName("Delete Transaction")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
     [ProducesResponseType(StatusCodes.Status403Forbidden, Type = typeof(ProblemDetails))]
@@ -191,9 +246,9 @@ public class TransactionsController : ControllerBase
             _logger.LogWarning("Transaction with ID: {Id} not found!", id);
             return NotFound("Transaction not found!");
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
-            _logger.LogError("An error occurred while deleting the transaction with ID: {Id}!", id);
+            _logger.LogError(exception, "An error occurred while deleting the transaction with ID: {Id}!", id);
             return Problem(
                 detail: "An error occurred while processing your request. Please try again later.",
                 instance: HttpContext.TraceIdentifier,

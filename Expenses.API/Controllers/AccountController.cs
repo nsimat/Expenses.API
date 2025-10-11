@@ -11,6 +11,13 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Expenses.API.Controllers
 {
+    /// <summary>
+    /// Controller responsible for handling user account-related operations such as login and registration.
+    /// </summary>
+    /// <param name="expensesDbContext">The EF Core database context property</param>
+    /// <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
+    /// <param name="configuration">Application configuration property</param>
+    /// <param name="passwordHasher">Identity password hashing property.</param>
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController(
@@ -19,16 +26,18 @@ namespace Expenses.API.Controllers
         IConfiguration configuration,
         PasswordHasher<User> passwordHasher) : ControllerBase
     {
+        #region Endpoints for Accounts
         
         /// <summary>
         /// Authenticates a user and returns a JWT token if successful.
         /// </summary>
         /// <param name="userLogin">A DTO object containing the user's credentials.</param>
-        /// <returns>An ActionResult of type LoginResultDto</returns>
+        /// <returns>A DTO object of type LoginResultDto</returns>
         /// <response code="200">Returns a LoginResultDto object containing the success status, message, and JWT token.</response>
         /// <response code="400">If the request is invalid, e.g., missing email or password.</response>
         /// <response code="401">If the credentials are invalid.</response>
         /// <response code="500">If an internal server error occurs.</response>
+        /// <exception cref="Exception">Throws exception if an error occured during processing login</exception>
         [EndpointSummary("Performs a user login.")]
         [EndpointDescription("Authenticates a user with email and password.")]
         [EndpointName("Login")]
@@ -41,11 +50,14 @@ namespace Expenses.API.Controllers
         {
             logger.LogInformation("Attempting to log in user with email: {Email}...", userLogin.Email);
             
-            // Validate the incoming user data
+            // Check if the model is valid or not
             if (!ModelState.IsValid)
             {
+                // Something failed with the incoming data model!
                 logger.LogWarning("Invalid login attempt.");
-                return BadRequest("Email and password are required.");
+                // Redisplay the validation errors to the client.
+                return BadRequest(ModelState);
+                //return BadRequest("Email and password are required.");
             }
 
             try
@@ -56,10 +68,11 @@ namespace Expenses.API.Controllers
                 if (user == null)
                 {
                     logger.LogWarning("Invalid credentials for email: {Email}.", userLogin.Email);
+                    ModelState.AddModelError("message", "Invalid Email or Password. Please try again.");
                     return Unauthorized(new LoginResultDto()
                     {
                         Success = false,
-                        Message = "Invalid Email or Password."
+                        Message = "Invalid Email or Password. Please try again."
                     });
                 }
 
@@ -73,7 +86,7 @@ namespace Expenses.API.Controllers
                     return Unauthorized(new LoginResultDto()
                     {
                         Success = false,
-                        Message = "Invalid Email or Password."
+                        Message = "Invalid Email or Password. Please try again."
                     });
                 }
                 
@@ -111,6 +124,7 @@ namespace Expenses.API.Controllers
         /// <response code="201">Returns a JWT token if the registration is successful.</response>
         /// <response code="400">If the request is invalid, e.g., missing email or password, or if the user already exists.</response>
         /// <response code="500">If an internal server error occurs.</response>
+        /// <exception cref="Exception">Throws exception if an error occured during processing registration</exception>
         [HttpPost("Register")]
         [EndpointSummary("Registers a new user.")]
         [EndpointDescription("Registers a new user with email and password in the database.")]
@@ -122,11 +136,14 @@ namespace Expenses.API.Controllers
         {
             logger.LogInformation("Registering a new user with email: {Email}...", userCreationDto.Email);
             
-            // Validate the incoming user data
+            // Check if the model is valid
             if (!ModelState.IsValid)
             {
+                // Something is wrong with the incoming data model!
                 logger.LogWarning("Invalid user registration attempt.");
-                return BadRequest("Email and password are required.");
+                // Redisplay the validation errors to the client.
+                return BadRequest(ModelState);
+                //return BadRequest("Email and password are required.");
             }
 
             // Check if the user already exists and create a new user
@@ -135,11 +152,12 @@ namespace Expenses.API.Controllers
                 var existingUser = await expensesDbContext.Users.FirstOrDefaultAsync(u => u.Email == userCreationDto.Email);
                 if (existingUser != null)
                 {
-                    logger.LogWarning("User with email {Email} already exists!", userCreationDto.Email);
-                    return BadRequest("User with this email already exists!");
+                    logger.LogWarning("User with email {Email} is already taken!", userCreationDto.Email);
+                    ModelState.AddModelError("message", "User with this email is already taken!");
+                    return BadRequest(ModelState);
                 }
 
-                // Create a new user and save to the database
+                // Create a new user object after hashing password
                 var hashedPassword = passwordHasher.HashPassword(null!, userCreationDto.Password);
                 
                 var newUser = new User
@@ -205,5 +223,6 @@ namespace Expenses.API.Controllers
             
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+        #endregion
     }
 }

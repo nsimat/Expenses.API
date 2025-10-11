@@ -1,3 +1,4 @@
+using System.Reflection;
 using Expenses.API.Data;
 using Expenses.API.Data.Services;
 using Expenses.API.Models;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +20,22 @@ builder.Services.AddControllers();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => options.EnableAnnotations());
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo()
+    {
+        Title = "My Income & Expenses API",
+        Version = "v1",
+        Description = "Backend service that provides resources for managing income and expenses.",
+        Contact = new OpenApiContact()
+        {
+            Name = "Mike Matondo",
+            Email = "mike.matondo@gmail.com"
+        }
+    });
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+});
 
 builder.Services.AddCors(options => 
     options.AddPolicy(name: "AngularExpensesPolicy",
@@ -55,12 +72,12 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI(setupAction =>
     {
-        setupAction.DocumentTitle = "Expenses API";
-        setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Expenses API V1");
-        setupAction.RoutePrefix = string.Empty;
+        setupAction.DocumentTitle = "My Income & Expenses API";
+        setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "My Income & Expenses API V1");
     });
 }
 
@@ -72,4 +89,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
 await app.RunAsync();
