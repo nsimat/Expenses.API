@@ -1,4 +1,4 @@
-import { LoginResult } from './../models/login-result';
+import { LoginResult } from '../models/login-result';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
 
-  // Dependency Injection using inject() function
+  // Dependency Injections using inject() function
   private readonly http = inject(HttpClient);
   private readonly apiAuthUrl = environment.apiAuthUrl;
   private readonly router = inject(Router);
