@@ -56,8 +56,8 @@ namespace Expenses.API.Controllers
                 // Something failed with the incoming data model!
                 logger.LogWarning("Invalid login attempt.");
                 // Redisplay the validation errors to the client.
+                ModelState.AddModelError("message", " Valid email and password are required.");
                 return BadRequest(ModelState);
-                //return BadRequest("Email and password are required.");
             }
 
             try
@@ -142,8 +142,8 @@ namespace Expenses.API.Controllers
                 // Something is wrong with the incoming data model!
                 logger.LogWarning("Invalid user registration attempt.");
                 // Redisplay the validation errors to the client.
+                ModelState.AddModelError("message", "Invalid user registration attempt.");
                 return BadRequest(ModelState);
-                //return BadRequest("Email and password are required.");
             }
 
             // Check if the user already exists and create a new user

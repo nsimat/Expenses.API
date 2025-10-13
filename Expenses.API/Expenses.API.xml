@@ -118,6 +118,16 @@
             This DTO aims to receive the user's credentials for account creation from the client.
             </summary>
         </member>
+        <member name="P:Expenses.API.Dtos.UserCreationDto.Email">
+            <summary>
+            Email to be used as username, must be in a valid email format
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.UserCreationDto.Password">
+            <summary>
+            Password to be used for authentication, must be at least 6 characters long
+            </summary>
+        </member>
         <member name="T:Expenses.API.Dtos.UserLoginDto">
             <summary>
             A DTO to receive user credentials for login from the client.
@@ -125,12 +135,12 @@
         </member>
         <member name="P:Expenses.API.Dtos.UserLoginDto.Email">
             <summary>
-            A valid email address is required.
+            A valid email address is required for username authentication.
             </summary>
         </member>
         <member name="P:Expenses.API.Dtos.UserLoginDto.Password">
             <summary>
-            A password with a minimum length of 6 characters is required.
+            A password with a minimum length of 6 characters is required for password authentication.
             </summary>
         </member>
         <member name="T:Expenses.API.Migrations.InitialMigration">
