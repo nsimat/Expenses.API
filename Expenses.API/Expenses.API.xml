@@ -27,11 +27,12 @@
             Authenticates a user and returns a JWT token if successful.
             </summary>
             <param name="userLogin">A DTO object containing the user's credentials.</param>
-            <returns>An ActionResult of type LoginResultDto</returns>
+            <returns>A DTO object of type LoginResultDto</returns>
             <response code="200">Returns a LoginResultDto object containing the success status, message, and JWT token.</response>
             <response code="400">If the request is invalid, e.g., missing email or password.</response>
             <response code="401">If the credentials are invalid.</response>
             <response code="500">If an internal server error occurs.</response>
+            <exception cref="T:System.Exception">Throws exception if an error occured during processing login</exception>
         </member>
         <member name="M:Expenses.API.Controllers.AccountController.Register(Expenses.API.Dtos.UserCreationDto)">
             <summary>
@@ -42,6 +43,7 @@
             <response code="201">Returns a JWT token if the registration is successful.</response>
             <response code="400">If the request is invalid, e.g., missing email or password, or if the user already exists.</response>
             <response code="500">If an internal server error occurs.</response>
+            <exception cref="T:System.Exception">Throws exception if an error occured during processing registration</exception>
         </member>
         <member name="M:Expenses.API.Controllers.AccountController.GenerateJwtToken(Expenses.API.Models.User)">
             <summary>
