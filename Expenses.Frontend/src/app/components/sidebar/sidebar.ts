@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
-  faChartBar,
+  faChartLine,
   faComment, faEye, faGear,
-  faHome, faList, faMoneyBill1Wave,
+  faHome, faMagnifyingGlassChart, faMoneyBill1Wave,
   faUser
 } from '@fortawesome/free-solid-svg-icons';
 import {RouterLink} from '@angular/router';
@@ -16,13 +16,14 @@ import {RouterLink} from '@angular/router';
 })
 export class Sidebar {
   home = faHome;
-  chart = faChartBar;
+  chart = faChartLine;
   message = faComment;
-  overview = faEye;
+  overview = faMagnifyingGlassChart;
  settings = faGear;
   user = faUser;
-  transactionsLog = faList;
+  transactionsLog = faEye;
   transaction = faMoneyBill1Wave;
+
 
   title?: string = 'Dashboard';
 
