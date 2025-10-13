@@ -30,9 +30,9 @@ export class Signup {
   private readonly router = inject(Router);
   protected readonly signupForm = this.formBuilder.group(
     {
-      email: [''!, [Validators.required, Validators.email]],
-      password: [''!, [Validators.required, Validators.minLength(6)]],
-      confirmPassword: [''!, [Validators.required, Validators.minLength(6), Signup.passwordMatch]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(6), Signup.passwordMatch]],
     }
   );
 
