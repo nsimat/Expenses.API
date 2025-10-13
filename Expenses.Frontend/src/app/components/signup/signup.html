@@ -6,7 +6,7 @@
           <h3 class="card-title mb-0 text-white">Sign Up</h3>
         </div>
         <div class="card-body">
-          <form [formGroup]="signupForm" (ngSubmit)="onSubmit(signupForm.value)">
+          <form [formGroup]="signupForm" (ngSubmit)="register()">
             @if(errorMessage) {
               <div class="alert alert-danger" role="alert">
                 {{ errorMessage }}
@@ -17,15 +17,11 @@
               <label for="email" class="form-label px-2">Email Address*</label>
               <input type="email" class="form-control" id="email" formControlName="email"
                      placeholder="Enter your email">
-              @if (signupForm.get('email')?.touched
-                   && signupForm.get('email')?.invalid
-                   && signupForm.get('email')?.errors?.['required']) {
+              @if (hasError('email', 'required')){
                 <div class="text-danger">Email is required.</div>
               }
-              @if (signupForm.get('email')?.touched
-                   && signupForm.get('email')?.invalid
-                   && signupForm.get(('email'))?.errors?.['email']) {
-                <div class="text-danger">Please enter a valid email address.</div>
+              @if (hasError('email', 'email')) {
+                <div class="text-danger">Please, enter a valid email address.</div>
               }
             </div>
             <div class="mb-3">
@@ -33,14 +29,10 @@
               <label for="password" class="form-label px-2">Password*</label>
               <input type="password" class="form-control" id="password" formControlName="password"
                      placeholder="Enter your password">
-              @if (signupForm.get('password')?.touched
-                   && signupForm.get('password')?.invalid
-                   && signupForm.get('password')?.errors?.['required']) {
+              @if (hasError('password', 'required')) {
                 <div class="text-danger"> Password is required.</div>
               }
-              @if (signupForm.get('password')?.touched
-                   && signupForm.get('password')?.invalid
-                   && signupForm.get('password')?.errors?.['minlength']) {
+              @if (hasError('password', 'minlength')) {
                 <div class="text-danger"> Password must be at least 6 characters long.</div>
               }
             </div>
@@ -49,20 +41,14 @@
               <label for="confirmPassword" class="form-label px-2">Confirm Password*</label>
               <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword"
                      placeholder="Confirm your password">
-              @if (signupForm.get('confirmPassword')?.touched
-                   && signupForm.get('confirmPassword')?.invalid
-                   && signupForm.get('confirmPassword')?.errors?.['required']) {
-                <div class="text-danger">Confirm Password is required.</div>
+              @if (hasError('confirmPassword', 'required')) {
+                <div class="text-danger">Confirm your password.</div>
               }
-              @if (signupForm.get('confirmPassword')?.touched
-                   && signupForm.get('confirmPassword')?.invalid
-                   && signupForm.get('confirmPassword')?.errors?.['minlength']) {
-                <div class="text-danger">Confirm Password must be at least 6 characters long.</div>
+              @if (hasError('confirmPassword', 'minlength')) {
+                <div class="text-danger">Password must be at least 6 characters long.</div>
               }
-              @if (signupForm.get('confirmPassword')?.touched
-                   && signupForm.get('confirmPassword')?.invalid
-                   && signupForm.errors?.['mismatch']) {
-                <div class="text-danger">Passwords do not match.</div>
+              @if (hasError('confirmPassword', 'matchingError')) {
+                <div class="text-danger">Your password does not match.</div>
               }
             </div>
             <div class="d-grid">
