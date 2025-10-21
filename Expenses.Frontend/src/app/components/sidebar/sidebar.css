@@ -9,6 +9,7 @@ ul {
 .nav-text {
   vertical-align: middle;
   margin-left: 2px;
+  text-align: left;
 }
 
 .vertical-navbar {
@@ -19,15 +20,15 @@ ul {
   padding: 10px;
   gap: 16px;
   overflow-y: auto; /* Scroll if content overflows */
-  background-color: palevioletred ;
+  background-color: #1a237e ;
   border-radius: 8px;
   box-shadow: 10px 0px 10px rgba(0, 0, 0, 0.2);
 }
 
-.vertical-navbar h1 {
-  padding-left: 20px;
+.vertical-navbar h4 {
+  padding-left: 10px;
   font-weight: 400;
-  color: black;
+  color: white;
 }
 
 .vertical-navbar ul li {
@@ -37,7 +38,7 @@ ul {
 
 .vertical-navbar ul li a {
   text-decoration: none;
-  color: black;
+  color: white;
   display: block;
 }
 

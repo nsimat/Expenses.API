@@ -8,6 +8,13 @@
   font-size: 24px;
 }
 
+.alert-bg-color {
+  background-color: #1a237e;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
 .button-group button {
   margin-left: 10px;
   padding: 10px 15px;
