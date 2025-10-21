@@ -16,6 +16,13 @@ builder.Services.AddDbContext<ExpensesDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ExpensesConnection"));
 });
 builder.Services.AddScoped<ITransactionsService, TransactionsService>();
+//builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+// Register PasswordHasher as a scoped service
+builder.Services.AddScoped<PasswordHasher<User>>();
+// Register JwtHandler as a scoped service
+builder.Services.AddScoped<JwtHandler>();
+// Register AccountService as a scoped service
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddControllers();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -24,13 +31,19 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo()
     {
-        Title = "My Income & Expenses API",
+        Title = "Income & Expenses Service - REST API",
         Version = "v1",
-        Description = "Backend service that provides resources for managing income and expenses.",
+        Description = "Documentation of Income & Expenses Service (IES) REST API providing resources for income and expenses management.",
         Contact = new OpenApiContact()
         {
-            Name = "Mike Matondo",
-            Email = "mike.matondo@gmail.com"
+            Name = "Support",
+            Email = "ies-support@ies.com",
+            Url = new Uri("https://www.ies.com/support")
+        },
+        License = new OpenApiLicense()
+        {
+            Name = "MIT License",
+            Url = new Uri("https://opensource.org/licenses/MIT")
         }
     });
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -65,7 +78,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-builder.Services.AddScoped<PasswordHasher<User>>();
+
 
 var app = builder.Build();
 
@@ -76,8 +89,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(setupAction =>
     {
-        setupAction.DocumentTitle = "My Income & Expenses API";
-        setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "My Income & Expenses API V1");
+        setupAction.DocumentTitle = "Income & Expenses Service (IES) - REST API";
+        setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Income & Expenses Service (IES) - REST API V1");
     });
 }
 
