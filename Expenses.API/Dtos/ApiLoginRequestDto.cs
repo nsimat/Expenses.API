@@ -3,9 +3,9 @@
 namespace Expenses.API.Dtos;
 
 /// <summary>
-/// A DTO to receive user credentials for login from the client.
+/// A DTO used to receive user's credentials for login from the client.
 /// </summary>
-public class UserLoginDto
+public class ApiLoginRequestDto
 {
     /// <summary>
     /// A valid email address is required for username authentication.
