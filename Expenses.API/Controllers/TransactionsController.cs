@@ -38,7 +38,7 @@ public class TransactionsController : ControllerBase
     // validate models, catch errors, and return responses.
     
     /// <summary>
-    /// Retrieve all transactions.
+    /// List all transactions.
     /// </summary>
     /// <returns>List of transactions from database</returns>
     /// <response code="200">Successfully returns all transactions found in the database.</response>
@@ -46,7 +46,7 @@ public class TransactionsController : ControllerBase
     /// <response code="500">If an error occurred while processing the request.</response>
     /// <exception cref="Exception">Throws exception if an error occurs while retrieving transactions.</Exception>
     [HttpGet("All")]
-    [EndpointSummary("Get all transactions.")]
+    [EndpointSummary("Obtain all transactions.")]
     [EndpointDescription("Fetches all transactions from the database.")]
     [EndpointName("All Transactions")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Transaction>))]
@@ -79,16 +79,16 @@ public class TransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Retrieve a specific transaction by its ID.
+    /// Retrieves a specific transaction by its ID.
     /// </summary>
-    /// <param name="id">ID of transaction to retrieve.</param>
-    /// <returns>Transaction returned by database.</returns>
+    /// <param name="id">The unique identifier of the transaction to retrieve.</param>
+    /// <returns>The requested transaction if found, or NotFound if not available.</returns>
     /// <response code="200">Transaction found and returned successfully.</response>
     /// <response code="404">Transaction with specified ID not found.</response>
     /// <response code="500">An error occurred while processing the request.</response>
     /// <exception cref="Exception">Throws exception if an error occurs while retrieving the transaction.</Exception>
     [HttpGet("Details/{id:int}")]
-    [EndpointSummary("Get transaction by ID from the database.")]
+    [EndpointSummary("Obtain transaction by ID from the database.")]
     [EndpointDescription("Fetches a specific transaction by its ID.")]
     [EndpointName("Transaction Details")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Transaction))]
@@ -122,7 +122,7 @@ public class TransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Create a new transaction.
+    /// Creates a new transaction.
     /// </summary>
     /// <param name="payload">A DTO that represents parts of transaction to be created.</param>
     /// <returns>The created transaction if creation is successful. Otherwise, an error is returned.</returns>
@@ -145,6 +145,7 @@ public class TransactionsController : ControllerBase
             if(!ModelState.IsValid)
             {
                 _logger.LogWarning("Invalid model state for creating transaction!");
+                ModelState.AddModelError("message", "The provided transaction is invalid.");
                 return BadRequest(ModelState);
             }
             
@@ -153,7 +154,7 @@ public class TransactionsController : ControllerBase
                 return Ok(createdTransaction);
 
             _logger.LogWarning("Failed to create transaction. TransactionForCreationDto object is null!");
-            return BadRequest("TransactionForCreationDto object is null!");
+            return BadRequest("Transaction object is null!");
         }
         catch (Exception exception)
         {
@@ -168,10 +169,10 @@ public class TransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Updates an existing transaction.
+    /// Modifies the content of existing transaction.
     /// </summary>
-    /// <param name="id">ID of transaction to update.</param>
-    /// <param name="payload">A DTO object representing the transaction to update</param>
+    /// <param name="id">the unique identifier of transaction to modify.</param>
+    /// <param name="payload">A DTO object representing the transaction to modify</param>
     /// <returns>Transaction updated from database.</returns>
     /// <response code="200">Transaction updated successfully.</response>
     /// <response code="400">The provided payload is null or invalid.</response>
@@ -180,7 +181,7 @@ public class TransactionsController : ControllerBase
     /// <exception cref="ArgumentNullException">Thrown when the provided payload is null.</exception>
     [HttpPut("Update/{id:int}")]
     [EndpointSummary("Update an existing transaction.")]
-    [EndpointDescription("Updates an existing transaction in the database.")]
+    [EndpointDescription("Modifies an existing transaction in the database.")]
     [EndpointName("Update Transaction")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -216,7 +217,7 @@ public class TransactionsController : ControllerBase
     /// <summary>
     /// Deletes a transaction by its ID.
     /// </summary>
-    /// <param name="id">ID of transaction to delete.</param>
+    /// <param name="id">The unique identifier of transaction to delete.</param>
     /// <returns>No content if deletion is successful. Otherwise, an error is returned.</returns>
     /// <response code="204">Transaction deleted successfully.</response>
     /// <response code="404">Transaction with specified ID not found.</response>
@@ -224,8 +225,8 @@ public class TransactionsController : ControllerBase
     /// <response code="500">An error occurred while processing the request.</response>
     /// <exception cref="Exception">Throws exception if an error occurs while deleting the transaction.</Exception>
     [HttpDelete("Delete/{id:int}")]
-    [EndpointSummary("Delete a transaction.")]
-    [EndpointDescription("Deletes a transaction from the database.")]
+    [EndpointSummary("Deletes an identified transaction.")]
+    [EndpointDescription("Deletes a transaction by its identifier.")]
     [EndpointName("Delete Transaction")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
