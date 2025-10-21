@@ -9,24 +9,37 @@
             Controller responsible for handling user account-related operations such as login and registration.
             </summary>
             <param name="expensesDbContext">The EF Core database context property</param>
+            <param name="accountService">Service for handling account-related operations</param>
             <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
             <param name="configuration">Application configuration property</param>
             <param name="passwordHasher">Identity password hashing property.</param>
         </member>
-        <member name="M:Expenses.API.Controllers.AccountController.#ctor(Expenses.API.Data.ExpensesDbContext,Microsoft.Extensions.Logging.ILogger{Expenses.API.Controllers.AccountController},Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Identity.PasswordHasher{Expenses.API.Models.User})">
+        <member name="M:Expenses.API.Controllers.AccountController.#ctor(Expenses.API.Data.ExpensesDbContext,Expenses.API.Data.Services.IAccountService,Microsoft.Extensions.Logging.ILogger{Expenses.API.Controllers.AccountController},Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Identity.PasswordHasher{Expenses.API.Models.User})">
             <summary>
             Controller responsible for handling user account-related operations such as login and registration.
             </summary>
             <param name="expensesDbContext">The EF Core database context property</param>
+            <param name="accountService">Service for handling account-related operations</param>
             <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
             <param name="configuration">Application configuration property</param>
             <param name="passwordHasher">Identity password hashing property.</param>
         </member>
-        <member name="M:Expenses.API.Controllers.AccountController.Login(Expenses.API.Dtos.UserLoginDto)">
+        <member name="M:Expenses.API.Controllers.AccountController.IsEmailAlreadyTaken(System.String)">
+            <summary>
+            Checks if an email is already registered in the system.
+            </summary>
+            <param name="email">Email to check use of</param>
+            <returns>True if email already taken, false otherwise.</returns>
+            <response code="200">Returns true if email is already taken, false otherwise.</response>
+            <response code="400">If the request is invalid, e.g., missing email.</response>
+            <response code="500">If an internal server error occurs.</response>
+            <exception cref="T:System.Exception">Throws exception if an error occured during processing email check</exception>
+        </member>
+        <member name="M:Expenses.API.Controllers.AccountController.Login(Expenses.API.Dtos.ApiLoginRequestDto)">
             <summary>
             Authenticates a user and returns a JWT token if successful.
             </summary>
-            <param name="userLogin">A DTO object containing the user's credentials.</param>
+            <param name="apiLoginRequest">A DTO object containing the user's credentials.</param>
             <returns>A DTO object of type LoginResultDto</returns>
             <response code="200">Returns a LoginResultDto object containing the success status, message, and JWT token.</response>
             <response code="400">If the request is invalid, e.g., missing email or password.</response>
@@ -45,14 +58,6 @@
             <response code="500">If an internal server error occurs.</response>
             <exception cref="T:System.Exception">Throws exception if an error occured during processing registration</exception>
         </member>
-        <member name="M:Expenses.API.Controllers.AccountController.GenerateJwtToken(Expenses.API.Models.User)">
-            <summary>
-             Generates a JWT token for the authenticated user.
-            </summary>
-            <param name="user"></param>
-            <returns>String representing the token</returns>
-            <exception cref="T:System.InvalidOperationException"></exception>
-        </member>
         <member name="T:Expenses.API.Controllers.TransactionsController">
             <summary>
             Controller for managing transactions CRUD operations.
@@ -70,7 +75,7 @@
         <!-- Badly formed XML comment ignored for member "M:Expenses.API.Controllers.TransactionsController.GetTransactionById(System.Int32)" -->
         <member name="M:Expenses.API.Controllers.TransactionsController.CreateTransaction(Expenses.API.Dtos.TransactionForCreationDto)">
             <summary>
-            Create a new transaction.
+            Creates a new transaction.
             </summary>
             <param name="payload">A DTO that represents parts of transaction to be created.</param>
             <returns>The created transaction if creation is successful. Otherwise, an error is returned.</returns>
@@ -81,10 +86,10 @@
         </member>
         <member name="M:Expenses.API.Controllers.TransactionsController.UpdateTransaction(System.Int32,Expenses.API.Dtos.TransactionForUpdateDto)">
             <summary>
-            Updates an existing transaction.
+            Modifies the content of existing transaction.
             </summary>
-            <param name="id">ID of transaction to update.</param>
-            <param name="payload">A DTO object representing the transaction to update</param>
+            <param name="id">the unique identifier of transaction to modify.</param>
+            <param name="payload">A DTO object representing the transaction to modify</param>
             <returns>Transaction updated from database.</returns>
             <response code="200">Transaction updated successfully.</response>
             <response code="400">The provided payload is null or invalid.</response>
@@ -93,24 +98,260 @@
             <exception cref="T:System.ArgumentNullException">Thrown when the provided payload is null.</exception>
         </member>
         <!-- Badly formed XML comment ignored for member "M:Expenses.API.Controllers.TransactionsController.DeleteTransaction(System.Int32)" -->
-        <member name="T:Expenses.API.Dtos.LoginResultDto">
+        <member name="T:Expenses.API.Data.Services.AccountService">
+            <summary>
+            This service handles user account related operations such as registration, login, and
+            email availability checks.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Data.Services.AccountService._context">
+            <summary>
+            Context for accessing the database.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Data.Services.AccountService._passwordHasher">
+            <summary>
+            Password hasher for securely hashing and verifying passwords.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Data.Services.AccountService._configuration">
+            <summary>
+            Application configuration property
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Data.Services.AccountService._logger">
+            <summary>
+            Logger for logging information and errors.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Data.Services.AccountService._jwtHandler">
+            <summary>
+            JWT handler for generating and validating JWT tokens.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Data.Services.AccountService.#ctor(Expenses.API.Data.ExpensesDbContext,Microsoft.AspNetCore.Identity.PasswordHasher{Expenses.API.Models.User},Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{Expenses.API.Data.Services.AccountService},Expenses.API.Data.Services.JwtHandler)">
+            <summary>
+            Constructor to initialize the AccountService with necessary dependencies.
+            </summary>
+            <param name="context">The context for database accessing</param>
+            <param name="passwordHasher">Password hasher to initialize the service constructor</param>
+            <param name="configuration">Configuration to initialize the service constructor</param>
+            <param name="logger">Logger to initialize the service constructor</param>
+            <param name="jwtHandler">JWT handler to initialize the service constructor</param>
+        </member>
+        <member name="M:Expenses.API.Data.Services.AccountService.FindUserAsync(Expenses.API.Dtos.ApiLoginRequestDto)">
+            <summary>
+            
+            </summary>
+            <param name="apiLoginRequest"></param>
+            <returns></returns>
+            <exception cref="T:System.NotImplementedException"></exception>
+        </member>
+        <member name="M:Expenses.API.Data.Services.AccountService.IsEmailAvailableAsync(System.String)">
+            <summary>
+            checks if an email is already registered in the system
+            </summary>
+            <param name="email"></param>
+            <returns>True if email found already in the system, or false otherwise</returns>
+        </member>
+        <member name="M:Expenses.API.Data.Services.AccountService.AddUserAsync(Expenses.API.Dtos.UserCreationDto)">
+            <summary>
+            Add a new user to the system
+            </summary>
+            <param name="userCreationDto">A DTO representing user's data</param>
+            <returns>The user newly added to the system</returns>
+        </member>
+        <member name="M:Expenses.API.Data.Services.AccountService.IdentifyUserAsync(Expenses.API.Dtos.ApiLoginRequestDto)">
+            <summary>
+            Identify user by email and password, 
+            </summary>
+            <param name="apiLoginRequest">A DTO representing user's credentials to identify</param>
+            <returns>the user entity if found, or NULL otherwise.</returns>
+        </member>
+        <member name="T:Expenses.API.Data.Services.IAccountService">
+            <summary>
+            Interface for account-related operations and user management
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Data.Services.IAccountService.FindUserAsync(Expenses.API.Dtos.ApiLoginRequestDto)">
+            <summary>
+            Find user by email and password
+            </summary>
+            <param name="apiLoginRequest">A DTO representing user's credentials</param>
+            <returns>The user represents by the email entered if found, or NULL otherwise</returns>
+        </member>
+        <member name="M:Expenses.API.Data.Services.IAccountService.IsEmailAvailableAsync(System.String)">
+            <summary>
+            checks if an email is already registered in the system
+            </summary>
+            <param name="email"></param>
+            <returns>True if email found already in the system, or false otherwise</returns>
+        </member>
+        <member name="M:Expenses.API.Data.Services.IAccountService.AddUserAsync(Expenses.API.Dtos.UserCreationDto)">
+            <summary>
+            Add a new user to the system
+            </summary>
+            <param name="userCreationDto">A DTO representing user's data</param>
+            <returns>A DTO containing the result of the creation operation</returns>
+        </member>
+        <member name="M:Expenses.API.Data.Services.IAccountService.IdentifyUserAsync(Expenses.API.Dtos.ApiLoginRequestDto)">
+            <summary>
+            Identify user by email and password, 
+            </summary>
+            <param name="apiLoginRequest">A DTO representing user's credentials to identify</param>
+            <returns>the user entity if found, or NULL otherwise.</returns>
+        </member>
+        <member name="T:Expenses.API.Data.Services.ITransactionsService">
+            <summary>
+            Service to handle transactions CRUD operations
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Data.Services.ITransactionsService.GetAllAsync">
+            <summary>
+            Retrieves all transactions
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Expenses.API.Data.Services.ITransactionsService.GetByIdAsync(System.Int32)">
+            <summary>
+            Retrieves a transaction by its ID
+            </summary>
+            <param name="id">ID of transaction to fetch</param>
+            <returns></returns>
+        </member>
+        <member name="M:Expenses.API.Data.Services.ITransactionsService.AddAsync(Expenses.API.Dtos.TransactionForCreationDto)">
+            <summary>
+            Creates a new transaction
+            </summary>
+            <param name="transactionForCreation">TDO object representing transaction info</param>
+            <returns></returns>
+        </member>
+        <member name="M:Expenses.API.Data.Services.ITransactionsService.UpdateAsync(System.Int32,Expenses.API.Dtos.TransactionForUpdateDto)">
+            <summary>
+            Updates an existing transaction
+            </summary>
+            <param name="id">Unique ID of transaction to modify</param>
+            <param name="transactionForUpdate"></param>
+            <returns>The transaction updated</returns>
+        </member>
+        <member name="M:Expenses.API.Data.Services.ITransactionsService.Delete(System.Int32)">
+            <summary>
+            deletes a transaction by its ID
+            </summary>
+            <param name="id">The unique transaction to remove from database</param>
+            <returns>True if deletion successful or false if the transaction does not exist in the system.</returns>
+        </member>
+        <member name="T:Expenses.API.Data.Services.JwtHandler">
+            <summary>
+            Service class for handling JWT operations
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Data.Services.JwtHandler.GenerateJwtToken(Expenses.API.Models.User)">
+            <summary>
+             Generates a JWT token for the authenticated user.
+            </summary>
+            <param name="user"></param>
+            <returns>String representing the token</returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="T:Expenses.API.Data.Services.TransactionsService">
+            <summary>
+            Service for managing transactions in the Expenses application.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Data.Services.TransactionsService.#ctor(Expenses.API.Data.ExpensesDbContext)">
+            <summary>
+            Service for managing transactions in the Expenses application.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Data.Services.TransactionsService.GetAllAsync">
+            <summary>
+            Retrieves all transactions
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Expenses.API.Data.Services.TransactionsService.GetByIdAsync(System.Int32)">
+            <summary>
+            Retrieves a transaction by its ID
+            </summary>
+            <param name="id">ID of transaction to fetch</param>
+            <returns>The unique transaction if found, or null otherwise</returns>
+        </member>
+        <member name="M:Expenses.API.Data.Services.TransactionsService.AddAsync(Expenses.API.Dtos.TransactionForCreationDto)">
+            <summary>
+            Creates a new transaction
+            </summary>
+            <param name="transactionForCreation">TDO object representing transaction info</param>
+            <returns>The created transaction</returns>
+        </member>
+        <member name="M:Expenses.API.Data.Services.TransactionsService.UpdateAsync(System.Int32,Expenses.API.Dtos.TransactionForUpdateDto)">
+            <summary>
+            Updates an existing transaction
+            </summary>
+            <param name="id">Unique ID of transaction to modify</param>
+            <param name="transactionForUpdate">TDO object representing updated transaction info</param>
+            <returns>The transaction updated</returns>
+        </member>
+        <member name="M:Expenses.API.Data.Services.TransactionsService.Delete(System.Int32)">
+            <summary>
+            deletes a transaction by its ID
+            </summary>
+            <param name="id">The unique transaction to remove from database</param>
+            <returns>True if deletion successful or false if the transaction does not exist in the system.</returns>
+        </member>
+        <member name="T:Expenses.API.Dtos.ApiLoginRequestDto">
+            <summary>
+            A DTO used to receive user's credentials for login from the client.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.ApiLoginRequestDto.Email">
+            <summary>
+            A valid email address is required for username authentication.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.ApiLoginRequestDto.Password">
+            <summary>
+            A password with a minimum length of 6 characters is required for password authentication.
+            </summary>
+        </member>
+        <member name="T:Expenses.API.Dtos.ApiLoginResultDto">
             <summary>
             Strongly typed result class to inform the client of a login attempt result, sending it the JWT if successful.
             </summary>
         </member>
-        <member name="P:Expenses.API.Dtos.LoginResultDto.Success">
+        <member name="P:Expenses.API.Dtos.ApiLoginResultDto.Success">
             <summary>
             TRUE if the login attempt is successful, FALSE otherwise.
             </summary>
         </member>
-        <member name="P:Expenses.API.Dtos.LoginResultDto.Message">
+        <member name="P:Expenses.API.Dtos.ApiLoginResultDto.Message">
             <summary>
             Login attempt result message.
             </summary>
         </member>
-        <member name="P:Expenses.API.Dtos.LoginResultDto.Token">
+        <member name="P:Expenses.API.Dtos.ApiLoginResultDto.Token">
             <summary>
-            The JWT token generated for the user if the login attempt is successful, NULL otherwise.
+            The JWT token generated for the user if the login attempt is successful, or NULL otherwise.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.TransactionForCreationDto.Type">
+            <summary>
+            Type of the transaction (e.g., "income", "expense").
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.TransactionForCreationDto.Amount">
+            <summary>
+            Amount of the transaction.  
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.TransactionForCreationDto.Category">
+            <summary>
+            Category of the transaction (e.g., "food", "salary").
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.TransactionForCreationDto.CreatedAt">
+            <summary>
+            Date and time when the transaction was created.
             </summary>
         </member>
         <member name="T:Expenses.API.Dtos.UserCreationDto">
@@ -128,21 +369,6 @@
             Password to be used for authentication, must be at least 6 characters long
             </summary>
         </member>
-        <member name="T:Expenses.API.Dtos.UserLoginDto">
-            <summary>
-            A DTO to receive user credentials for login from the client.
-            </summary>
-        </member>
-        <member name="P:Expenses.API.Dtos.UserLoginDto.Email">
-            <summary>
-            A valid email address is required for username authentication.
-            </summary>
-        </member>
-        <member name="P:Expenses.API.Dtos.UserLoginDto.Password">
-            <summary>
-            A password with a minimum length of 6 characters is required for password authentication.
-            </summary>
-        </member>
         <member name="T:Expenses.API.Migrations.InitialMigration">
             <inheritdoc />
         </member>
@@ -154,6 +380,21 @@
         </member>
         <member name="M:Expenses.API.Migrations.InitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
+        </member>
+        <member name="P:Expenses.API.Models.Transaction.Type">
+            <summary>
+            Type of the transaction, e.g., "income" or "expense"
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.Transaction.Amount">
+            <summary>
+            Amount of the transaction
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.Transaction.Category">
+            <summary>
+            Category of the transaction, e.g., "food", "salary", etc.
+            </summary>
         </member>
     </members>
 </doc>
