@@ -1,8 +1,11 @@
 <div class="container">
   <div class="row justify-content-center">
+    <div class="container alert-login-bg-color text-white">
+      <h4 class="text-center"><i>WELCOME to Income & Expenses Tracker Dashboard</i></h4>
+    </div>
     <div class="col-md-6 col-lg-4">
       <div class="card mt-5">
-        <div class="card-header bg-primary bg-opacity-75">
+        <div class="card-header card-header-bg-color bg-opacity-75">
           <h3 class="card-title mb-0 text-white">Sign Up</h3>
         </div>
         <div class="card-body">
@@ -19,8 +22,7 @@
                      placeholder="Enter your email">
               @if (hasError('email', 'required')){
                 <div class="text-danger">Email is required.</div>
-              }
-              @if (hasError('email', 'email')) {
+              } @else if (hasError('email', 'email')) {
                 <div class="text-danger">Please, enter a valid email address.</div>
               }
             </div>
@@ -52,7 +54,7 @@
               }
             </div>
             <div class="d-grid">
-              <button type="submit" class="btn btn-primary px-4" [disabled]="signupForm.invalid">Sign Up</button>
+              <button type="submit" class="btn btn-submit-bg-color px-4 text-white" [disabled]="signupForm.invalid">Sign Up</button>
 
             </div>
             <div class="text-center mt-3">

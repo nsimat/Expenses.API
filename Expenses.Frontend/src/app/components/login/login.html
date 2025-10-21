@@ -1,8 +1,11 @@
 <div class="container">
   <div class="row justify-content-center">
+    <div class="container alert-login-bg-color text-white">
+      <h4 class="text-center"><i>WELCOME to Income & Expenses Tracker Dashboard</i></h4>
+    </div>
     <div class="col-md-6 col-lg-4">
       <div class="card mt-5">
-        <div class="card-header bg-primary bg-opacity-75">
+        <div class="card-header card-header-bg-color bg-opacity-75">
           <h3 class="card-title mb-0 text-white">Login</h3>
         </div>
         <div class="card-body">
@@ -14,7 +17,7 @@
             }
             <div class="mb-3">
               <i class="bi bi-envelope-at-fill"></i>
-              <label for="email" class="form-label px-2">Email Address*</label>
+              <label for="email" class="form-label px-2">Email Address</label>
               <input type="email" class="form-control" id="email" formControlName="email"
                      placeholder="Enter your email">
               @if (hasError('email', 'required')){
@@ -26,7 +29,7 @@
             </div>
             <div class="mb-3">
               <i class="bi bi-person-fill-lock"></i>
-              <label for="password" class="form-label px-2">Password*</label>
+              <label for="password" class="form-label px-2">Password</label>
               <input type="password" class="form-control" id="password" formControlName="password"
                      placeholder="Enter your password">
               @if (hasError('password', 'required')) {
@@ -38,12 +41,13 @@
             </div>
 
             <div class="d-grid">
-              <button type="submit" class="btn btn-primary px-4" [disabled]="loginForm.invalid">Sign Up</button>
+              <button type="submit" class="btn btn-submit-bg-color px-4 text-white" [disabled]="loginForm.invalid">
+                <strong>Sign In</strong>
+              </button>
             </div>
             <div class="text-center mt-3">
               You don't have an account? <a [routerLink]="['/signup']">Sign up</a>
             </div>
-            <div class="align-content-md-start">*required</div>
           </form>
         </div>
       </div>

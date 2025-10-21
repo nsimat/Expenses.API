@@ -1,8 +1,8 @@
 <nav class="vertical-navbar">
-  <h4><i>{{ title }}</i></h4>
+  <h4><strong><i>{{ title }}</i></strong></h4>
   <ul>
     <li>
-      <a [routerLink]="['/transactions']" (click)="updateTitle('Transactions Log')">
+      <a [routerLink]="['/transactions']" (click)="updateTitle('My Transactions')">
         <fa-icon [icon]="transactionsLog"></fa-icon>
         <span class="nav-text"><strong><i>View all transactions</i></strong></span>
       </a>
@@ -26,7 +26,7 @@
       </a>
     </li>
     <li>
-      <a href="#" (click)="updateTitle('Setup Income & Expenses')">
+      <a href="#" (click)="updateTitle('Setup Income-Expenses')">
         <fa-icon [icon]="settings"></fa-icon>
         <span class="nav-text"><strong><i>Settings</i></strong></span>
       </a>
