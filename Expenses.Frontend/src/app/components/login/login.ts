@@ -7,7 +7,7 @@ import {
 import {AuthService} from '../../services/auth-service';
 import {Router, RouterLink} from '@angular/router';
 import {CommonModule} from '@angular/common';
-import {User} from '../../models/user';
+import {LoginRequest} from '../../models/login-request';
 
 
 @Component({
@@ -42,7 +42,7 @@ export class Login {
     if (this.loginForm.valid) {
       const loginData = this.loginForm.value;
       console.log('Form submitted is valid:', loginData);
-      this.apiService.login(<User>loginData).subscribe(
+      this.apiService.login(<LoginRequest>loginData).subscribe(
         {
           next: (loginResult) => {
             console.log('Login successful, navigating to dashboard...');
