@@ -27,9 +27,6 @@ export class Sidebar {
 
 
   title?: string = 'Dashboard';
-  private readonly authService = inject(AuthService);
-
-
 
   getTitle(): string {
     return this.title || 'Dashboard';
