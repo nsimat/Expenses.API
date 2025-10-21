@@ -48,6 +48,14 @@ span {
   text-align: center;
 }
 
+.alert-bg-color {
+  background-color: chocolate;
+  padding: 10px;
+  border: 2px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
 a {
   display: inline-block;
   padding: 0.8em 1em;
