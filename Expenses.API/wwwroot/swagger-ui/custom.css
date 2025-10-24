@@ -1,0 +1,31 @@
+﻿img[alt="Swagger UI"] {
+    display: block;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.swagger-ui {
+    background-image: url("./images/swagger-defocused.jpg");
+}
+
+.swagger-ui #header {
+    background-color: #2ca8ff;
+}
+
+.swagger-ui .topbar {
+    background-color: #051e2f !important; /* Custom green color #1abc9c */
+    border-top: 12px solid #2ca8ff !important; /* Darker green border */
+    border-bottom: 12px solid #2ca8ff !important; /* Lighter green border */
+    border-right: 12px solid whitesmoke !important; /* Lighter green border */
+    border-left: 12px solid whitesmoke !important; 
+}
+
+.swagger-ui info {
+    color: chartreuse;
+}
+.swagger-ui .info .title {
+    color: #2c3e50; /* Custom red color for the title */
+    font-weight: bold;
+}
