@@ -1,8 +1,5 @@
-using Expenses.API.Data;
 using Expenses.API.Data.Services;
 using Expenses.API.Dtos;
-using Expenses.API.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Expenses.API.Controllers
@@ -10,19 +7,13 @@ namespace Expenses.API.Controllers
     /// <summary>
     /// Controller responsible for handling user account-related operations such as login and registration.
     /// </summary>
-    /// <param name="expensesDbContext">The EF Core database context property</param>
     /// <param name="accountService">Service for handling account-related operations</param>
     /// <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
-    /// <param name="configuration">Application configuration property</param>
-    /// <param name="passwordHasher">Identity password hashing property.</param>
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController(
-        ExpensesDbContext expensesDbContext, 
         IAccountService accountService,
-        ILogger<AccountController> logger,
-        IConfiguration configuration,
-        PasswordHasher<User> passwordHasher) : ControllerBase
+        ILogger<AccountController> logger) : ControllerBase
     {
         #region Endpoints for Accounts
         
@@ -74,7 +65,7 @@ namespace Expenses.API.Controllers
         /// <response code="500">If an internal server error occurs.</response>
         /// <exception cref="Exception">Throws exception if an error occured during processing login</exception>
         [EndpointSummary("Performs a user login.")]
-        [EndpointDescription("Authenticates a user with email and password.")]
+        [EndpointDescription("Authenticates a user according to email and password.")]
         [EndpointName("Login")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ApiLoginResultDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
