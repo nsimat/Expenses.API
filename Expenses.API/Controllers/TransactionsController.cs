@@ -1,6 +1,7 @@
 ﻿using Expenses.API.Data.Services;
 using Expenses.API.Dtos;
 using Expenses.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Expenses.API.Controllers;
@@ -10,6 +11,7 @@ namespace Expenses.API.Controllers;
 /// </summary>
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class TransactionsController : ControllerBase
 {
     #region Fields
