@@ -44,12 +44,13 @@ public class TransactionsController : ControllerBase
     /// <response code="200">Successfully returns all transactions found in the database.</response>
     /// <response code="204">If no transaction found in the database.</response>
     /// <response code="500">If an error occurred while processing the request.</response>
-    /// <exception cref="Exception">Throws exception if an error occurs while retrieving transactions.</Exception>
+    /// <exception cref="Exception">Throws exception if an error occurs while retrieving transactions.</exception>
     [HttpGet("All")]
-    [EndpointSummary("Obtain all transactions.")]
+    [EndpointSummary("Obtain a list of all transactions.")]
     [EndpointDescription("Fetches all transactions from the database.")]
     [EndpointName("All Transactions")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Transaction>))]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> GetAllTransactions()
     {
@@ -86,7 +87,7 @@ public class TransactionsController : ControllerBase
     /// <response code="200">Transaction found and returned successfully.</response>
     /// <response code="404">Transaction with specified ID not found.</response>
     /// <response code="500">An error occurred while processing the request.</response>
-    /// <exception cref="Exception">Throws exception if an error occurs while retrieving the transaction.</Exception>
+    /// <exception cref="Exception">Throws exception if an error occurs while retrieving the transaction.</exception>
     [HttpGet("Details/{id:int}")]
     [EndpointSummary("Obtain transaction by ID from the database.")]
     [EndpointDescription("Fetches a specific transaction by its ID.")]
@@ -223,7 +224,7 @@ public class TransactionsController : ControllerBase
     /// <response code="404">Transaction with specified ID not found.</response>
     /// <response code="403">Forbidden. User does not have permission to delete the transaction.</response>
     /// <response code="500">An error occurred while processing the request.</response>
-    /// <exception cref="Exception">Throws exception if an error occurs while deleting the transaction.</Exception>
+    /// <exception cref="Exception">Throws exception if an error occurs while deleting the transaction.</exception>
     [HttpDelete("Delete/{id:int}")]
     [EndpointSummary("Deletes an identified transaction.")]
     [EndpointDescription("Deletes a transaction by its identifier.")]
@@ -259,4 +260,9 @@ public class TransactionsController : ControllerBase
         }
     }
     #endregion
+    
+    // Rest to do:
+    // Add filtering to Web API (Backend) and Transactions Page (Frontend)
+    // Add sorting to Web API (Backend) and Transactions Page (Frontend)
+    // Add pagination to Web API (Backend) and Transactions Page (Frontend)
 }

@@ -18,7 +18,7 @@ public interface IAccountService
     /// <summary>
     /// checks if an email is already registered in the system
     /// </summary>
-    /// <param name="email"></param>
+    /// <param name="email">Email to check availability in the database</param>
     /// <returns>True if email found already in the system, or false otherwise</returns>
     Task<bool> IsEmailAvailableAsync(string email);
     

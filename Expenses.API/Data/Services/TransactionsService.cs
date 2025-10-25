@@ -12,7 +12,7 @@ public class TransactionsService(ExpensesDbContext expensesDbContext) : ITransac
     /// <summary>
     /// Retrieves all transactions
     /// </summary>
-    /// <returns></returns>
+    /// <returns>List of transactions</returns>
     public async Task<IEnumerable<Transaction>> GetAllAsync()
     {
         var transactions = await expensesDbContext.Transactions.ToListAsync();

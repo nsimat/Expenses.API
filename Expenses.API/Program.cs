@@ -15,8 +15,8 @@ builder.Services.AddDbContext<ExpensesDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("ExpensesConnection"));
 });
+// Register TransactionService as a scoped service
 builder.Services.AddScoped<ITransactionsService, TransactionsService>();
-//builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 // Register PasswordHasher as a scoped service
 builder.Services.AddScoped<PasswordHasher<User>>();
 // Register JwtHandler as a scoped service
@@ -29,10 +29,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo()
+    options.SwaggerDoc("v2", new OpenApiInfo()
     {
         Title = "Income & Expenses Service - REST API",
-        Version = "v1",
+        Version = "Version .Net 9.0.306",
         Description = "Documentation of Income & Expenses Service (IES) REST API providing resources for income and expenses management.",
         Contact = new OpenApiContact()
         {
@@ -78,25 +78,30 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    
+    // Adding and enabling the middleware to generate the swagger documentation
     app.UseSwagger();
     app.UseSwaggerUI(setupAction =>
     {
         setupAction.DocumentTitle = "Income & Expenses Service (IES) - REST API";
-        setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Income & Expenses Service (IES) - REST API V1");
+        setupAction.SwaggerEndpoint("/swagger/v2/swagger.json", "Income & Expenses Service (IES) - Swagger UI V.2");
+        // Add this custom css styles to Swagger.ui
+        setupAction.InjectStylesheet("/swagger-ui/custom.css");
     });
 }
 
 app.UseCors("AngularExpensesPolicy");
 
 app.UseHttpsRedirection();
+
+// Enabling the use of static files
+app.UseStaticFiles(); // For serving custom CSS for Swagger UI
 
 app.UseAuthentication();
 app.UseAuthorization();

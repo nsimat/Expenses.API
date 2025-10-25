@@ -14,6 +14,12 @@ public class JwtHandler
     private readonly IConfiguration _configuration;
     private readonly ILogger<JwtHandler> _logger;
 
+    /// <summary>
+    /// JWT Handler constructor
+    /// </summary>
+    /// <param name="configuration">Configuration object to inject in the constructor</param>
+    /// <param name="logger">Logger object to inject to the constructor</param>
+    /// <exception cref="ArgumentNullException">Exception generated if object injected is null.</exception>
     public JwtHandler(IConfiguration configuration, ILogger<JwtHandler> logger)
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -23,9 +29,8 @@ public class JwtHandler
     /// <summary>
     ///  Generates a JWT token for the authenticated user.
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="user">User for whom JWT token is generated</param>
     /// <returns>String representing the token</returns>
-    /// <exception cref="InvalidOperationException"></exception>
     public string GenerateJwtToken(User user)
     {
         _logger.LogInformation("Generating JWT token for user with email: {Email}", user.Email);
