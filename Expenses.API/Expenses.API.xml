@@ -8,21 +8,15 @@
             <summary>
             Controller responsible for handling user account-related operations such as login and registration.
             </summary>
-            <param name="expensesDbContext">The EF Core database context property</param>
             <param name="accountService">Service for handling account-related operations</param>
             <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
-            <param name="configuration">Application configuration property</param>
-            <param name="passwordHasher">Identity password hashing property.</param>
         </member>
-        <member name="M:Expenses.API.Controllers.AccountController.#ctor(Expenses.API.Data.ExpensesDbContext,Expenses.API.Data.Services.IAccountService,Microsoft.Extensions.Logging.ILogger{Expenses.API.Controllers.AccountController},Microsoft.Extensions.Configuration.IConfiguration,Microsoft.AspNetCore.Identity.PasswordHasher{Expenses.API.Models.User})">
+        <member name="M:Expenses.API.Controllers.AccountController.#ctor(Expenses.API.Data.Services.IAccountService,Microsoft.Extensions.Logging.ILogger{Expenses.API.Controllers.AccountController})">
             <summary>
             Controller responsible for handling user account-related operations such as login and registration.
             </summary>
-            <param name="expensesDbContext">The EF Core database context property</param>
             <param name="accountService">Service for handling account-related operations</param>
             <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
-            <param name="configuration">Application configuration property</param>
-            <param name="passwordHasher">Identity password hashing property.</param>
         </member>
         <member name="M:Expenses.API.Controllers.AccountController.IsEmailAlreadyTaken(System.String)">
             <summary>
@@ -71,8 +65,27 @@
             <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
             <exception cref="T:System.ArgumentNullException">Throws argument exception if injected objects are null.</exception>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Expenses.API.Controllers.TransactionsController.GetAllTransactions" -->
-        <!-- Badly formed XML comment ignored for member "M:Expenses.API.Controllers.TransactionsController.GetTransactionById(System.Int32)" -->
+        <member name="M:Expenses.API.Controllers.TransactionsController.GetAllTransactions">
+            <summary>
+            List all transactions.
+            </summary>
+            <returns>List of transactions from database</returns>
+            <response code="200">Successfully returns all transactions found in the database.</response>
+            <response code="204">If no transaction found in the database.</response>
+            <response code="500">If an error occurred while processing the request.</response>
+            <exception cref="T:System.Exception">Throws exception if an error occurs while retrieving transactions.</exception>
+        </member>
+        <member name="M:Expenses.API.Controllers.TransactionsController.GetTransactionById(System.Int32)">
+            <summary>
+            Retrieves a specific transaction by its ID.
+            </summary>
+            <param name="id">The unique identifier of the transaction to retrieve.</param>
+            <returns>The requested transaction if found, or NotFound if not available.</returns>
+            <response code="200">Transaction found and returned successfully.</response>
+            <response code="404">Transaction with specified ID not found.</response>
+            <response code="500">An error occurred while processing the request.</response>
+            <exception cref="T:System.Exception">Throws exception if an error occurs while retrieving the transaction.</exception>
+        </member>
         <member name="M:Expenses.API.Controllers.TransactionsController.CreateTransaction(Expenses.API.Dtos.TransactionForCreationDto)">
             <summary>
             Creates a new transaction.
@@ -97,7 +110,18 @@
             <response code="500">An error occurred while processing the request.</response>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided payload is null.</exception>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:Expenses.API.Controllers.TransactionsController.DeleteTransaction(System.Int32)" -->
+        <member name="M:Expenses.API.Controllers.TransactionsController.DeleteTransaction(System.Int32)">
+            <summary>
+            Deletes a transaction by its ID.
+            </summary>
+            <param name="id">The unique identifier of transaction to delete.</param>
+            <returns>No content if deletion is successful. Otherwise, an error is returned.</returns>
+            <response code="204">Transaction deleted successfully.</response>
+            <response code="404">Transaction with specified ID not found.</response>
+            <response code="403">Forbidden. User does not have permission to delete the transaction.</response>
+            <response code="500">An error occurred while processing the request.</response>
+            <exception cref="T:System.Exception">Throws exception if an error occurs while deleting the transaction.</exception>
+        </member>
         <member name="T:Expenses.API.Data.Services.AccountService">
             <summary>
             This service handles user account related operations such as registration, login, and
@@ -143,15 +167,14 @@
             <summary>
             
             </summary>
-            <param name="apiLoginRequest"></param>
-            <returns></returns>
-            <exception cref="T:System.NotImplementedException"></exception>
+            <param name="apiLoginRequest">A DTO containing user's credentials</param>
+            <returns>User if found in the database, null otherwise</returns>
         </member>
         <member name="M:Expenses.API.Data.Services.AccountService.IsEmailAvailableAsync(System.String)">
             <summary>
             checks if an email is already registered in the system
             </summary>
-            <param name="email"></param>
+            <param name="email">Email to check availability in the database</param>
             <returns>True if email found already in the system, or false otherwise</returns>
         </member>
         <member name="M:Expenses.API.Data.Services.AccountService.AddUserAsync(Expenses.API.Dtos.UserCreationDto)">
@@ -184,7 +207,7 @@
             <summary>
             checks if an email is already registered in the system
             </summary>
-            <param name="email"></param>
+            <param name="email">Email to check availability in the database</param>
             <returns>True if email found already in the system, or false otherwise</returns>
         </member>
         <member name="M:Expenses.API.Data.Services.IAccountService.AddUserAsync(Expenses.API.Dtos.UserCreationDto)">
@@ -210,28 +233,28 @@
             <summary>
             Retrieves all transactions
             </summary>
-            <returns></returns>
+            <returns>A list of transactions</returns>
         </member>
         <member name="M:Expenses.API.Data.Services.ITransactionsService.GetByIdAsync(System.Int32)">
             <summary>
             Retrieves a transaction by its ID
             </summary>
             <param name="id">ID of transaction to fetch</param>
-            <returns></returns>
+            <returns>The unique transaction represented by the given ID</returns>
         </member>
         <member name="M:Expenses.API.Data.Services.ITransactionsService.AddAsync(Expenses.API.Dtos.TransactionForCreationDto)">
             <summary>
             Creates a new transaction
             </summary>
             <param name="transactionForCreation">TDO object representing transaction info</param>
-            <returns></returns>
+            <returns>Transaction created in the database or null if not created</returns>
         </member>
         <member name="M:Expenses.API.Data.Services.ITransactionsService.UpdateAsync(System.Int32,Expenses.API.Dtos.TransactionForUpdateDto)">
             <summary>
             Updates an existing transaction
             </summary>
             <param name="id">Unique ID of transaction to modify</param>
-            <param name="transactionForUpdate"></param>
+            <param name="transactionForUpdate">A DTO containing transaction data to modify</param>
             <returns>The transaction updated</returns>
         </member>
         <member name="M:Expenses.API.Data.Services.ITransactionsService.Delete(System.Int32)">
@@ -246,13 +269,20 @@
             Service class for handling JWT operations
             </summary>
         </member>
+        <member name="M:Expenses.API.Data.Services.JwtHandler.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{Expenses.API.Data.Services.JwtHandler})">
+            <summary>
+            JWT Handler constructor
+            </summary>
+            <param name="configuration">Configuration object to inject in the constructor</param>
+            <param name="logger">Logger object to inject to the constructor</param>
+            <exception cref="T:System.ArgumentNullException">Exception generated if object injected is null.</exception>
+        </member>
         <member name="M:Expenses.API.Data.Services.JwtHandler.GenerateJwtToken(Expenses.API.Models.User)">
             <summary>
              Generates a JWT token for the authenticated user.
             </summary>
-            <param name="user"></param>
+            <param name="user">User for whom JWT token is generated</param>
             <returns>String representing the token</returns>
-            <exception cref="T:System.InvalidOperationException"></exception>
         </member>
         <member name="T:Expenses.API.Data.Services.TransactionsService">
             <summary>
@@ -268,7 +298,7 @@
             <summary>
             Retrieves all transactions
             </summary>
-            <returns></returns>
+            <returns>List of transactions</returns>
         </member>
         <member name="M:Expenses.API.Data.Services.TransactionsService.GetByIdAsync(System.Int32)">
             <summary>
