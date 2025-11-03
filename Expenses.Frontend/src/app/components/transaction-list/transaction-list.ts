@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Itransaction } from '../../models/itransaction';
+import { Transaction } from '../../models/transaction';
 import { CommonModule } from '@angular/common';
-import { Transaction } from '../../services/transaction';
+import { TransactionService } from '../../services/transaction-service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,9 +11,9 @@ import { Router } from '@angular/router';
   styleUrl: './transaction-list.css',
 })
 export class TransactionList implements OnInit {
-  transactions: Itransaction[] = [];
+  transactions: Transaction[] = [];
 
-  constructor(private transactionService: Transaction, private router: Router) {}
+  constructor(private transactionService: TransactionService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadTransactions();
@@ -42,7 +42,7 @@ export class TransactionList implements OnInit {
     return this.getTotalIncome() - this.getTotalExpenses();
   }
 
-  editTransaction(transaction: Itransaction): void {
+  editTransaction(transaction: Transaction): void {
     // Implement navigation to edit form with transaction details
     console.log('Editing transaction: ', transaction);
 
@@ -51,7 +51,7 @@ export class TransactionList implements OnInit {
     }
   }
 
-  deleteTransaction(transaction: Itransaction): void {
+  deleteTransaction(transaction: Transaction): void {
     if (confirm('Are you sure you want to delete this transaction?')) {
       this.transactionService.deleteTransaction(transaction.id).subscribe({
         next: () => {

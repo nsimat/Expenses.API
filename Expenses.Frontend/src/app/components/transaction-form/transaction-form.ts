@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Transaction } from '../../services/transaction';
+import { TransactionService } from '../../services/transaction-service';
 
 @Component({
   selector: 'app-transaction-form',
@@ -61,7 +61,7 @@ export class TransactionForm implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private activatedRouter: ActivatedRoute,
-    private transactionService: Transaction
+    private transactionService: TransactionService
   ) {
     this.transactionForm = this.fb.group({
       type: ['Expense', Validators.required],
