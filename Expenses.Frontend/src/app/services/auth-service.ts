@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment.development';
 import { LoginRequest } from '../models/login-request';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
 import { Router } from '@angular/router';
+import {User} from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +42,16 @@ export class AuthService {
   initializeAuthStatus(): void {
     const isAuth = this.isAuthenticated();
     this.setAuthStatus(isAuth);
+  }
+
+  // Get a user from his email
+  getUser(email: string): Observable<User>{
+    return this.http.get<User>(`${this.apiAuthUrl}/UserProfile?email=${email}`);
+  }
+
+  // Update the profile of a user
+  updateUserProfile(id: number, user: User): Observable<User>{
+    return this.http.put<User>(`${this.apiAuthUrl}/UpdateUserProfile/${id}`, user);
   }
 
   // Authenticate the user and store the token
