@@ -5,7 +5,7 @@ namespace Expenses.API.Dtos;
 /// <summary>
 /// This DTO aims to receive the user's credentials for account creation from the client.
 /// </summary>
-public class UserCreationDto
+public class UserCreateDto
 {
     /// <summary>
     /// Email to be used as username, must be in a valid email format
