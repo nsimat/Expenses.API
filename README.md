@@ -1,4 +1,4 @@
-# Expense Tracker
+# Income & Expense Tracker
 
 ## Overview
 
