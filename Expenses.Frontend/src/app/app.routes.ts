@@ -5,6 +5,7 @@ import { TransactionList } from './components/transaction-list/transaction-list'
 import { TransactionForm } from './components/transaction-form/transaction-form';
 import {PageNotFound} from './components/page-not-found/page-not-found';
 import {authGuard} from './guards/auth-guard';
+import {UserProfile} from './components/user-profile/user-profile';
 
 export const routes: Routes = [
   // Route mapping the URL '/login' to Login component
@@ -33,6 +34,12 @@ export const routes: Routes = [
   {
     path: 'edit/:id',
     component: TransactionForm,
+    canActivate: [authGuard]
+  },
+  // Route mapping the URL '/userprofile' to UserProfile component
+  {
+    path: 'userprofile',
+    component: UserProfile,
     canActivate: [authGuard]
   },
   // Route redirecting the root URL '' to the '/transactions' route

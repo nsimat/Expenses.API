@@ -1,0 +1,72 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow">
+        <div class="card-header card-header-bg-color py-3 text-white">
+          <h3 class="card-title mb-0 fw-semibold">
+            <i>User Profile</i>
+          </h3>
+        </div>
+
+        <div class="card-body p-4">
+          <form [formGroup]="userProfileForm" (ngSubmit)="onSubmit()">
+            @if (errorMessage) {
+              <div class="alert alert-danger" role="alert">
+                {{ errorMessage }}
+              </div>
+            }
+            <!-- Use Email -->
+            <div class="mb-4">
+              <label for="type" class="form-label fw-medium"><i>Email</i></label>
+              <input type="email" class="form-control form-control-lg" id="email" formControlName="email"
+                     placeholder="Enter your email"/>
+              @if (hasError('email', 'required')) {
+                <div class="text-danger">Email is required.</div>
+              } @else if (hasError('email', 'email')) {
+                <div class="text-danger">Please, enter a valid email address.</div>
+              }
+            </div>
+
+            <!-- First Name -->
+            <div class="mb-4">
+              <label for="category" class="form-label fw-medium"><i>First Name</i></label>
+              <input type="text" class="form-control form-control-lg" id="firstName" formControlName="firstName"
+                     placeholder="Enter your first name"/>
+              @if (hasError('firstName', 'required')) {
+                <div class="text-danger">FirstName is required.</div>
+              }
+              @if (hasError('firstName', 'minlength')) {
+                <div class="text-danger">FirstName should be 3 characters min.</div>
+              }
+            </div>
+
+            <!-- Last Name -->
+            <div class="mb-4">
+              <label for="amount" class="form-label fw-medium"><i>Last Name</i></label>
+              <input type="text" class="form-control form-control-lg" id="lastName" formControlName="lastName"
+                     placeholder="Enter your last name"/>
+              @if (hasError('lastName', 'required')) {
+                <div class="text-danger">LastName is required.</div>
+              }
+              @if (hasError('lastName', 'minlength')) {
+                <div class="text-danger">LastName should be 3 characters min.</div>
+              }
+            </div>
+
+            <!-- Form Actions -->
+            <div class="d-flex gap-3 justify-content-center mt-4">
+              <button type="button" class="btn btn-secondary btn-md px-4" (click)="cancel()">
+                <i><strong>Cancel</strong></i>
+              </button>
+              <button type="submit" class="btn btn-submit-bg-color btn-md px-4 text-white"
+                      [disabled]="userProfileForm.invalid">
+                <i><strong>Update</strong></i>
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
