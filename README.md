@@ -1,8 +1,18 @@
 # Income & Expense Tracker
 
+### An overview of the ASP.NET Core Web API back-end: 
+![Static view of project backend1](Expenses.API\wwwroot\images\expenses-api-swagger1b.png)
+
+![Static view of project backend2](Expenses.API\wwwroot\images\expenses-api-swagger2.png)
+
+![Static view of project backend3](Expenses.API\wwwroot\images\expenses-api-swagger3.png)
+
+### An overview of the Angular Front-end:
+![Static view of project frontend](Expenses.API\wwwroot\images\expenses-api-backend1.png)
+
 ## Overview
 
-**Expense Tracker** is a project which aim is to practically build a full stack application using ASP.NET Core API and Angular. 
+**Income & Expense Tracker** is a project which aim is to practically build a full stack application using ASP.NET Core API and Angular. 
 The application allows users to manage their expenses efficiently by providing features such as user authentication, expense tracking, and data visualization.
 
 Two separate projects are used for clear separation of concerns and easier deployment: 
