@@ -1,14 +1,14 @@
 # Income & Expense Tracker
 
 ### An overview of the ASP.NET Core Web API back-end: 
-![Static view of project backend1](Expenses.API\wwwroot\images\expenses-api-swagger1b.png)
+![Static view of project backend1](Expenses.API\wwwroot\images\expenses_api_swagger1b.png)
 
-![Static view of project backend2](Expenses.API\wwwroot\images\expenses-api-swagger2.png)
+![Static view of project backend2](Expenses.API\wwwroot\images\expenses_api_swagger2.png)
 
-![Static view of project backend3](Expenses.API\wwwroot\images\expenses-api-swagger3.png)
+![Static view of project backend3](Expenses.API\wwwroot\images\expenses_api_swagger3.png)
 
 ### An overview of the Angular Front-end:
-![Static view of project frontend](Expenses.API\wwwroot\images\expenses-api-backend1.png)
+![Static view of project frontend](Expenses.API\wwwroot\images\expenses_api_backend1.png)
 
 ## Overview
 
