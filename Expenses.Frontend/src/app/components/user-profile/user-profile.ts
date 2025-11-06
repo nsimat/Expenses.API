@@ -40,6 +40,7 @@ export class UserProfile implements OnInit {
     const email = localStorage.getItem('userEmail');
     console.log('User profile email is:', email);
     if(email != null){
+      console.log("Loading user profile for email:", email);
       this.authService.getUser(email).subscribe({
         next: (userdata) => {
           console.log(userdata);
