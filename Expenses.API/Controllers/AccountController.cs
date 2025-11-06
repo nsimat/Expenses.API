@@ -210,7 +210,7 @@ namespace Expenses.API.Controllers
         /// <summary>
         /// Updates profile for user with given ID 
         /// </summary>
-        /// <param name="id">The unique ID of user</param>
+        /// <param name="userId">The unique ID of user</param>
         /// <param name="payload">User data to modify</param>
         /// <returns>Updated version of user profile</returns>
         /// <response code="200">User updated successfully</response>
@@ -224,17 +224,17 @@ namespace Expenses.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        [HttpPut("UpdateUserProfile/{id:int}")]
-        public async Task<IActionResult> UpdateUserProfile(int id, UserUpdateDto payload)
+        [HttpPut("UpdateUserProfile/{userId:int}")]
+        public async Task<IActionResult> UpdateUserProfile(int userId, UserUpdateDto payload)
         {
-            logger.LogInformation("Updating user profile for user with ID:{0}", id);
+            logger.LogInformation("Updating user profile for user with ID:{0}", userId);
             try
             {
-                var updateUser = await accountService.UpdateUserProfile(id, payload);
+                var updateUser = await accountService.UpdateUserProfile(userId, payload);
 
                 if (updateUser != null)
                 {
-                    logger.LogInformation("User profile for user with ID{0} updated successfully.", id);
+                    logger.LogInformation("User profile for user with ID{0} updated successfully.", userId);
                     return Ok(updateUser);
                 }
                 logger.LogWarning("User does not exist in the database!");
@@ -242,8 +242,8 @@ namespace Expenses.API.Controllers
             }
             catch (Exception exception)
             {
-                logger.LogError(exception,"An error occurred while updating user profile with ID:{0}.", id);
-                return BadRequest($"Error occurred while updating user profile with ID:{id}");
+                logger.LogError(exception,"An error occurred while updating user profile with ID:{0}.", userId);
+                return BadRequest($"Error occurred while updating user profile with ID:{userId}");
             }
         }
         #endregion

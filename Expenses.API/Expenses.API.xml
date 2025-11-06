@@ -67,7 +67,7 @@
             <summary>
             Updates profile for user with given ID 
             </summary>
-            <param name="id">The unique ID of user</param>
+            <param name="userId">The unique ID of user</param>
             <param name="payload">User data to modify</param>
             <returns>Updated version of user profile</returns>
             <response code="200">User updated successfully</response>
