@@ -32,7 +32,7 @@
       </a>
     </li>
     <li>
-      <a href="#" (click)="updateTitle('User Profile')">
+      <a [routerLink]="['/userprofile']" (click)="updateTitle('User Profile')">
         <fa-icon [icon]="user"></fa-icon>
         <span class="nav-text"><strong><i>Profile</i></strong></span>
       </a>
