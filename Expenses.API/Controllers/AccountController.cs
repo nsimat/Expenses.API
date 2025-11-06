@@ -203,7 +203,7 @@ namespace Expenses.API.Controllers
             catch (Exception exception)
             {
                 logger.LogError(exception, "An error occurred while getting the user with email:{0}.", email);
-                return BadRequest($"Email:{email} is not found in the database.");
+                return BadRequest($"Email:{email} not found in the database!");
             }
         }
         
@@ -238,7 +238,7 @@ namespace Expenses.API.Controllers
                     return Ok(updateUser);
                 }
                 logger.LogWarning("User does not exist in the database!");
-                return NotFound("User not find in database!");
+                return NotFound("User not found in database!");
             }
             catch (Exception exception)
             {
