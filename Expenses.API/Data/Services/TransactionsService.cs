@@ -13,9 +13,11 @@ public class TransactionsService(ExpensesDbContext expensesDbContext) : ITransac
     /// Retrieves all transactions
     /// </summary>
     /// <returns>List of transactions</returns>
-    public async Task<IEnumerable<Transaction>> GetAllAsync()
+    public async Task<IEnumerable<Transaction>> GetAllAsync(int userId)
     {
-        var transactions = await expensesDbContext.Transactions.ToListAsync();
+        var transactions = await expensesDbContext.Transactions
+            .Where(t => t.UserId == userId)
+            .ToListAsync();
         return transactions;
     }
 
@@ -35,7 +37,7 @@ public class TransactionsService(ExpensesDbContext expensesDbContext) : ITransac
     /// </summary>
     /// <param name="transactionForCreation">TDO object representing transaction info</param>
     /// <returns>The created transaction</returns>
-    public async Task<Transaction?> AddAsync(TransactionForCreationDto transactionForCreation)
+    public async Task<Transaction?> AddAsync(TransactionForCreationDto transactionForCreation, int userId)
     {
         var newTransaction = new Transaction
         {
@@ -43,7 +45,8 @@ public class TransactionsService(ExpensesDbContext expensesDbContext) : ITransac
             Amount = transactionForCreation.Amount,
             Category = transactionForCreation.Category,
             CreatedAt = transactionForCreation.CreatedAt ?? DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
+            UpdatedAt = DateTime.UtcNow,
+            UserId = userId
         };
 
         await expensesDbContext.Transactions.AddAsync(newTransaction);

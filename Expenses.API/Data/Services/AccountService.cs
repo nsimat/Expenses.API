@@ -87,15 +87,15 @@ public class AccountService : IAccountService
     /// <summary>
     /// Add a new user to the system
     /// </summary>
-    /// <param name="userCreationDto">A DTO representing user's data</param>
+    /// <param name="userCreateDto">A DTO representing user's data</param>
     /// <returns>The user newly added to the system</returns>
-    public async Task<ApiLoginResultDto> AddUserAsync(UserCreationDto userCreationDto)
+    public async Task<ApiLoginResultDto> AddUserAsync(UserCreateDto userCreateDto)
     {
-        _logger.LogInformation("Adding new user with email: {Email}", userCreationDto.Email);
+        _logger.LogInformation("Adding new user with email: {Email}", userCreateDto.Email);
 
         // Check if the user already exists. Otherwise, create a new user record
         var existingUser = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == userCreationDto.Email);
+            .FirstOrDefaultAsync(u => u.Email == userCreateDto.Email);
 
         // If user already exists, return no token
         if (existingUser != null)
@@ -106,10 +106,10 @@ public class AccountService : IAccountService
             };
 
         // Or Create a new user object after hashing password
-        var hashedPassword = _passwordHasher.HashPassword(null!, userCreationDto.Password);
+        var hashedPassword = _passwordHasher.HashPassword(null!, userCreateDto.Password);
         var newUser = new User
         {
-            Email = userCreationDto.Email,
+            Email = userCreateDto.Email,
             Password = hashedPassword,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
@@ -117,7 +117,7 @@ public class AccountService : IAccountService
         await _context.Users.AddAsync(newUser);
         await _context.SaveChangesAsync();
 
-        _logger.LogInformation("User with email {Email} registered successfully.", userCreationDto.Email);
+        _logger.LogInformation("User with email {Email} registered successfully.", userCreateDto.Email);
 
         // Create a JWT as the given user credentials are valid.
         var jwtToken = _jwtHandler.GenerateJwtToken(newUser);
@@ -174,5 +174,45 @@ public class AccountService : IAccountService
             Message = "Login successful.",
             Token = jwtToken
         };
+    }
+
+    /// <summary>
+    /// Obtain the profile of a user from his email
+    /// </summary>
+    /// <param name="email">The unique email of a user</param>
+    /// <returns>The specified user identified by the given email</returns>
+    public async Task<User?> GetUserProfile(string email)
+    {
+        _logger.LogInformation("Retrieving the user from his email:{0}", email);
+
+        var existingUer = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        return existingUer;
+    }
+
+    /// <summary>
+    /// Updates the user data in the database
+    /// </summary>
+    /// <param name="id">The unique ID of a user in the database</param>
+    /// <param name="userUpdateDto">A DTO containing modified user data</param>
+    /// <returns>The newly modified data in the database</returns>
+    public async Task<User?> UpdateUserProfile(int id, UserUpdateDto userUpdateDto)
+    {
+        _logger.LogInformation("Updating user profile with ID:{0} & Info:{1}", id, userUpdateDto);
+
+        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id && u.Email == userUpdateDto.email);
+
+        if (existingUser != null)
+        {
+            _logger.LogInformation("User with ID:{0} exists in the database.", id);
+            existingUser.FirstName = userUpdateDto.FirstName;
+            existingUser.LastName = userUpdateDto.LastName;
+            existingUser.UpdatedAt = DateTime.UtcNow;
+
+            _context.Users.Update(existingUser);
+            _context.Users.Entry(existingUser).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        return existingUser;
     }
 }

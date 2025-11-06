@@ -1,5 +1,6 @@
 ﻿using Expenses.API.Dtos;
 using Expenses.API.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Expenses.API.Data.Services;
 
@@ -25,9 +26,9 @@ public interface IAccountService
     /// <summary>
     /// Add a new user to the system
     /// </summary>
-    /// <param name="userCreationDto">A DTO representing user's data</param>
+    /// <param name="userCreateDto">A DTO representing user's data</param>
     /// <returns>A DTO containing the result of the creation operation</returns>
-    Task<ApiLoginResultDto> AddUserAsync(UserCreationDto userCreationDto);
+    Task<ApiLoginResultDto> AddUserAsync(UserCreateDto userCreateDto);
     
     /// <summary>
     /// Identify user by email and password, 
@@ -35,4 +36,19 @@ public interface IAccountService
     /// <param name="apiLoginRequest">A DTO representing user's credentials to identify</param>
     /// <returns>the user entity if found, or NULL otherwise.</returns>
     Task<ApiLoginResultDto> IdentifyUserAsync(ApiLoginRequestDto apiLoginRequest);
+
+    /// <summary>
+    /// Obtain the profile of a user from his email
+    /// </summary>
+    /// <param name="email">The unique email of a user</param>
+    /// <returns>The specified user identified by the given email</returns>
+    Task<User?> GetUserProfile(string email);
+
+    /// <summary>
+    /// Updates the user data in the database
+    /// </summary>
+    /// <param name="id">The unique ID of a user in the database</param>
+    /// <param name="userUpdateDto">A DTO containing modified user data</param>
+    /// <returns>The newly modified data in the database</returns>
+    Task<User?> UpdateUserProfile(int id, [FromBody] UserUpdateDto userUpdateDto);
 }

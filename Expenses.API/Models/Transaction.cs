@@ -18,4 +18,14 @@ public class Transaction: BaseEntity
     /// Category of the transaction, e.g., "food", "salary", etc.
     /// </summary>
     public string Category { get; set; }
+
+    /// <summary>
+    /// Unique ID of the user who creates the transaction
+    /// </summary>
+    public int? UserId { get; set; }
+    
+    /// <summary>
+    /// The user entity used for navigation
+    /// </summary>
+    public virtual User? User { get; set; }
 }

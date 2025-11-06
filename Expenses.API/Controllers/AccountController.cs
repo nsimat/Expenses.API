@@ -1,5 +1,6 @@
 using Expenses.API.Data.Services;
 using Expenses.API.Dtos;
+using Expenses.API.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Expenses.API.Controllers
@@ -113,7 +114,7 @@ namespace Expenses.API.Controllers
         /// <summary>
         /// Registers a new user with email and password.
         /// </summary>
-        /// <param name="userCreationDto">A DTO object that can be used to create a new user account.</param>
+        /// <param name="userCreateDto">A DTO object that can be used to create a new user account.</param>
         /// <returns>An object containing the token created</returns>
         /// <response code="201">Returns a JWT token if the registration is successful.</response>
         /// <response code="400">If the request is invalid, e.g., missing email or password, or if the user already exists.</response>
@@ -126,9 +127,9 @@ namespace Expenses.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
-        public async Task<IActionResult> Register([FromBody] UserCreationDto userCreationDto)
+        public async Task<IActionResult> Register([FromBody] UserCreateDto userCreateDto)
         {
-            logger.LogInformation("Registering a new user with email: {Email}...", userCreationDto.Email);
+            logger.LogInformation("Registering a new user with email: {Email}...", userCreateDto.Email);
             
             // Check if the model is valid
             if (!ModelState.IsValid)
@@ -143,7 +144,7 @@ namespace Expenses.API.Controllers
             
             try
             {
-                var creationLoginResult = await accountService.AddUserAsync(userCreationDto);
+                var creationLoginResult = await accountService.AddUserAsync(userCreateDto);
                 if (!creationLoginResult.Success)
                 {
                     logger.LogWarning("User registration failed: {Message}", creationLoginResult.Message);
@@ -165,6 +166,84 @@ namespace Expenses.API.Controllers
                     statusCode: StatusCodes.Status500InternalServerError,
                     title: "Internal Server Error"
                );
+            }
+        }
+
+        /// <summary>
+        /// Obtains the user by a given email
+        /// </summary>
+        /// <param name="email">The specified email</param>
+        /// <returns>The user specified by the given email if found, or null otherwise.</returns>
+        /// <response code="200">Specified user found and returned successfully.</response>
+        /// <response code="404">Specified user with given email not found.</response>
+        /// <response code="500">An Internal Server Error occurred while processing the request.</response>
+        /// <exception cref="Exception">Throws exception if an error occurs while retrieving the transaction.</exception>
+        [EndpointSummary("Obtain user by given email from database")]
+        [EndpointDescription("Retrieve a specified user by his email")]
+        [EndpointName("UserProfile")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        [HttpGet("UserProfile")]
+        public async Task<IActionResult> GetUserProfileByEmail(string email)
+        {
+            logger.LogInformation("Getting the profile of user:{0}", email);
+            try
+            {
+                var existingUser = await accountService.GetUserProfile(email);
+
+                if (existingUser != null)
+                {
+                    logger.LogInformation("User with Email:{0} is found.", email);
+                    return Ok(existingUser);
+                }
+                logger.LogWarning("User with Email:{0} does not exist.", email);
+                return NotFound($"User with Email:{email} not found!");
+            }
+            catch (Exception exception)
+            {
+                logger.LogError(exception, "An error occurred while getting the user with email:{0}.", email);
+                return BadRequest($"Email:{email} is not found in the database.");
+            }
+        }
+        
+        /// <summary>
+        /// Updates profile for user with given ID 
+        /// </summary>
+        /// <param name="id">The unique ID of user</param>
+        /// <param name="payload">User data to modify</param>
+        /// <returns>Updated version of user profile</returns>
+        /// <response code="200">User updated successfully</response>
+        /// <response code="404">User with specified ID not found.</response>
+        /// <response code="400">The provided payload is null or invalid.</response>
+        /// <response code="500">An Internal Server Error occurred while processing the request.</response>
+        [EndpointSummary("Updates user profile by user ID")]
+        [EndpointDescription("Updates the profile of a user identified by the given Id.")]
+        [EndpointName("UpdateUserprofile")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
+        [HttpPut("UpdateUserProfile/{id:int}")]
+        public async Task<IActionResult> UpdateUserProfile(int id, UserUpdateDto payload)
+        {
+            logger.LogInformation("Updating user profile for user with ID:{0}", id);
+            try
+            {
+                var updateUser = await accountService.UpdateUserProfile(id, payload);
+
+                if (updateUser != null)
+                {
+                    logger.LogInformation("User profile for user with ID{0} updated successfully.", id);
+                    return Ok(updateUser);
+                }
+                logger.LogWarning("User does not exist in the database!");
+                return NotFound("User not find in database!");
+            }
+            catch (Exception exception)
+            {
+                logger.LogError(exception,"An error occurred while updating user profile with ID:{0}.", id);
+                return BadRequest($"Error occurred while updating user profile with ID:{id}");
             }
         }
         #endregion

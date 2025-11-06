@@ -11,8 +11,9 @@ public interface ITransactionsService
     /// <summary>
     /// Retrieves all transactions
     /// </summary>
+    /// <param name="userId">The unique ID of the authentified user.</param>
     /// <returns>A list of transactions</returns>
-    Task<IEnumerable<Transaction>> GetAllAsync();
+    Task<IEnumerable<Transaction>> GetAllAsync(int userId);
     
     /// <summary>
     /// Retrieves a transaction by its ID
@@ -25,8 +26,9 @@ public interface ITransactionsService
     /// Creates a new transaction
     /// </summary>
     /// <param name="transactionForCreation">TDO object representing transaction info</param>
+    /// <param name="userId">The unique ID of the authentified user.</param>
     /// <returns>Transaction created in the database or null if not created</returns>
-    Task<Transaction?> AddAsync(TransactionForCreationDto transactionForCreation);
+    Task<Transaction?> AddAsync(TransactionForCreationDto transactionForCreation, int userId);
     
     /// <summary>
     /// Updates an existing transaction

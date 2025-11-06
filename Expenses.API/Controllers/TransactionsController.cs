@@ -1,4 +1,5 @@
-﻿using Expenses.API.Data.Services;
+﻿using System.Security.Claims;
+using Expenses.API.Data.Services;
 using Expenses.API.Dtos;
 using Expenses.API.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -40,12 +41,12 @@ public class TransactionsController : ControllerBase
     // validate models, catch errors, and return responses.
     
     /// <summary>
-    /// List all transactions.
+    /// Get all the transactions created by the authentified user in the database .
     /// </summary>
-    /// <returns>List of transactions from database</returns>
+    /// <returns>List of transactions created by the authentified user</returns>
     /// <response code="200">Successfully returns all transactions found in the database.</response>
     /// <response code="204">If no transaction found in the database.</response>
-    /// <response code="500">If an error occurred while processing the request.</response>
+    /// <response code="500">An Internal Server Error prevented the request from being processed.</response>
     /// <exception cref="Exception">Throws exception if an error occurs while retrieving transactions.</exception>
     [HttpGet("All")]
     [EndpointSummary("Obtain a list of all transactions.")]
@@ -59,7 +60,14 @@ public class TransactionsController : ControllerBase
         _logger.LogInformation("Fetching all transactions...");
         try
         {
-            var transactions = await _transactionsService.GetAllAsync();
+            var nameIdentifierClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(nameIdentifierClaim))
+                return BadRequest("Could not find user ID.");
+
+            if (!int.TryParse(nameIdentifierClaim, out int userId))
+                return BadRequest("User ID is not a number.");
+            
+            var transactions = await _transactionsService.GetAllAsync(userId);
             if (!transactions.Any())
             {
                 _logger.LogWarning("No transactions found!");
@@ -82,13 +90,13 @@ public class TransactionsController : ControllerBase
     }
 
     /// <summary>
-    /// Retrieves a specific transaction by its ID.
+    /// Retrieves a single transaction by its ID.
     /// </summary>
-    /// <param name="id">The unique identifier of the transaction to retrieve.</param>
+    /// <param name="id">The unique ID of the transaction to retrieve.</param>
     /// <returns>The requested transaction if found, or NotFound if not available.</returns>
-    /// <response code="200">Transaction found and returned successfully.</response>
-    /// <response code="404">Transaction with specified ID not found.</response>
-    /// <response code="500">An error occurred while processing the request.</response>
+    /// <response code="200">Specified transaction found and returned successfully.</response>
+    /// <response code="404">Specified transaction with unique ID not found.</response>
+    /// <response code="500">An Internal Server Error occurred while processing the request.</response>
     /// <exception cref="Exception">Throws exception if an error occurs while retrieving the transaction.</exception>
     [HttpGet("Details/{id:int}")]
     [EndpointSummary("Obtain transaction by ID from the database.")]
@@ -131,7 +139,7 @@ public class TransactionsController : ControllerBase
     /// <returns>The created transaction if creation is successful. Otherwise, an error is returned.</returns>
     /// <response code="201">Transaction created successfully.</response>
     /// <response code="400">The provided payload is null or invalid.</response>
-    /// <response code="500">An error occurred while processing the request.</response>
+    /// <response code="500">An Internal Server Error occurred while processing the request.</response>
     /// <exception cref="ArgumentNullException">Thrown when the provided payload is null.</exception>
     [HttpPost("Create")]
     [EndpointSummary("Create a new transaction.")]
@@ -151,8 +159,15 @@ public class TransactionsController : ControllerBase
                 ModelState.AddModelError("message", "The provided transaction is invalid.");
                 return BadRequest(ModelState);
             }
+
+            var nameIdentifierClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(nameIdentifierClaim))
+                return BadRequest("Could not get the user ID");
+
+            if (!int.TryParse(nameIdentifierClaim, out int userId))
+                return BadRequest("User ID is not a number.");
             
-            var createdTransaction = await _transactionsService.AddAsync(payload);
+            var createdTransaction = await _transactionsService.AddAsync(payload, userId);
             if (createdTransaction != null)
                 return Ok(createdTransaction);
 
@@ -192,28 +207,22 @@ public class TransactionsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> UpdateTransaction(int id, [FromBody] TransactionForUpdateDto payload)
     {
-        _logger.LogInformation("Updating transaction with ID: {Id}...", id);
+        _logger.LogInformation("Updating transaction with ID:{0}...", id);
         try
         {
             var existingTransaction = await _transactionsService.UpdateAsync(id, payload);
             if (existingTransaction != null)
             {
-                _logger.LogInformation("Transaction with ID: {Id} updated successfully.", id);
+                _logger.LogInformation("Transaction with ID:{0} updated successfully.", id);
                 return Ok(existingTransaction);
             }
-
-            _logger.LogWarning("Transaction with ID: {Id} not found!", id);
-            return BadRequest("TransactionForUpdateDto object is null or invalid!");
+            _logger.LogWarning("Transaction with ID:{0} not found!", id);
+            return NotFound("Transaction not found!");
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "An error occurred while updating the transaction with ID: {Id}.", id);
-            return Problem(
-                detail: "An error occurred while processing your request. Please try again later.",
-                instance: HttpContext.TraceIdentifier,
-                statusCode: StatusCodes.Status500InternalServerError,
-                title: "Internal Server Error"
-            );
+            _logger.LogError(exception, "An error occurred while updating the transaction with ID:{0}.", id);
+            return BadRequest("Error occured while executing transaction updating request!");
         }
     }
 
