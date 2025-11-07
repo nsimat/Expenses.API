@@ -47,7 +47,7 @@ export class AuthService {
   // Check if an email is already registered
   isEmailRegistered(email: string): Observable<boolean>{
     console.log(`Checking if ${email} is already registered...`);
-    let emailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$';
+    //let emailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$';
 
     const params = new Map();
     params.set('email', email);
