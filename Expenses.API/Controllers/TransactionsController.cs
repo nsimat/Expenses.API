@@ -49,15 +49,15 @@ public class TransactionsController : ControllerBase
     /// <response code="500">An Internal Server Error prevented the request from being processed.</response>
     /// <exception cref="Exception">Throws exception if an error occurs while retrieving transactions.</exception>
     [HttpGet("All")]
-    [EndpointSummary("Obtain a list of all transactions.")]
-    [EndpointDescription("Fetches all transactions from the database.")]
+    [EndpointSummary("Get the list of all transactions of the user.")]
+    [EndpointDescription("Fetches all transactions from the database created by the user.")]
     [EndpointName("All Transactions")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Transaction>))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
     public async Task<IActionResult> GetAllTransactions()
     {
-        _logger.LogInformation("Fetching all transactions...");
+        _logger.LogInformation("Fetching all transactions of the connected user...");
         try
         {
             var nameIdentifierClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -99,8 +99,8 @@ public class TransactionsController : ControllerBase
     /// <response code="500">An Internal Server Error occurred while processing the request.</response>
     /// <exception cref="Exception">Throws exception if an error occurs while retrieving the transaction.</exception>
     [HttpGet("Details/{id:int}")]
-    [EndpointSummary("Obtain transaction by ID from the database.")]
-    [EndpointDescription("Fetches a specific transaction by its ID.")]
+    [EndpointSummary("Get one transaction by ID from the database.")]
+    [EndpointDescription("Fetches one specific transaction by its ID.")]
     [EndpointName("Transaction Details")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Transaction))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -142,8 +142,8 @@ public class TransactionsController : ControllerBase
     /// <response code="500">An Internal Server Error occurred while processing the request.</response>
     /// <exception cref="ArgumentNullException">Thrown when the provided payload is null.</exception>
     [HttpPost("Create")]
-    [EndpointSummary("Create a new transaction.")]
-    [EndpointDescription("Creates a new transaction in the database.")]
+    [EndpointSummary("Adds a new transaction.")]
+    [EndpointDescription("Insert a new transaction in the database.")]
     [EndpointName("Create Transaction")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Transaction))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -198,8 +198,8 @@ public class TransactionsController : ControllerBase
     /// <response code="500">An error occurred while processing the request.</response>
     /// <exception cref="ArgumentNullException">Thrown when the provided payload is null.</exception>
     [HttpPut("Update/{id:int}")]
-    [EndpointSummary("Update an existing transaction.")]
-    [EndpointDescription("Modifies an existing transaction in the database.")]
+    [EndpointSummary("Update one existing transaction.")]
+    [EndpointDescription("Modifies one transaction data in the database.")]
     [EndpointName("Update Transaction")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -237,8 +237,8 @@ public class TransactionsController : ControllerBase
     /// <response code="500">An error occurred while processing the request.</response>
     /// <exception cref="Exception">Throws exception if an error occurs while deleting the transaction.</exception>
     [HttpDelete("Delete/{id:int}")]
-    [EndpointSummary("Deletes an identified transaction.")]
-    [EndpointDescription("Deletes a transaction by its identifier.")]
+    [EndpointSummary("Deletes one identified transaction.")]
+    [EndpointDescription("Deletes one transaction by its identifier.")]
     [EndpointName("Delete Transaction")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
