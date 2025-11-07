@@ -24,24 +24,27 @@ namespace Expenses.API.Controllers
         /// <param name="email">Email to check use of</param>
         /// <returns>True if email already taken, false otherwise.</returns>
         /// <response code="200">Returns true if email is already taken, false otherwise.</response>
-        /// <response code="400">If the request is invalid, e.g., missing email.</response>
+        /// <response code="404">If email is not found.</response>
         /// <response code="500">If an internal server error occurs.</response>
         /// <exception cref="Exception">Throws exception if an error occured during processing email check</exception>
         [EndpointSummary("Checks if an email is already registered.")]
         [EndpointDescription("Checks if an email is already registered in the system.")]
         [EndpointName("IsEmailAlreadyTaken")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(bool))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         [HttpGet(("IsEmailAlreadyTaken"))]
         public async Task<ActionResult<bool>> IsEmailAlreadyTaken(string email)
         {
             logger.LogInformation("Checking if email {Email} is already taken...", email);
-
             try
             {
                 var result = await accountService.IsEmailAvailableAsync(email);
-                return Ok(result);
+                if (result)
+                    // Email is already taken in the database
+                    return Ok(true);
+                // Email is available to be used in the database
+                return NotFound(false);
             }
             catch (Exception exception)
             {
@@ -76,7 +79,6 @@ namespace Expenses.API.Controllers
         public async Task<ActionResult<ApiLoginResultDto>> Login([FromBody] ApiLoginRequestDto apiLoginRequest)
         {
             logger.LogInformation("Attempting to log in user with email: {Email}...", apiLoginRequest.Email);
-            
             // Check if the model is valid or not
             if (!ModelState.IsValid)
             {
@@ -91,7 +93,6 @@ namespace Expenses.API.Controllers
             {
                 // Process to identify the user by email and password
                 var loginResult = await accountService.IdentifyUserAsync(apiLoginRequest);
-
                 if (!loginResult.Success)
                     // Return a JSON result containing the success status and message only.
                     return Unauthorized(loginResult);

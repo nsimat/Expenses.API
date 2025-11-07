@@ -25,7 +25,7 @@
             <param name="email">Email to check use of</param>
             <returns>True if email already taken, false otherwise.</returns>
             <response code="200">Returns true if email is already taken, false otherwise.</response>
-            <response code="400">If the request is invalid, e.g., missing email.</response>
+            <response code="404">If email is not found.</response>
             <response code="500">If an internal server error occurs.</response>
             <exception cref="T:System.Exception">Throws exception if an error occured during processing email check</exception>
         </member>
