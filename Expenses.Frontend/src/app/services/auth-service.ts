@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { LoginRequest } from '../models/login-request';
-import {BehaviorSubject, Observable, tap} from 'rxjs';
+import {BehaviorSubject, catchError, map, Observable, of, tap, throwError} from 'rxjs';
 import { Router } from '@angular/router';
 import {User} from '../models/user';
 
@@ -42,6 +42,31 @@ export class AuthService {
   initializeAuthStatus(): void {
     const isAuth = this.isAuthenticated();
     this.setAuthStatus(isAuth);
+  }
+
+  // Check if an email is already registered
+  isEmailRegistered(email: string): Observable<boolean>{
+    console.log(`Checking if ${email} is already registered...`);
+    let emailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$';
+
+    const params = new Map();
+    params.set('email', email);
+
+    return this.http.get<boolean>(`${this.apiAuthUrl}/IsEmailAlreadyTaken?email=`+ email)
+      .pipe(
+        map((isTaken) => {
+          console.log(`Email:${email} is registered:`, isTaken);
+          return isTaken;// Return the boolean value, specifically true if email is taken, false otherwise
+        }),
+        catchError(error => {
+          console.error('Error checking email registration:', error);
+          if(error.status === 404){
+            // If the server returns 404, it means the email is not registered
+            return of(false);// Emit 'false' if Email is not registered
+          }
+          return throwError(error);// Rethrow other status codes (errors) for further handling
+        })
+      );
   }
 
   // Get a user from his email
