@@ -12,6 +12,7 @@ import {AuthService} from '../../services/auth-service';
 import {LoginRequest} from '../../models/login-request';
 import {Router, RouterLink} from '@angular/router';
 import {LoginResult} from '../../models/login-result';
+import {map, Observable} from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -32,11 +33,23 @@ export class Signup {
   // Reactive form for signup with validation rules
   protected readonly signupForm = this.formBuilder.group(
     {
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email, (control: AbstractControl<any, any>) => this.emailAvailableValidator(control)]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(6), Signup.passwordMatch]],
     }
   );
+
+  // Custom validator to check if email is already taken
+  emailAvailableValidator(control: AbstractControl): Observable<ValidationErrors | null> {
+    const email = control.value;
+    console.log("Validating email availability for:", email);
+    return this.apiService
+      .isEmailRegistered(email)
+      .pipe(map(isEmailRegistered => {
+        console.log('Email availability check result for ', email, ':', isEmailRegistered);
+        return isEmailRegistered ? { emailTaken: true } : null;
+      }));
+  }
 
   // Method to check if a form control has a specific error and has been touched or dirty
   hasError(controlName: string, errorName: string): boolean {

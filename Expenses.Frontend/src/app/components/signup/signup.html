@@ -24,6 +24,8 @@
                 <div class="text-danger">Email is required.</div>
               } @else if (hasError('email', 'email')) {
                 <div class="text-danger">Please, enter a valid email address.</div>
+              } @else if(hasError('email', 'emailTaken')) {
+                <div class="text-danger">This email is already taken.</div>
               }
             </div>
             <div class="mb-3">
