@@ -1,16 +1,27 @@
-﻿namespace Expenses.API.Dtos;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Expenses.API.Dtos;
 
 /// <summary>
 /// A DTO containing part of user data
 /// </summary>
 public class UserUpdateDto
 {
-    // The user email
+    /// <summary>
+    /// The email of the user
+    /// </summary>
+    [EmailAddress(ErrorMessage = "Invalid email format!")]
     public string email { get; set; }
     
-    // User first name
+    /// <summary>
+    /// The first name of the user
+    /// </summary>
+    [MinLength(3, ErrorMessage = "First name must be at least 3 characters long!")]
     public string FirstName { get; set; }
     
-    // User last name
+    /// <summary>
+    /// The last name of the user
+    /// </summary>
+    [MinLength(3, ErrorMessage = "Last name must be at least 3 characters long!")]
     public string LastName { get; set; }
 }

@@ -459,6 +459,21 @@
             A DTO containing part of user data
             </summary>
         </member>
+        <member name="P:Expenses.API.Dtos.UserUpdateDto.email">
+            <summary>
+            The email of the user
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.UserUpdateDto.FirstName">
+            <summary>
+            The first name of the user
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Dtos.UserUpdateDto.LastName">
+            <summary>
+            The last name of the user
+            </summary>
+        </member>
         <member name="T:Expenses.API.Migrations.InitialMigration">
             <inheritdoc />
         </member>
@@ -518,6 +533,36 @@
         <member name="P:Expenses.API.Models.Transaction.User">
             <summary>
             The user entity used for navigation
+            </summary>
+        </member>
+        <member name="T:Expenses.API.Models.User">
+            <summary>
+            User entity representing an application user
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.User.Email">
+            <summary>
+            Email of the user
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.User.Password">
+            <summary>
+            Password of the user
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.User.FirstName">
+            <summary>
+            The first name of the user
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.User.LastName">
+            <summary>
+            The last name of the user
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.User.Transactions">
+            <summary>
+            List of transactions associated with the user
             </summary>
         </member>
     </members>
