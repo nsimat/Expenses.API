@@ -225,9 +225,21 @@ namespace Expenses.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ProblemDetails))]
         [HttpPut("UpdateUserProfile/{userId:int}")]
-        public async Task<IActionResult> UpdateUserProfile(int userId, UserUpdateDto payload)
+        public async Task<IActionResult> UpdateUserProfile(int userId, [FromBody] UserUpdateDto payload)
         {
-            logger.LogInformation("Updating user profile for user with ID:{0}", userId);
+            logger.LogInformation("Updating user profile for user with ID:{0}...", userId);
+            
+            // Check if the model is valid or not
+            if (!ModelState.IsValid)
+            {
+                // Something failed with the incoming data model!
+                logger.LogWarning("Invalid updating attempt.");
+                // Redisplay the validation errors to the client.
+                ModelState.AddModelError("message", " Valid firstName and lastName are required.");
+                return BadRequest(ModelState);
+            }
+            
+            // Proceed to update the user profile in the database
             try
             {
                 var updateUser = await accountService.UpdateUserProfile(userId, payload);
