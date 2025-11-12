@@ -87,7 +87,7 @@ public class TransactionsService(ExpensesDbContext expensesDbContext) : ITransac
     }
 
     /// <summary>
-    /// deletes a transaction by its ID
+    /// Deletes a transaction by its ID
     /// </summary>
     /// <param name="id">The unique transaction to remove from database</param>
     /// <returns>True if deletion successful or false if the transaction does not exist in the system.</returns>
