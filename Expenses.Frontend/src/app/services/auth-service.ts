@@ -64,7 +64,7 @@ export class AuthService {
             // If the server returns 404, it means the email is not registered
             return of(false);// Emit 'false' if Email is not registered
           }
-          return throwError(error);// Rethrow other status codes (errors) for further handling
+          return throwError(() => new Error(error));// Rethrow other status codes (errors) for further handling
         })
       );
   }
