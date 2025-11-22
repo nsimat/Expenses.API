@@ -49,6 +49,7 @@ public class TransactionsController : ControllerBase
     /// <response code="500">An Internal Server Error prevented the request from being processed.</response>
     /// <exception cref="Exception">Throws exception if an error occurs while retrieving transactions.</exception>
     [HttpGet("All")]
+    [Tags("Transactions")]
     [EndpointSummary("Get the list of all transactions of the user.")]
     [EndpointDescription("Fetches all transactions from the database created by the user.")]
     [EndpointName("All Transactions")]
@@ -99,6 +100,7 @@ public class TransactionsController : ControllerBase
     /// <response code="500">An Internal Server Error occurred while processing the request.</response>
     /// <exception cref="Exception">Throws exception if an error occurs while retrieving the transaction.</exception>
     [HttpGet("Details/{id:int}")]
+    [Tags("Transactions")]
     [EndpointSummary("Get one transaction by ID from the database.")]
     [EndpointDescription("Fetches one specific transaction by its ID.")]
     [EndpointName("Transaction Details")]
@@ -137,13 +139,15 @@ public class TransactionsController : ControllerBase
     /// </summary>
     /// <param name="payload">A DTO that represents parts of transaction to be created.</param>
     /// <returns>The created transaction if creation is successful. Otherwise, an error is returned.</returns>
-    /// <response code="201">Transaction created successfully.</response>
+    /// <response code="201">Transaction created successfully. Returns created transaction + location header pointing
+    /// to GetTransactionById.</response>
     /// <response code="400">The provided payload is null or invalid.</response>
     /// <response code="500">An Internal Server Error occurred while processing the request.</response>
     /// <exception cref="ArgumentNullException">Thrown when the provided payload is null.</exception>
     [HttpPost("Create")]
-    [EndpointSummary("Adds a new transaction.")]
-    [EndpointDescription("Insert a new transaction in the database.")]
+    [Tags("Transactions")]
+    [EndpointSummary("Creates a new transaction.")]
+    [EndpointDescription("POST to create a new transaction. Accepts a TransactionForCreationDTO.")]
     [EndpointName("Create Transaction")]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Transaction))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ProblemDetails))]
@@ -169,7 +173,9 @@ public class TransactionsController : ControllerBase
             
             var createdTransaction = await _transactionsService.AddAsync(payload, userId);
             if (createdTransaction != null)
-                return Ok(createdTransaction);
+                // Returns a 201 Created response with the location header of the newly created transaction.
+                return CreatedAtAction(nameof(GetTransactionById), 
+                    new {id = createdTransaction.Id}, createdTransaction);// Ok was used here before. 
 
             _logger.LogWarning("Failed to create transaction. TransactionForCreationDto object is null!");
             return BadRequest("Transaction object is null!");
@@ -189,7 +195,7 @@ public class TransactionsController : ControllerBase
     /// <summary>
     /// Modifies the content of existing transaction.
     /// </summary>
-    /// <param name="id">the unique identifier of transaction to modify.</param>
+    /// <param name="id">The unique identifier of transaction to modify.</param>
     /// <param name="payload">A DTO object representing the transaction to modify</param>
     /// <returns>Transaction updated from database.</returns>
     /// <response code="200">Transaction updated successfully.</response>
@@ -198,8 +204,9 @@ public class TransactionsController : ControllerBase
     /// <response code="500">An error occurred while processing the request.</response>
     /// <exception cref="ArgumentNullException">Thrown when the provided payload is null.</exception>
     [HttpPut("Update/{id:int}")]
-    [EndpointSummary("Update one existing transaction.")]
-    [EndpointDescription("Modifies one transaction data in the database.")]
+    [Tags("Transactions")]
+    [EndpointSummary("Updates an existing transaction.")]
+    [EndpointDescription("PUT to update an existing transaction. Accepts a TransactionForUpdateDTO.")]
     [EndpointName("Update Transaction")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -237,8 +244,9 @@ public class TransactionsController : ControllerBase
     /// <response code="500">An error occurred while processing the request.</response>
     /// <exception cref="Exception">Throws exception if an error occurs while deleting the transaction.</exception>
     [HttpDelete("Delete/{id:int}")]
-    [EndpointSummary("Deletes one identified transaction.")]
-    [EndpointDescription("Deletes one transaction by its identifier.")]
+    [Tags("Transactions")]
+    [EndpointSummary("Deletes an existing transaction with a specific identifier.")]
+    [EndpointDescription("DELETE to remove an existing transaction by its identifier.")]
     [EndpointName("Delete Transaction")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
@@ -257,7 +265,7 @@ public class TransactionsController : ControllerBase
             }
 
             _logger.LogWarning("Transaction with ID: {Id} not found!", id);
-            return NotFound("Transaction not found!");
+            return NotFound(new { message = "Transaction not found!" });
         }
         catch (Exception exception)
         {
