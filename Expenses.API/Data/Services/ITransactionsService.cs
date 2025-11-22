@@ -13,7 +13,7 @@ public interface ITransactionsService
     /// </summary>
     /// <param name="userId">The unique ID of the authentified user.</param>
     /// <returns>A list of transactions</returns>
-    Task<IEnumerable<Transaction>> GetAllAsync(int userId);
+    Task<IQueryable<Transaction>> GetAllAsync(int userId);
     
     /// <summary>
     /// Retrieves a transaction by its ID
