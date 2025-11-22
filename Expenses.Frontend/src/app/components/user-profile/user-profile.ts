@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth-service';
 import {Router} from '@angular/router';
-import {CommonModule} from '@angular/common';
+
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {User} from '../../models/user';
 
 @Component({
   selector: 'app-user-profile',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './user-profile.html',
   styleUrl: './user-profile.css'
 })

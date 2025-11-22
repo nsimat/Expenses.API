@@ -6,13 +6,13 @@ import {
 } from '@angular/forms';
 import {AuthService} from '../../services/auth-service';
 import {Router, RouterLink} from '@angular/router';
-import {CommonModule} from '@angular/common';
+
 import {LoginRequest} from '../../models/login-request';
 
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
