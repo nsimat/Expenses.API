@@ -32,7 +32,7 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc("v2", new OpenApiInfo()
     {
         Title = "Income & Expenses Service - REST API",
-        Version = "Version .Net 9.0.306",
+        Version = "Version .Net 10",
         Description = "Documentation of Income & Expenses Service (IES) REST API providing resources for income and expenses management.",
         Contact = new OpenApiContact()
         {
