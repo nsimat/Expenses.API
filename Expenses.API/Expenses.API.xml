@@ -115,7 +115,8 @@
             </summary>
             <param name="payload">A DTO that represents parts of transaction to be created.</param>
             <returns>The created transaction if creation is successful. Otherwise, an error is returned.</returns>
-            <response code="201">Transaction created successfully.</response>
+            <response code="201">Transaction created successfully. Returns created transaction + location header pointing
+            to GetTransactionById.</response>
             <response code="400">The provided payload is null or invalid.</response>
             <response code="500">An Internal Server Error occurred while processing the request.</response>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided payload is null.</exception>
@@ -124,7 +125,7 @@
             <summary>
             Modifies the content of existing transaction.
             </summary>
-            <param name="id">the unique identifier of transaction to modify.</param>
+            <param name="id">The unique identifier of transaction to modify.</param>
             <param name="payload">A DTO object representing the transaction to modify</param>
             <returns>Transaction updated from database.</returns>
             <response code="200">Transaction updated successfully.</response>

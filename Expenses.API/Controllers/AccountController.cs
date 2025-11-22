@@ -27,6 +27,7 @@ namespace Expenses.API.Controllers
         /// <response code="404">If email is not found.</response>
         /// <response code="500">If an internal server error occurs.</response>
         /// <exception cref="Exception">Throws exception if an error occured during processing email check</exception>
+        [Tags("Account")]
         [EndpointSummary("Checks if an email is already registered.")]
         [EndpointDescription("Checks if an email is already registered in the system.")]
         [EndpointName("IsEmailAlreadyTaken")]
@@ -68,6 +69,7 @@ namespace Expenses.API.Controllers
         /// <response code="401">If the credentials are invalid.</response>
         /// <response code="500">If an internal server error occurs.</response>
         /// <exception cref="Exception">Throws exception if an error occured during processing login</exception>
+        [Tags("Account")]
         [EndpointSummary("Performs a user login.")]
         [EndpointDescription("Authenticates a user according to email and password.")]
         [EndpointName("Login")]
@@ -122,6 +124,7 @@ namespace Expenses.API.Controllers
         /// <response code="500">If an internal server error occurs.</response>
         /// <exception cref="Exception">Throws exception if an error occured during processing registration</exception>
         [HttpPost("Register")]
+        [Tags("Account")]
         [EndpointSummary("Registers a new user.")]
         [EndpointDescription("Registers a new user with email and password in the database.")]
         [EndpointName("Register")]
@@ -179,6 +182,7 @@ namespace Expenses.API.Controllers
         /// <response code="404">Specified user with given email not found.</response>
         /// <response code="500">An Internal Server Error occurred while processing the request.</response>
         /// <exception cref="Exception">Throws exception if an error occurs while retrieving the transaction.</exception>
+        [Tags("Account")]
         [EndpointSummary("Obtain user by given email from database")]
         [EndpointDescription("Retrieve a specified user by his email")]
         [EndpointName("UserProfile")]
@@ -218,6 +222,7 @@ namespace Expenses.API.Controllers
         /// <response code="404">User with specified ID not found.</response>
         /// <response code="400">The provided payload is null or invalid.</response>
         /// <response code="500">An Internal Server Error occurred while processing the request.</response>
+        [Tags("Account")]
         [EndpointSummary("Updates user profile by user ID")]
         [EndpointDescription("Updates the profile of a user identified by the given Id.")]
         [EndpointName("UpdateUserprofile")]
