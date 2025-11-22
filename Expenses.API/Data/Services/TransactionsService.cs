@@ -13,12 +13,11 @@ public class TransactionsService(ExpensesDbContext expensesDbContext) : ITransac
     /// Retrieves all transactions
     /// </summary>
     /// <returns>List of transactions</returns>
-    public async Task<IEnumerable<Transaction>> GetAllAsync(int userId)
+    public async Task<IQueryable<Transaction>> GetAllAsync(int userId)
     {
         var transactions = await expensesDbContext.Transactions
-            .Where(t => t.UserId == userId)
             .ToListAsync();
-        return transactions;
+        return transactions.Where(t => t.UserId == userId).AsQueryable();
     }
 
     /// <summary>
