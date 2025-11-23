@@ -80,7 +80,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+#region Configure the HTTP request pipeline and routes.
+    
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -91,7 +92,7 @@ if (app.Environment.IsDevelopment())
     {
         setupAction.DocumentTitle = "Income & Expenses Service (IES) - REST API";
         setupAction.SwaggerEndpoint("/swagger/v2/swagger.json", "Income & Expenses Service (IES) - Swagger UI V.2");
-        // Add this custom css styles to Swagger.ui
+        // Add this custom CSS styles to Swagger.ui
         setupAction.InjectStylesheet("/swagger-ui/custom.css");
     });
 }
@@ -107,5 +108,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+#endregion
 
-await app.RunAsync();
+// Start the web server, host the web API, and listen for incoming HTTP requests.
+await app.RunAsync(); // This is a thread-blocking call
+
+// Exit point of the Web API application
+Console.WriteLine("The Web API has been stopped! Press any key to exit...");
