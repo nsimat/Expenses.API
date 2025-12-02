@@ -63,10 +63,10 @@ namespace Expenses.API.Controllers
         /// Authenticates a user and returns a JWT token if successful.
         /// </summary>
         /// <param name="apiLoginRequest">A DTO object containing the user's credentials.</param>
-        /// <returns>A DTO object of type LoginResultDto</returns>
-        /// <response code="200">Returns a LoginResultDto object containing the success status, message, and JWT token.</response>
-        /// <response code="400">If the request is invalid, e.g., missing email or password.</response>
-        /// <response code="401">If the credentials are invalid.</response>
+        /// <returns>A DTO object of type LoginResultDto containing the success status, message, and a Bear token (in JWT format).</returns>
+        /// <response code="200">User has been logged in.</response>
+        /// <response code="400">Login failed (bad request) If the request is invalid, e.g., missing email or password.</response>
+        /// <response code="401">Login failed (unauthorized) If the credentials are invalid.</response>
         /// <response code="500">If an internal server error occurs.</response>
         /// <exception cref="Exception">Throws exception if an error occured during processing login</exception>
         [Tags("Account")]
@@ -117,11 +117,11 @@ namespace Expenses.API.Controllers
         /// <summary>
         /// Registers a new user with email and password.
         /// </summary>
-        /// <param name="userCreateDto">A DTO object that can be used to create a new user account.</param>
-        /// <returns>An object containing the token created</returns>
-        /// <response code="201">Returns a JWT token if the registration is successful.</response>
-        /// <response code="400">If the request is invalid, e.g., missing email or password, or if the user already exists.</response>
-        /// <response code="500">If an internal server error occurs.</response>
+        /// <param name="userCreateDto">A DTO object containing the user data for new user account.</param>
+        /// <returns>A 201 - Created Status Code in case of success, with an object containing the token created</returns>
+        /// <response code="201">User has been registered successfully with a JWT token sent to client.</response>
+        /// <response code="400">Invalid data/request, e.g., missing email or password, or if the user already exists.</response>
+        /// <response code="500">An internal server error occurs.</response>
         /// <exception cref="Exception">Throws exception if an error occured during processing registration</exception>
         [HttpPost("Register")]
         [Tags("Account")]
@@ -159,7 +159,8 @@ namespace Expenses.API.Controllers
                     return BadRequest(ModelState);
                 }
                 // Return a JSON result containing the JWT in the response.
-                return Ok(new {Token = creationLoginResult.Token});
+                //return Ok(new {Token = creationLoginResult.Token});// Ok was used before
+                return Created(string.Empty, creationLoginResult);
             }
             catch (Exception ex)
             {
