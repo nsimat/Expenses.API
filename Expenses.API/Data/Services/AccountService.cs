@@ -125,7 +125,7 @@ public class AccountService : IAccountService
         return new ApiLoginResultDto()
         {
             Success = true,
-            Message = "Login successful.",
+            Message = "Registration successful.",
             Token = jwtToken
         };
     }
