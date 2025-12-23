@@ -8,7 +8,7 @@ namespace Expenses.API.Dtos;
 public class UserCreateDto
 {
     /// <summary>
-    /// Email to be used as username, must be in a valid email format
+    /// Email to be used as a username must be in a valid email format
     /// </summary>
     [EmailAddress(ErrorMessage = "Invalid email format!")]
     [Required(ErrorMessage = "Email is required.")]
