@@ -4,7 +4,7 @@ using Expenses.API.Models;
 namespace Expenses.API.Data.Services;
 
 /// <summary>
-/// Service to handle transactions CRUD operations
+/// Interface to handle transactions CRUD operations
 /// </summary>
 public interface ITransactionsService
 {
