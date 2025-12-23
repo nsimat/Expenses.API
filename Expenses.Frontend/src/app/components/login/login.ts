@@ -24,8 +24,14 @@ export class Login {
   private readonly apiService = inject(AuthService);
   private readonly router = inject(Router);
   protected readonly loginForm = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]]
+    email: ['', [
+      Validators.required,
+      Validators.email
+    ]],
+    password: ['', [
+      Validators.required,
+      Validators.minLength(6)
+    ]]
   });
 
   // Method to check if a form control has a specific error and has been touched or dirty
