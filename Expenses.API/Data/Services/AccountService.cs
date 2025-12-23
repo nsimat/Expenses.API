@@ -22,11 +22,6 @@ public class AccountService : IAccountService
     private readonly PasswordHasher<User> _passwordHasher;
 
     /// <summary>
-    /// Application configuration property
-    /// </summary>
-    private readonly IConfiguration _configuration;
-
-    /// <summary>
     /// Logger for logging information and errors.
     /// </summary>
     private readonly ILogger<AccountService> _logger;
@@ -41,28 +36,21 @@ public class AccountService : IAccountService
     /// </summary>
     /// <param name="context">The context for database accessing</param>
     /// <param name="passwordHasher">Password hasher to initialize the service constructor</param>
-    /// <param name="configuration">Configuration to initialize the service constructor</param>
     /// <param name="logger">Logger to initialize the service constructor</param>
     /// <param name="jwtHandler">JWT handler to initialize the service constructor</param>
     public AccountService(
         ExpensesDbContext context,
         PasswordHasher<User> passwordHasher,
-        IConfiguration configuration,
         ILogger<AccountService> logger,
         JwtHandler jwtHandler)
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
-        _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _jwtHandler = jwtHandler ?? throw new ArgumentNullException(nameof(jwtHandler));
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="apiLoginRequest">A DTO containing user's credentials</param>
-    /// <returns>User if found in the database, null otherwise</returns>
+    /// <inheritdoc/>
     public async Task<User?> FindUserAsync(ApiLoginRequestDto apiLoginRequest)
     {
         _logger.LogInformation("Attempting to find user with email: {Email}", apiLoginRequest.Email);
@@ -71,11 +59,7 @@ public class AccountService : IAccountService
         return user;
     }
 
-    /// <summary>
-    /// checks if an email is already registered in the system
-    /// </summary>
-    /// <param name="email">Email to check availability in the database</param>
-    /// <returns>True if email found already in the system, or false otherwise</returns>
+    /// <inheritdoc/>
     public async Task<bool> IsEmailAvailableAsync(string email)
     {
         _logger.LogInformation("Checking availability for email: {Email}", email);
@@ -84,11 +68,7 @@ public class AccountService : IAccountService
         return user != null;
     }
 
-    /// <summary>
-    /// Add a new user to the system
-    /// </summary>
-    /// <param name="userCreateDto">A DTO representing user's data</param>
-    /// <returns>The user newly added to the system</returns>
+    /// <inheritdoc/>
     public async Task<ApiLoginResultDto> AddUserAsync(UserCreateDto userCreateDto)
     {
         _logger.LogInformation("Adding new user with email: {Email}", userCreateDto.Email);
@@ -130,11 +110,7 @@ public class AccountService : IAccountService
         };
     }
 
-    /// <summary>
-    /// Identify user by email and password, 
-    /// </summary>
-    /// <param name="apiLoginRequest">A DTO representing user's credentials to identify</param>
-    /// <returns>the user entity if found, or NULL otherwise.</returns>
+    /// <inheritdoc/>
     public async Task<ApiLoginResultDto> IdentifyUserAsync(ApiLoginRequestDto apiLoginRequest)
     {
         _logger.LogInformation("Identifying user with email: {Email}", apiLoginRequest.Email);
@@ -176,11 +152,7 @@ public class AccountService : IAccountService
         };
     }
 
-    /// <summary>
-    /// Obtain the profile of a user from his email
-    /// </summary>
-    /// <param name="email">The unique email of a user</param>
-    /// <returns>The specified user identified by the given email</returns>
+    /// <inheritdoc/>
     public async Task<User?> GetUserProfile(string email)
     {
         _logger.LogInformation("Retrieving the user from his email:{0}", email);
@@ -189,17 +161,12 @@ public class AccountService : IAccountService
         return existingUer;
     }
 
-    /// <summary>
-    /// Updates the user data in the database
-    /// </summary>
-    /// <param name="id">The unique ID of a user in the database</param>
-    /// <param name="userUpdateDto">A DTO containing modified user data</param>
-    /// <returns>The newly modified data in the database</returns>
+   /// <inheritdoc/>
     public async Task<User?> UpdateUserProfile(int id, UserUpdateDto userUpdateDto)
     {
         _logger.LogInformation("Updating user profile with ID:{0} & Info:{1}", id, userUpdateDto);
 
-        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id && u.Email == userUpdateDto.email);
+        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id && u.Email == userUpdateDto.Email);
 
         if (existingUser != null)
         {
