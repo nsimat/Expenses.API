@@ -33,9 +33,22 @@ export class Signup {
   // Reactive form for signup with validation rules
   protected readonly signupForm = this.formBuilder.group(
     {
-      email: ['', [Validators.required, Validators.email, (control: AbstractControl<any, any>) => this.emailAvailableValidator(control)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6), Signup.passwordMatch]],
+      email: ['', [
+        Validators.required,
+        Validators.email,
+        Validators.maxLength(30)
+      ]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(30)
+      ]],
+      confirmPassword: ['', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(30),
+        Signup.passwordMatch
+      ]],
     }
   );
 
