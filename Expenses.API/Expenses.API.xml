@@ -162,11 +162,6 @@
             Password hasher for securely hashing and verifying passwords.
             </summary>
         </member>
-        <member name="F:Expenses.API.Data.Services.AccountService._configuration">
-            <summary>
-            Application configuration property
-            </summary>
-        </member>
         <member name="F:Expenses.API.Data.Services.AccountService._logger">
             <summary>
             Logger for logging information and errors.
@@ -177,58 +172,32 @@
             JWT handler for generating and validating JWT tokens.
             </summary>
         </member>
-        <member name="M:Expenses.API.Data.Services.AccountService.#ctor(Expenses.API.Data.ExpensesDbContext,Microsoft.AspNetCore.Identity.PasswordHasher{Expenses.API.Models.User},Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{Expenses.API.Data.Services.AccountService},Expenses.API.Data.Services.JwtHandler)">
+        <member name="M:Expenses.API.Data.Services.AccountService.#ctor(Expenses.API.Data.ExpensesDbContext,Microsoft.AspNetCore.Identity.PasswordHasher{Expenses.API.Models.User},Microsoft.Extensions.Logging.ILogger{Expenses.API.Data.Services.AccountService},Expenses.API.Data.Services.JwtHandler)">
             <summary>
             Constructor to initialize the AccountService with necessary dependencies.
             </summary>
             <param name="context">The context for database accessing</param>
             <param name="passwordHasher">Password hasher to initialize the service constructor</param>
-            <param name="configuration">Configuration to initialize the service constructor</param>
             <param name="logger">Logger to initialize the service constructor</param>
             <param name="jwtHandler">JWT handler to initialize the service constructor</param>
         </member>
         <member name="M:Expenses.API.Data.Services.AccountService.FindUserAsync(Expenses.API.Dtos.ApiLoginRequestDto)">
-            <summary>
-            
-            </summary>
-            <param name="apiLoginRequest">A DTO containing user's credentials</param>
-            <returns>User if found in the database, null otherwise</returns>
+            <inheritdoc/>
         </member>
         <member name="M:Expenses.API.Data.Services.AccountService.IsEmailAvailableAsync(System.String)">
-            <summary>
-            checks if an email is already registered in the system
-            </summary>
-            <param name="email">Email to check availability in the database</param>
-            <returns>True if email found already in the system, or false otherwise</returns>
+            <inheritdoc/>
         </member>
         <member name="M:Expenses.API.Data.Services.AccountService.AddUserAsync(Expenses.API.Dtos.UserCreateDto)">
-            <summary>
-            Add a new user to the system
-            </summary>
-            <param name="userCreateDto">A DTO representing user's data</param>
-            <returns>The user newly added to the system</returns>
+            <inheritdoc/>
         </member>
         <member name="M:Expenses.API.Data.Services.AccountService.IdentifyUserAsync(Expenses.API.Dtos.ApiLoginRequestDto)">
-            <summary>
-            Identify user by email and password, 
-            </summary>
-            <param name="apiLoginRequest">A DTO representing user's credentials to identify</param>
-            <returns>the user entity if found, or NULL otherwise.</returns>
+            <inheritdoc/>
         </member>
         <member name="M:Expenses.API.Data.Services.AccountService.GetUserProfile(System.String)">
-            <summary>
-            Obtain the profile of a user from his email
-            </summary>
-            <param name="email">The unique email of a user</param>
-            <returns>The specified user identified by the given email</returns>
+            <inheritdoc/>
         </member>
         <member name="M:Expenses.API.Data.Services.AccountService.UpdateUserProfile(System.Int32,Expenses.API.Dtos.UserUpdateDto)">
-            <summary>
-            Updates the user data in the database
-            </summary>
-            <param name="id">The unique ID of a user in the database</param>
-            <param name="userUpdateDto">A DTO containing modified user data</param>
-            <returns>The newly modified data in the database</returns>
+            <inheritdoc/>
         </member>
         <member name="T:Expenses.API.Data.Services.IAccountService">
             <summary>
@@ -280,7 +249,7 @@
         </member>
         <member name="T:Expenses.API.Data.Services.ITransactionsService">
             <summary>
-            Service to handle transactions CRUD operations
+            Interface to handle transactions CRUD operations
             </summary>
         </member>
         <member name="M:Expenses.API.Data.Services.ITransactionsService.GetAllAsync(System.Int32)">
@@ -351,39 +320,19 @@
             </summary>
         </member>
         <member name="M:Expenses.API.Data.Services.TransactionsService.GetAllAsync(System.Int32)">
-            <summary>
-            Retrieves all transactions
-            </summary>
-            <returns>List of transactions</returns>
+            <inheritdoc/>
         </member>
         <member name="M:Expenses.API.Data.Services.TransactionsService.GetByIdAsync(System.Int32)">
-            <summary>
-            Retrieves a transaction by its ID
-            </summary>
-            <param name="id">ID of transaction to fetch</param>
-            <returns>The unique transaction if found, or null otherwise</returns>
+            <inheritdoc/>
         </member>
         <member name="M:Expenses.API.Data.Services.TransactionsService.AddAsync(Expenses.API.Dtos.TransactionForCreationDto,System.Int32)">
-            <summary>
-            Creates a new transaction
-            </summary>
-            <param name="transactionForCreation">TDO object representing transaction info</param>
-            <returns>The created transaction</returns>
+            <inheritdoc/>
         </member>
         <member name="M:Expenses.API.Data.Services.TransactionsService.UpdateAsync(System.Int32,Expenses.API.Dtos.TransactionForUpdateDto)">
-            <summary>
-            Updates an existing transaction
-            </summary>
-            <param name="id">Unique ID of transaction to modify</param>
-            <param name="transactionForUpdate">TDO object representing updated transaction info</param>
-            <returns>The transaction updated</returns>
+            <inheritdoc/>
         </member>
         <member name="M:Expenses.API.Data.Services.TransactionsService.Delete(System.Int32)">
-            <summary>
-            Deletes a transaction by its ID
-            </summary>
-            <param name="id">The unique transaction to remove from database</param>
-            <returns>True if deletion successful or false if the transaction does not exist in the system.</returns>
+            <inheritdoc/>
         </member>
         <member name="T:Expenses.API.Dtos.ApiLoginRequestDto">
             <summary>
@@ -447,7 +396,7 @@
         </member>
         <member name="P:Expenses.API.Dtos.UserCreateDto.Email">
             <summary>
-            Email to be used as username, must be in a valid email format
+            Email to be used as a username must be in a valid email format
             </summary>
         </member>
         <member name="P:Expenses.API.Dtos.UserCreateDto.Password">
@@ -460,7 +409,7 @@
             A DTO containing part of user data
             </summary>
         </member>
-        <member name="P:Expenses.API.Dtos.UserUpdateDto.email">
+        <member name="P:Expenses.API.Dtos.UserUpdateDto.Email">
             <summary>
             The email of the user
             </summary>

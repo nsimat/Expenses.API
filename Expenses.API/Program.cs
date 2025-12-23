@@ -114,4 +114,4 @@ app.MapControllers();
 await app.RunAsync(); // This is a thread-blocking call
 
 // Exit point of the Web API application
-Console.WriteLine("The Web API has been stopped! Press any key to exit...");
+Console.WriteLine("The Expenses Tracker Web API has been stopped! Program will exit automatically...");
