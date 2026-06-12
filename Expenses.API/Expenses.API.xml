@@ -4,141 +4,492 @@
         <name>Expenses.API</name>
     </assembly>
     <members>
-        <member name="T:Expenses.API.Controllers.AccountController">
+        <member name="T:Expenses.API.Brokers.DateTimes.DateTimeBroker">
+            <summary>
+            Class responsible for providing date and time information.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Brokers.DateTimes.DateTimeBroker.GetCurrentDateTimeOffset">
+            <inheritdoc/>
+        </member>
+        <member name="T:Expenses.API.Brokers.DateTimes.IDateTimeBroker">
+            <summary>
+            Contract for a broker, responsible for providing the current date and time, which can be used for various
+            operations such as setting timestamps on entities, calculating time differences, etc.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Brokers.DateTimes.IDateTimeBroker.GetCurrentDateTimeOffset">
+            <summary>
+            Gets the current date and time
+            </summary>
+            <returns>The current date and time</returns>
+        </member>
+        <member name="T:Expenses.API.Brokers.Loggings.ILoggingBroker">
+            <summary>
+            Contract for logging operations.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Brokers.Loggings.ILoggingBroker.LogInformation(System.String)">
+            <summary>
+            Log information message
+            </summary>
+            <param name="message">The message to be logged.</param>
+        </member>
+        <member name="M:Expenses.API.Brokers.Loggings.ILoggingBroker.LogTrace(System.String)">
+            <summary>
+            Log trace message
+            </summary>
+            <param name="message">The message to be logged.</param>
+        </member>
+        <member name="M:Expenses.API.Brokers.Loggings.ILoggingBroker.LogDebug(System.String)">
+            <summary>
+            Log debug message
+            </summary>
+            <param name="message">The message to be logged.</param>
+        </member>
+        <member name="M:Expenses.API.Brokers.Loggings.ILoggingBroker.LogWarning(System.String)">
+            <summary>
+            Log warning message
+            </summary>
+            <param name="message">The message to be logged.</param>
+        </member>
+        <member name="M:Expenses.API.Brokers.Loggings.ILoggingBroker.LogError(System.Exception)">
+            <summary>
+            Log error message
+            </summary>
+            <param name="exception">The exception to be logged.</param>
+        </member>
+        <member name="M:Expenses.API.Brokers.Loggings.ILoggingBroker.LogCritical(System.Exception)">
+            <summary>
+            Log critical message
+            </summary>
+            <param name="exception">The exception to be logged.</param>
+        </member>
+        <member name="T:Expenses.API.Brokers.Loggings.LoggingBroker">
+            <summary>
+            Class responsible for logging operations.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Brokers.Loggings.LoggingBroker._logger">
+            <summary>
+            Logger instance for logging operations.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Brokers.Loggings.LoggingBroker.#ctor(Microsoft.Extensions.Logging.ILogger{Expenses.API.Brokers.Loggings.LoggingBroker})">
+            <summary>
+            Constructor for LoggingBroker.
+            </summary>
+            <param name="logger">Logger instance for logging operations.</param>
+            <exception cref="T:System.ArgumentNullException">Exception thrown when logger is null.</exception>
+        </member>
+        <member name="M:Expenses.API.Brokers.Loggings.LoggingBroker.LogInformation(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Brokers.Loggings.LoggingBroker.LogTrace(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Brokers.Loggings.LoggingBroker.LogDebug(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Brokers.Loggings.LoggingBroker.LogWarning(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Brokers.Loggings.LoggingBroker.LogError(System.Exception)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Brokers.Loggings.LoggingBroker.LogCritical(System.Exception)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Expenses.API.Brokers.Storages.IStorageBroker">
+            <summary>
+            Contract for Storage Broker handling all storage-related operations for the Expenses API, including User Accounts,
+            Transactions, etc.
+            </summary>
+            <summary>
+            Represents a contract for storage operations.
+            </summary>
+            <remarks>
+            This interface defines the methods for interacting with the storage layer of the application, specifically for user
+            accounts and transactions. It includes methods for selecting, inserting, updating, and deleting user accounts and
+            transactions in the storage system.
+            </remarks>  
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.IStorageBroker.InsertTransactionAsync(Expenses.API.Models.Transaction)">
+            <summary>
+            Inserts a new transaction into the storage
+            </summary>
+            <param name="transaction">Transaction to be inserted</param>
+            <returns>The instance of the inserted transaction</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.IStorageBroker.SelectAllTransactions">
+            <summary>
+            Retrieves all transactions from the storage
+            </summary>
+            <returns>All transactions</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.IStorageBroker.SelectTransactionByIdAsync(System.Guid)">
+            <summary>
+            Retrieves a transaction by its unique ID from the storage
+            </summary>
+            <param name="transactionId">The ID of the transaction to retrieve</param>
+            <returns>The transaction with the specified ID</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.IStorageBroker.UpdateTransactionAsync(Expenses.API.Models.Transaction)">
+            <summary>
+            Updates an existing transaction in the storage
+            </summary>
+            <param name="transaction">The updated transaction data</param>
+            <returns>The updated transaction</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.IStorageBroker.DeleteTransactionAsync(Expenses.API.Models.Transaction)">
+            <summary>
+            Deletes a transaction from the storage
+            </summary>
+            <param name="transaction">The transaction to delete</param>
+            <returns>The deleted transaction</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.IStorageBroker.InsertUserAccountAsync(Expenses.API.Models.UserAccount)">
+            <summary>
+            Inserts a new user account into the storage
+            </summary>
+            <param name="userAccount">The user account to be inserted</param>
+            <returns>The inserted user</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.IStorageBroker.SelectAllUserAccounts">
+            <summary>
+            Retrieves all user's accounts from the storage
+            </summary>
+            <returns>A list of all users</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.IStorageBroker.SelectUserAccountByIdAsync(System.Guid)">
+            <summary>
+            Retrieves a user by their ID from the storage
+            </summary>
+            <param name="userAccountId">The user account ID to search for</param>
+            <returns>The user with the specified ID, or null if not found</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.IStorageBroker.SelectUserAccountByEmailAsync(System.String)">
+            <summary>
+            Retrieves a user account by their email address from the storage.
+            </summary>
+            <param name="userAccountEmail">The email address of the user account to search for.</param>
+            <returns>The user account with the specified email address, or null if not found.</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.IStorageBroker.UpdateUserAccountAsync(Expenses.API.Models.UserAccount)">
+            <summary>
+            Updates an existing user account in the storage
+            </summary>
+            <param name="userAccount">The user account to be updated</param>
+            <returns>The updated user</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.IStorageBroker.DeleteUserAccountAsync(Expenses.API.Models.UserAccount)">
+            <summary>
+            Deletes a user from the storage
+            </summary>
+            <param name="userAccount">The user to be deleted</param>
+            <returns>The deleted user</returns>
+        </member>
+        <member name="T:Expenses.API.Brokers.Storages.StorageBroker">
+            <summary>
+            Class responsible for interacting with the database using Entity Framework Core.
+            </summary>
+            <summary>
+            Class responsible for interacting with the database using Entity Framework Core.
+            </summary>
+            <summary>
+            Class responsible for interacting with the database using Entity Framework Core.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Brokers.Storages.StorageBroker._configuration">
+            <summary>
+            Represents the application's configuration settings.
+            Used to access configuration, such as connection strings, at runtime.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor for the StorageBroker class
+            </summary>
+            <param name="configuration">Configuration settings for the application</param>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Configures the entity models and establishes relationships between them
+            as part of the Entity Framework Core model building process.
+            </summary>
+            <param name="modelBuilder">Provides a simple API surface for configuring the model for the context.</param>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">
+            <summary>
+            Configures the database context with specific options such as connection string and retry logic.
+            </summary>
+            <param name="optionsBuilder">A builder used to configure database context options.</param>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.InsertAsync``1(``0)">
+            <summary>
+            Inserts an object asynchronously into the database.
+            </summary>
+            <typeparam name="T">The type of the object to be inserted.</typeparam>
+            <param name="object">The object instance to be inserted.</param>
+            <returns>The inserted object.</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.SelectAll``1">
+            <summary>
+            Retrieves all entities of type T from the database.
+            </summary>
+            <typeparam name="T">The type of entity to retrieve.</typeparam>
+            <returns>An IQueryable representing all entities of the specified type.</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.SelectAsync``1(System.Object[])">
+            <summary>
+            Retrieves an entity of the specified type using the provided object identifiers.
+            </summary>
+            <typeparam name="T">The type of the entity to retrieve.</typeparam>
+            <param name="objectIds">The identifiers of the entity to be retrieved.</param>
+            <returns>A task that represents the asynchronous operation. The task result contains the retrieved entity.</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.UpdateAsync``1(``0)">
+            <summary>
+            Updates the specified object in the storage and saves changes asynchronously.
+            </summary>
+            <typeparam name="T">The type of the object to be updated.</typeparam>
+            <param name="object">The object to be updated in the storage.</param>
+            <returns>Returns the updated object.</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.DeleteAsync``1(``0)">
+            <summary>
+            Deletes the specified object asynchronously from the database.
+            </summary>
+            <typeparam name="T">The type of the object to delete.</typeparam>
+            <param name="object">The instance of the object to delete.</param>
+            <returns>The deleted object.</returns>
+        </member>
+        <member name="P:Expenses.API.Brokers.Storages.StorageBroker.Transactions">
+            <summary>
+            DbSet representing the collection of financial transactions in the storage.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.InsertTransactionAsync(Expenses.API.Models.Transaction)">
+            <summary>
+            Saves a new transaction
+            </summary>
+            <param name="transaction">The new transaction to save.</param>
+            <returns>The created instance of transaction</returns>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.SelectAllTransactions">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.SelectTransactionByIdAsync(System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.UpdateTransactionAsync(Expenses.API.Models.Transaction)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.DeleteTransactionAsync(Expenses.API.Models.Transaction)">
+            <inheritdoc/>
+        </member>
+        <member name="P:Expenses.API.Brokers.Storages.StorageBroker.UserAccounts">
+            <summary>
+            DbSet representing the collection of User entities within the storage context.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.SelectAllUserAccounts">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.SelectUserAccountByIdAsync(System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.SelectUserAccountByEmailAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.InsertUserAccountAsync(Expenses.API.Models.UserAccount)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.UpdateUserAccountAsync(Expenses.API.Models.UserAccount)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Brokers.Storages.StorageBroker.DeleteUserAccountAsync(Expenses.API.Models.UserAccount)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Expenses.API.Controllers.AccountsController">
             <summary>
             Controller responsible for handling user account-related operations such as login and registration.
             </summary>
-            <param name="accountService">Service for handling account-related operations</param>
-            <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
+            <param name="userAccountService">Service for handling account-related operations</param>
+            <param name="loggingBroker">An ILoggingBroker property for logging information, warnings, and errors.</param>
+            <param name="jwtHandler">An IJwtHandler property for generating JWT tokens.</param>   
         </member>
-        <member name="M:Expenses.API.Controllers.AccountController.#ctor(Expenses.API.Data.Services.IAccountService,Microsoft.Extensions.Logging.ILogger{Expenses.API.Controllers.AccountController})">
+        <member name="M:Expenses.API.Controllers.AccountsController.#ctor(Expenses.API.Services.Foundations.Accounts.IUserAccountService,Expenses.API.Brokers.Loggings.ILoggingBroker,Expenses.API.Services.Foundations.JWToken.IJwtHandler)">
             <summary>
             Controller responsible for handling user account-related operations such as login and registration.
             </summary>
-            <param name="accountService">Service for handling account-related operations</param>
-            <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
+            <param name="userAccountService">Service for handling account-related operations</param>
+            <param name="loggingBroker">An ILoggingBroker property for logging information, warnings, and errors.</param>
+            <param name="jwtHandler">An IJwtHandler property for generating JWT tokens.</param>   
         </member>
-        <member name="M:Expenses.API.Controllers.AccountController.IsEmailAlreadyTaken(System.String)">
+        <member name="M:Expenses.API.Controllers.AccountsController.IsEmailAlreadyTaken(System.String)">
             <summary>
             Checks if an email is already registered in the system.
             </summary>
-            <param name="email">Email to check use of</param>
+            <param name="email">Email to check the use of</param>
             <returns>True if email already taken, false otherwise.</returns>
             <response code="200">Returns true if email is already taken, false otherwise.</response>
             <response code="404">If email is not found.</response>
             <response code="500">If an internal server error occurs.</response>
-            <exception cref="T:System.Exception">Throws exception if an error occured during processing email check</exception>
+            <exception cref="T:System.Exception">Throws exception if an error occurred during processing email check</exception>
         </member>
-        <member name="M:Expenses.API.Controllers.AccountController.Login(Expenses.API.Dtos.ApiLoginRequestDto)">
+        <member name="M:Expenses.API.Controllers.AccountsController.Login(Expenses.API.DTOs.UserAccounts.UserLoginRequest)">
             <summary>
-            Authenticates a user and returns a JWT token if successful.
+            Performs a user login.
             </summary>
-            <param name="apiLoginRequest">A DTO object containing the user's credentials.</param>
+            <param name="userLogin">A DTO object containing the user's credentials.</param>
             <returns>A DTO object of type LoginResultDto containing the success status, message, and a Bear token (in JWT format).</returns>
             <response code="200">User has been logged in.</response>
             <response code="400">Login failed (bad request) If the request is invalid, e.g., missing email or password.</response>
             <response code="401">Login failed (unauthorized) If the credentials are invalid.</response>
             <response code="500">If an internal server error occurs.</response>
-            <exception cref="T:System.Exception">Throws exception if an error occured during processing login</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountValidationException">Throws exception if the user data is invalid.</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyValidationException">Throws exception if the user data is invalid.</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyException">Throws exception if an error occurs while logging in the user.</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountServiceException">Throws exception if an error occurs while logging in the user.</exception>       
         </member>
-        <member name="M:Expenses.API.Controllers.AccountController.Register(Expenses.API.Dtos.UserCreateDto)">
+        <member name="M:Expenses.API.Controllers.AccountsController.Register(Expenses.API.DTOs.UserAccounts.UserRegisterRequest)">
             <summary>
             Registers a new user with email and password.
             </summary>
-            <param name="userCreateDto">A DTO object containing the user data for new user account.</param>
-            <returns>A 201 - Created Status Code in case of success, with an object containing the token created</returns>
-            <response code="201">User has been registered successfully with a JWT token sent to client.</response>
+            <param name="userRegisterRequest">A DTO object containing the user data for a new user account.</param>
+            <returns>A 201-Created Status Code in case of success, with an object containing the token created</returns>
+            <response code="201">User has been registered successfully with a JWT token sent to the client.</response>
             <response code="400">Invalid data/request, e.g., missing email or password, or if the user already exists.</response>
             <response code="500">An internal server error occurs.</response>
-            <exception cref="T:System.Exception">Throws exception if an error occured during processing registration</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountValidationException">Throws exception if the user data is invalid.</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyValidationException">Throws exception if the user data is invalid.</exception>       
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyException">Throws exception if an error occurs while registering the user.</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountServiceException">Throws exception if an error occurs while registering the user.</exception>
         </member>
-        <member name="M:Expenses.API.Controllers.AccountController.GetUserProfileByEmail(System.String)">
+        <member name="M:Expenses.API.Controllers.AccountsController.GetUserProfileByEmail(System.String)">
             <summary>
-            Obtains the user by a given email
+            Gets the user by a given email
             </summary>
             <param name="email">The specified email</param>
             <returns>The user specified by the given email if found, or null otherwise.</returns>
             <response code="200">Specified user found and returned successfully.</response>
             <response code="404">Specified user with given email not found.</response>
+            <response code="400">Invalid email format.</response>
             <response code="500">An Internal Server Error occurred while processing the request.</response>
-            <exception cref="T:System.Exception">Throws exception if an error occurs while retrieving the transaction.</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountValidationException">Throws exception if the email is invalid.</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.NotFoundUserAccountException">Throws exception if the user is not found.</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyException">
+            Throws exception if an error occurs while retrieving the user.
+            </exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountServiceException">
+            Throws exception if an error occurs while retrieving the user.
+            </exception>
         </member>
-        <member name="M:Expenses.API.Controllers.AccountController.UpdateUserProfile(System.Int32,Expenses.API.Dtos.UserUpdateDto)">
+        <member name="M:Expenses.API.Controllers.AccountsController.UpdateUserProfile(System.Guid,Expenses.API.DTOs.UserAccounts.UserUpdateRequest)">
             <summary>
-            Updates profile for user with given ID 
+            Updates the profile of a user with a given ID 
             </summary>
-            <param name="userId">The unique ID of user</param>
+            <param name="userId">The unique ID of user.</param>
             <param name="payload">User data to modify</param>
             <returns>Updated version of user profile</returns>
-            <response code="200">User updated successfully</response>
+            <response code="200">User updated successfully.</response>
             <response code="404">User with specified ID not found.</response>
             <response code="400">The provided payload is null or invalid.</response>
             <response code="500">An Internal Server Error occurred while processing the request.</response>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountValidationException">
+            Throws exception if the provided user data is invalid.
+            </exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyException">
+            Throws exception if an error occurs while updating the user profile.
+            </exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountServiceException">
+            Throws exception if an error occurs while updating the user profile.
+            </exception>
         </member>
         <member name="T:Expenses.API.Controllers.TransactionsController">
             <summary>
-            Controller for managing transactions CRUD operations.
+            Represents a controller to manage transaction CRUD operations in the Expenses API. This controller handles HTTP
+            requests related to transactions, such as creating, retrieving, updating, and deleting transactions.
             </summary>
         </member>
-        <member name="M:Expenses.API.Controllers.TransactionsController.#ctor(Expenses.API.Data.Services.ITransactionsService,Microsoft.Extensions.Logging.ILogger{Expenses.API.Controllers.TransactionsController})">
+        <member name="F:Expenses.API.Controllers.TransactionsController._loggingBroker">
             <summary>
-            Private constructor to initialize the TransactionsController with transaction service and logger.
+            Represents a logging broker that is responsible for handling logging operations
+            within the controller to facilitate application monitoring and diagnostics.
             </summary>
-            <param name="transactionsService">Service to handle business logic related to transactions.</param>
-            <param name="logger">An ILogger property for capturing valuable information during runtime.</param>
-            <exception cref="T:System.ArgumentNullException">Throws argument exception if injected objects are null.</exception>
         </member>
-        <member name="M:Expenses.API.Controllers.TransactionsController.GetAllTransactions">
+        <member name="F:Expenses.API.Controllers.TransactionsController._transactionService">
             <summary>
-            Get all the transactions created by the authentified user in the database .
+            Provides methods to manage transactions including creation, retrieval, updating,
+            and handling transaction-related business logic within the application.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Controllers.TransactionsController.#ctor(Expenses.API.Services.Foundations.Transactions.ITransactionService,Expenses.API.Brokers.Loggings.ILoggingBroker)">
+            <summary>
+            Initializes a new instance of the TransactionsController class with the specified transaction service and
+            logging broker.
+            </summary>
+            <param name="transactionService">Service to handle business logic related to transactions.</param>
+            <param name="loggingBroker">A logger for capturing valuable information during runtime.</param>
+            <exception cref="T:System.ArgumentNullException">Throws argument null exception if injected objects are null.</exception>
+        </member>
+        <member name="M:Expenses.API.Controllers.TransactionsController.CreateTransaction(Expenses.API.DTOs.Transactions.TransactionCreateRequest)">
+            <summary>
+            Creates a new transaction.
+            </summary>
+            <param name="newTransactionRequest">A DTO that represents parts of the transaction to be created.</param>
+            <returns>The created transaction if creation is successful. Otherwise, an error is returned.</returns>
+            <response code="201">Transaction created successfully. Returns created transaction and location header pointing
+            to GetTransactionById.</response>
+            <response code="400">The provided payload is null or invalid.</response>
+            <response code="409">Transaction with specified ID already exists.</response>
+            <response code="424">Transaction dependency failed.</response>
+            <response code="500">An Internal Server Error occurred while processing the request.</response>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided payload is null.</exception>
+        </member>
+        <member name="M:Expenses.API.Controllers.TransactionsController.GetAllTransactions(System.Int32,System.Int32)">
+            <summary>
+            Gets all the transactions created by the authentified user in the database.
             </summary>
             <returns>List of transactions created by the authentified user</returns>
             <response code="200">Successfully returns all transactions found in the database.</response>
-            <response code="204">If no transaction found in the database.</response>
+            <response code="204">If no transaction is found in the database.</response>
             <response code="500">An Internal Server Error prevented the request from being processed.</response>
             <exception cref="T:System.Exception">Throws exception if an error occurs while retrieving transactions.</exception>
         </member>
-        <member name="M:Expenses.API.Controllers.TransactionsController.GetTransactionById(System.Int32)">
+        <member name="M:Expenses.API.Controllers.TransactionsController.GetTransactionById(System.Guid)">
             <summary>
-            Retrieves a single transaction by its ID.
+            Gets a single transaction by its unique ID from the database.
             </summary>
-            <param name="id">The unique ID of the transaction to retrieve.</param>
+            <param name="transactionId">The unique ID of the transaction to retrieve.</param>
             <returns>The requested transaction if found, or NotFound if not available.</returns>
             <response code="200">Specified transaction found and returned successfully.</response>
+            <response code="400">The provided payload is null or invalid.</response>   
             <response code="404">Specified transaction with unique ID not found.</response>
             <response code="500">An Internal Server Error occurred while processing the request.</response>
             <exception cref="T:System.Exception">Throws exception if an error occurs while retrieving the transaction.</exception>
         </member>
-        <member name="M:Expenses.API.Controllers.TransactionsController.CreateTransaction(Expenses.API.Dtos.TransactionForCreationDto)">
+        <member name="M:Expenses.API.Controllers.TransactionsController.UpdateTransaction(System.Guid,Expenses.API.DTOs.Transactions.TransactionUpdateRequest)">
             <summary>
-            Creates a new transaction.
+            Modifies the content of an existing transaction.
             </summary>
-            <param name="payload">A DTO that represents parts of transaction to be created.</param>
-            <returns>The created transaction if creation is successful. Otherwise, an error is returned.</returns>
-            <response code="201">Transaction created successfully. Returns created transaction + location header pointing
-            to GetTransactionById.</response>
-            <response code="400">The provided payload is null or invalid.</response>
-            <response code="500">An Internal Server Error occurred while processing the request.</response>
-            <exception cref="T:System.ArgumentNullException">Thrown when the provided payload is null.</exception>
-        </member>
-        <member name="M:Expenses.API.Controllers.TransactionsController.UpdateTransaction(System.Int32,Expenses.API.Dtos.TransactionForUpdateDto)">
-            <summary>
-            Modifies the content of existing transaction.
-            </summary>
-            <param name="id">The unique identifier of transaction to modify.</param>
-            <param name="payload">A DTO object representing the transaction to modify</param>
-            <returns>Transaction updated from database.</returns>
+            <param name="transactionId">The unique identifier of transaction to modify.</param>
+            <param name="updateRequest">A DTO object representing the transaction to modify</param>
+            <returns>Transaction updated from a database.</returns>
             <response code="200">Transaction updated successfully.</response>
             <response code="400">The provided payload is null or invalid.</response>
             <response code="404">Transaction with specified ID not found.</response>
+            <response code="409">Transaction with specified ID already exists.</response>
+            <response code="424">Transaction dependency failed.</response>
             <response code="500">An error occurred while processing the request.</response>
             <exception cref="T:System.ArgumentNullException">Thrown when the provided payload is null.</exception>
         </member>
-        <member name="M:Expenses.API.Controllers.TransactionsController.DeleteTransaction(System.Int32)">
+        <member name="M:Expenses.API.Controllers.TransactionsController.DeleteTransaction(System.Guid)">
             <summary>
             Deletes a transaction by its ID.
             </summary>
-            <param name="id">The unique identifier of transaction to delete.</param>
+            <param name="transactionId">The unique identifier of transaction to delete.</param>
             <returns>No content if deletion is successful. Otherwise, an error is returned.</returns>
             <response code="204">Transaction deleted successfully.</response>
             <response code="404">Transaction with specified ID not found.</response>
@@ -146,319 +497,736 @@
             <response code="500">An error occurred while processing the request.</response>
             <exception cref="T:System.Exception">Throws exception if an error occurs while deleting the transaction.</exception>
         </member>
-        <member name="T:Expenses.API.Data.Services.AccountService">
+        <member name="T:Expenses.API.Data.Migrations.TheStandardMigration">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.TheStandardMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.TheStandardMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.TheStandardMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Expenses.API.Data.Migrations.Change_Some_Display_Names">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.Change_Some_Display_Names.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.Change_Some_Display_Names.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.Change_Some_Display_Names.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Expenses.API.Data.Migrations.Change_Some_Column_Names">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.Change_Some_Column_Names.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.Change_Some_Column_Names.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.Change_Some_Column_Names.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Expenses.API.Data.Migrations.Second_Change_Of_Column_Names">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.Second_Change_Of_Column_Names.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.Second_Change_Of_Column_Names.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.Second_Change_Of_Column_Names.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Expenses.API.Data.Migrations.StringLength_Change_Of_Column_PasswordHash">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.StringLength_Change_Of_Column_PasswordHash.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.StringLength_Change_Of_Column_PasswordHash.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Expenses.API.Data.Migrations.StringLength_Change_Of_Column_PasswordHash.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Expenses.API.DTOs.Mapping.DomainToDtoMapper">
             <summary>
-            This service handles user account related operations such as registration, login, and
-            email availability checks.
+            Provides extension methods for mapping domain models to Data Transfer Objects (DTOs) in the Expenses API.
             </summary>
         </member>
-        <member name="F:Expenses.API.Data.Services.AccountService._context">
+        <member name="M:Expenses.API.DTOs.Mapping.DomainToDtoMapper.ToTransactionDto(Expenses.API.Models.Transaction)">
+            <inheritdoc cref="M:Expenses.API.DTOs.Mapping.DomainToDtoMapper.&lt;G&gt;$2AED051DBFBF3A71D184C7C50931E6F5.ToTransactionDto"/>
+        </member>
+        <member name="M:Expenses.API.DTOs.Mapping.DomainToDtoMapper.ToTransactionDtos(System.Linq.IQueryable{Expenses.API.Models.Transaction})">
+            <inheritdoc cref="M:Expenses.API.DTOs.Mapping.DomainToDtoMapper.&lt;G&gt;$168FD805C53487D1AFAA118111C8589E.ToTransactionDtos"/>
+        </member>
+        <member name="M:Expenses.API.DTOs.Mapping.DomainToDtoMapper.ToUserAccountDto(Expenses.API.Models.UserAccount)">
+            <inheritdoc cref="M:Expenses.API.DTOs.Mapping.DomainToDtoMapper.&lt;G&gt;$3CCE515126EFD6EF74D579C8B705B288.ToUserAccountDto"/>
+        </member>
+        <member name="M:Expenses.API.DTOs.Mapping.DomainToDtoMapper.ToUserAccountDtos(System.Linq.IQueryable{Expenses.API.Models.UserAccount})">
+            <inheritdoc cref="M:Expenses.API.DTOs.Mapping.DomainToDtoMapper.&lt;G&gt;$7B2B9ABE1DAB56F1F4536DC936685331.ToUserAccountDtos"/>
+        </member>
+        <member name="M:Expenses.API.DTOs.Mapping.DomainToDtoMapper.&lt;G&gt;$2AED051DBFBF3A71D184C7C50931E6F5.ToTransactionDto">
             <summary>
-            Context for accessing the database.
+            Converts a domain-level <see cref="T:Expenses.API.Models.Transaction"/> model to a DTO-level <see cref="T:Expenses.API.DTOs.Transactions.TransactionResponse"/>.
+            </summary>
+            <returns>
+            A <see cref="T:Expenses.API.DTOs.Transactions.TransactionResponse"/> object containing the mapped data from the <see cref="T:Expenses.API.Models.Transaction"/> model.
+            Includes properties such as Id, Type, Amount, Category, UserId, CreatedAt, and UpdatedAt.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.DTOs.Mapping.DomainToDtoMapper.&lt;G&gt;$168FD805C53487D1AFAA118111C8589E.ToTransactionDtos">
+            <summary>
+            Converts a collection of domain-level <see cref="T:Expenses.API.Models.Transaction"/> models to a collection of DTO-level
+            <see cref="T:Expenses.API.DTOs.Transactions.TransactionResponse"/> objects.
+            </summary>
+            <returns>
+            An <see cref="T:System.Linq.IQueryable`1"/> containing the mapped data from the <see cref="T:Expenses.API.Models.Transaction"/> models.
+            Each <see cref="T:Expenses.API.DTOs.Transactions.TransactionResponse"/> includes properties such as Id, Type, Amount, Category, UserId,
+            CreatedAt, and UpdatedAt.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.DTOs.Mapping.DomainToDtoMapper.&lt;G&gt;$3CCE515126EFD6EF74D579C8B705B288.ToUserAccountDto">
+            <summary>
+            Converts a domain-level <see cref="T:Expenses.API.Models.UserAccount"/> model to a DTO-level <see cref="T:Expenses.API.DTOs.UserAccounts.UserAccountResponse"/>.
+            </summary>
+            <returns>
+            A <see cref="T:Expenses.API.DTOs.UserAccounts.UserAccountResponse"/> object containing the mapped data from the <see cref="T:Expenses.API.Models.UserAccount"/> model.
+            Includes properties such as UserId, Email, FirstName, LastName, DateOfBirth, CreatedAt, UpdatedAt,
+            RecentLoginTimes, and Transactions.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.DTOs.Mapping.DomainToDtoMapper.&lt;G&gt;$7B2B9ABE1DAB56F1F4536DC936685331.ToUserAccountDtos">
+            <summary>
+            Maps a queryable collection of domain-level <see cref="T:Expenses.API.Models.UserAccount"/> models to a queryable collection of
+            DTO-level <see cref="T:Expenses.API.DTOs.UserAccounts.UserAccountResponse"/> objects.
+            </summary>
+            <returns>
+            A queryable collection of <see cref="T:Expenses.API.DTOs.UserAccounts.UserAccountResponse"/> objects containing the mapped data from the
+            <see cref="T:Expenses.API.Models.UserAccount"/> models.
+            Includes properties such as UserId, Email, FirstName, LastName, DateOfBirth, CreatedAt, UpdatedAt, and
+            RecentLoginTimes.
+            </returns>
+        </member>
+        <member name="T:Expenses.API.DTOs.Transactions.TransactionCreateRequest">
+            <summary>
+            Class representing the data transfer object for creating a new transaction. It contains the necessary
+            properties to create a transaction, such as type, amount, category, and an optional createdAt timestamp.
             </summary>
         </member>
-        <member name="F:Expenses.API.Data.Services.AccountService._passwordHasher">
-            <summary>
-            Password hasher for securely hashing and verifying passwords.
-            </summary>
-        </member>
-        <member name="F:Expenses.API.Data.Services.AccountService._logger">
-            <summary>
-            Logger for logging information and errors.
-            </summary>
-        </member>
-        <member name="F:Expenses.API.Data.Services.AccountService._jwtHandler">
-            <summary>
-            JWT handler for generating and validating JWT tokens.
-            </summary>
-        </member>
-        <member name="M:Expenses.API.Data.Services.AccountService.#ctor(Expenses.API.Data.ExpensesDbContext,Microsoft.AspNetCore.Identity.PasswordHasher{Expenses.API.Models.User},Microsoft.Extensions.Logging.ILogger{Expenses.API.Data.Services.AccountService},Expenses.API.Data.Services.JwtHandler)">
-            <summary>
-            Constructor to initialize the AccountService with necessary dependencies.
-            </summary>
-            <param name="context">The context for database accessing</param>
-            <param name="passwordHasher">Password hasher to initialize the service constructor</param>
-            <param name="logger">Logger to initialize the service constructor</param>
-            <param name="jwtHandler">JWT handler to initialize the service constructor</param>
-        </member>
-        <member name="M:Expenses.API.Data.Services.AccountService.FindUserAsync(Expenses.API.Dtos.ApiLoginRequestDto)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Expenses.API.Data.Services.AccountService.IsEmailAvailableAsync(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Expenses.API.Data.Services.AccountService.AddUserAsync(Expenses.API.Dtos.UserCreateDto)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Expenses.API.Data.Services.AccountService.IdentifyUserAsync(Expenses.API.Dtos.ApiLoginRequestDto)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Expenses.API.Data.Services.AccountService.GetUserProfile(System.String)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Expenses.API.Data.Services.AccountService.UpdateUserProfile(System.Int32,Expenses.API.Dtos.UserUpdateDto)">
-            <inheritdoc/>
-        </member>
-        <member name="T:Expenses.API.Data.Services.IAccountService">
-            <summary>
-            Interface for account-related operations and user management
-            </summary>
-        </member>
-        <member name="M:Expenses.API.Data.Services.IAccountService.FindUserAsync(Expenses.API.Dtos.ApiLoginRequestDto)">
-            <summary>
-            Find user by email and password
-            </summary>
-            <param name="apiLoginRequest">A DTO representing user's credentials</param>
-            <returns>The user represents by the email entered if found, or NULL otherwise</returns>
-        </member>
-        <member name="M:Expenses.API.Data.Services.IAccountService.IsEmailAvailableAsync(System.String)">
-            <summary>
-            checks if an email is already registered in the system
-            </summary>
-            <param name="email">Email to check availability in the database</param>
-            <returns>True if email found already in the system, or false otherwise</returns>
-        </member>
-        <member name="M:Expenses.API.Data.Services.IAccountService.AddUserAsync(Expenses.API.Dtos.UserCreateDto)">
-            <summary>
-            Add a new user to the system
-            </summary>
-            <param name="userCreateDto">A DTO representing user's data</param>
-            <returns>A DTO containing the result of the creation operation</returns>
-        </member>
-        <member name="M:Expenses.API.Data.Services.IAccountService.IdentifyUserAsync(Expenses.API.Dtos.ApiLoginRequestDto)">
-            <summary>
-            Identify user by email and password, 
-            </summary>
-            <param name="apiLoginRequest">A DTO representing user's credentials to identify</param>
-            <returns>the user entity if found, or NULL otherwise.</returns>
-        </member>
-        <member name="M:Expenses.API.Data.Services.IAccountService.GetUserProfile(System.String)">
-            <summary>
-            Obtain the profile of a user from his email
-            </summary>
-            <param name="email">The unique email of a user</param>
-            <returns>The specified user identified by the given email</returns>
-        </member>
-        <member name="M:Expenses.API.Data.Services.IAccountService.UpdateUserProfile(System.Int32,Expenses.API.Dtos.UserUpdateDto)">
-            <summary>
-            Updates the user data in the database
-            </summary>
-            <param name="id">The unique ID of a user in the database</param>
-            <param name="userUpdateDto">A DTO containing modified user data</param>
-            <returns>The newly modified data in the database</returns>
-        </member>
-        <member name="T:Expenses.API.Data.Services.ITransactionsService">
-            <summary>
-            Interface to handle transactions CRUD operations
-            </summary>
-        </member>
-        <member name="M:Expenses.API.Data.Services.ITransactionsService.GetAllAsync(System.Int32)">
-            <summary>
-            Retrieves all transactions
-            </summary>
-            <param name="userId">The unique ID of the authentified user.</param>
-            <returns>A list of transactions</returns>
-        </member>
-        <member name="M:Expenses.API.Data.Services.ITransactionsService.GetByIdAsync(System.Int32)">
-            <summary>
-            Retrieves a transaction by its ID
-            </summary>
-            <param name="id">ID of transaction to fetch</param>
-            <returns>The unique transaction represented by the given ID</returns>
-        </member>
-        <member name="M:Expenses.API.Data.Services.ITransactionsService.AddAsync(Expenses.API.Dtos.TransactionForCreationDto,System.Int32)">
-            <summary>
-            Creates a new transaction
-            </summary>
-            <param name="transactionForCreation">TDO object representing transaction info</param>
-            <param name="userId">The unique ID of the authentified user.</param>
-            <returns>Transaction created in the database or null if not created</returns>
-        </member>
-        <member name="M:Expenses.API.Data.Services.ITransactionsService.UpdateAsync(System.Int32,Expenses.API.Dtos.TransactionForUpdateDto)">
-            <summary>
-            Updates an existing transaction
-            </summary>
-            <param name="id">Unique ID of transaction to modify</param>
-            <param name="transactionForUpdate">A DTO containing transaction data to modify</param>
-            <returns>The transaction updated</returns>
-        </member>
-        <member name="M:Expenses.API.Data.Services.ITransactionsService.Delete(System.Int32)">
-            <summary>
-            deletes a transaction by its ID
-            </summary>
-            <param name="id">The unique transaction to remove from database</param>
-            <returns>True if deletion successful or false if the transaction does not exist in the system.</returns>
-        </member>
-        <member name="T:Expenses.API.Data.Services.JwtHandler">
-            <summary>
-            Service class for handling JWT operations
-            </summary>
-        </member>
-        <member name="M:Expenses.API.Data.Services.JwtHandler.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{Expenses.API.Data.Services.JwtHandler})">
-            <summary>
-            JWT Handler constructor
-            </summary>
-            <param name="configuration">Configuration object to inject in the constructor</param>
-            <param name="logger">Logger object to inject to the constructor</param>
-            <exception cref="T:System.ArgumentNullException">Exception generated if object injected is null.</exception>
-        </member>
-        <member name="M:Expenses.API.Data.Services.JwtHandler.GenerateJwtToken(Expenses.API.Models.User)">
-            <summary>
-             Generates a JWT token for the authenticated user.
-            </summary>
-            <param name="user">User for whom JWT token is generated</param>
-            <returns>String representing the token</returns>
-        </member>
-        <member name="T:Expenses.API.Data.Services.TransactionsService">
-            <summary>
-            Service for managing transactions in the Expenses application.
-            </summary>
-        </member>
-        <member name="M:Expenses.API.Data.Services.TransactionsService.#ctor(Expenses.API.Data.ExpensesDbContext)">
-            <summary>
-            Service for managing transactions in the Expenses application.
-            </summary>
-        </member>
-        <member name="M:Expenses.API.Data.Services.TransactionsService.GetAllAsync(System.Int32)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Expenses.API.Data.Services.TransactionsService.GetByIdAsync(System.Int32)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Expenses.API.Data.Services.TransactionsService.AddAsync(Expenses.API.Dtos.TransactionForCreationDto,System.Int32)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Expenses.API.Data.Services.TransactionsService.UpdateAsync(System.Int32,Expenses.API.Dtos.TransactionForUpdateDto)">
-            <inheritdoc/>
-        </member>
-        <member name="M:Expenses.API.Data.Services.TransactionsService.Delete(System.Int32)">
-            <inheritdoc/>
-        </member>
-        <member name="T:Expenses.API.Dtos.ApiLoginRequestDto">
-            <summary>
-            A DTO used to receive user's credentials for login from the client.
-            </summary>
-        </member>
-        <member name="P:Expenses.API.Dtos.ApiLoginRequestDto.Email">
-            <summary>
-            A valid email address is required for username authentication.
-            </summary>
-        </member>
-        <member name="P:Expenses.API.Dtos.ApiLoginRequestDto.Password">
-            <summary>
-            A password with a minimum length of 6 characters is required for password authentication.
-            </summary>
-        </member>
-        <member name="T:Expenses.API.Dtos.ApiLoginResultDto">
-            <summary>
-            Strongly typed result class to inform the client of a login attempt result, sending it the JWT if successful.
-            </summary>
-        </member>
-        <member name="P:Expenses.API.Dtos.ApiLoginResultDto.Success">
-            <summary>
-            TRUE if the login attempt is successful, FALSE otherwise.
-            </summary>
-        </member>
-        <member name="P:Expenses.API.Dtos.ApiLoginResultDto.Message">
-            <summary>
-            Login attempt result message.
-            </summary>
-        </member>
-        <member name="P:Expenses.API.Dtos.ApiLoginResultDto.Token">
-            <summary>
-            The JWT token generated for the user if the login attempt is successful, or NULL otherwise.
-            </summary>
-        </member>
-        <member name="P:Expenses.API.Dtos.TransactionForCreationDto.Type">
+        <member name="P:Expenses.API.DTOs.Transactions.TransactionCreateRequest.Type">
             <summary>
             Type of the transaction (e.g., "income", "expense").
             </summary>
         </member>
-        <member name="P:Expenses.API.Dtos.TransactionForCreationDto.Amount">
+        <member name="P:Expenses.API.DTOs.Transactions.TransactionCreateRequest.Amount">
             <summary>
             Amount of the transaction.  
             </summary>
         </member>
-        <member name="P:Expenses.API.Dtos.TransactionForCreationDto.Category">
+        <member name="P:Expenses.API.DTOs.Transactions.TransactionCreateRequest.Category">
             <summary>
             Category of the transaction (e.g., "food", "salary").
             </summary>
         </member>
-        <member name="P:Expenses.API.Dtos.TransactionForCreationDto.CreatedAt">
+        <member name="P:Expenses.API.DTOs.Transactions.TransactionCreateRequest.CreatedAt">
             <summary>
             Date and time when the transaction was created.
             </summary>
         </member>
-        <member name="T:Expenses.API.Dtos.UserCreateDto">
+        <member name="T:Expenses.API.DTOs.Transactions.TransactionResponse">
             <summary>
-            This DTO aims to receive the user's credentials for account creation from the client.
+            DTO representing a transaction, used for transferring transaction data between layers of the application and to
+            clients. It includes properties such as Id, Type, Amount, Category, UserId, CreatedAt, and UpdatedAt to encapsulate
+            all relevant information about a transaction. 
             </summary>
         </member>
-        <member name="P:Expenses.API.Dtos.UserCreateDto.Email">
+        <member name="T:Expenses.API.DTOs.Transactions.TransactionUpdateRequest">
             <summary>
-            Email to be used as a username must be in a valid email format
+            A data transfer object for updating transaction details.
             </summary>
         </member>
-        <member name="P:Expenses.API.Dtos.UserCreateDto.Password">
+        <member name="P:Expenses.API.DTOs.Transactions.TransactionUpdateRequest.Type">
             <summary>
-            Password to be used for authentication, must be at least 6 characters long
+            Type of the transaction, e.g., "income" or "expense"
             </summary>
         </member>
-        <member name="T:Expenses.API.Dtos.UserUpdateDto">
+        <member name="P:Expenses.API.DTOs.Transactions.TransactionUpdateRequest.Amount">
             <summary>
-            A DTO containing part of user data
+            Amount of the transaction
             </summary>
         </member>
-        <member name="P:Expenses.API.Dtos.UserUpdateDto.Email">
+        <member name="P:Expenses.API.DTOs.Transactions.TransactionUpdateRequest.Category">
             <summary>
-            The email of the user
+            Category of the transaction, e.g., "food", "salary", etc.
             </summary>
         </member>
-        <member name="P:Expenses.API.Dtos.UserUpdateDto.FirstName">
+        <member name="T:Expenses.API.DTOs.UserAccounts.UserAccountResponse">
+            <summary>
+            Data transfer object for representing user account details.
+            </summary>
+            <remarks>
+            This class is designed to facilitate the transfer of user account information
+            between layers of the application. It includes key user details such as email,
+            name, date of birth, and associated transactions.
+            </remarks>
+        </member>
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserAccountResponse.UserId">
+            <summary>
+            Unique identifier for the user.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserAccountResponse.Email">
+            <summary>
+            Email of the user
+            </summary>
+        </member>
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserAccountResponse.FirstName">
             <summary>
             The first name of the user
             </summary>
         </member>
-        <member name="P:Expenses.API.Dtos.UserUpdateDto.LastName">
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserAccountResponse.LastName">
             <summary>
             The last name of the user
             </summary>
         </member>
-        <member name="T:Expenses.API.Migrations.InitialMigration">
-            <inheritdoc />
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserAccountResponse.PasswordHashed">
+            <summary>
+            Stores the hashed representation of the user's password.
+            </summary>
+            <remarks>
+            This property is intended to securely store the password in its hashed form,
+            ensuring that plain-text passwords are not stored or exposed.
+            </remarks>
         </member>
-        <member name="M:Expenses.API.Migrations.InitialMigration.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserAccountResponse.DateOfBirth">
+            <summary>
+            The date of birth of the user
+            </summary>
         </member>
-        <member name="M:Expenses.API.Migrations.InitialMigration.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserAccountResponse.CreatedAt">
+            <summary>
+            The date and time when the account was created.
+            </summary>
         </member>
-        <member name="M:Expenses.API.Migrations.InitialMigration.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserAccountResponse.UpdatedAt">
+            <summary>
+            The timestamp indicating when the record was last updated.
+            </summary>
         </member>
-        <member name="T:Expenses.API.Migrations.Add_UserId_Column">
-            <inheritdoc />
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserAccountResponse.RecentLoginTimes">
+            <summary>
+            List of timestamps representing the most recent login times of the user.
+            </summary>
         </member>
-        <member name="M:Expenses.API.Migrations.Add_UserId_Column.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserAccountResponse.Transactions">
+            <summary>
+            List of transactions associated with the user
+            </summary>
         </member>
-        <member name="M:Expenses.API.Migrations.Add_UserId_Column.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
+        <member name="T:Expenses.API.DTOs.UserAccounts.UserLoginRequest">
+            <summary>
+            A DTO used to receive user's credentials for login from the client.
+            </summary>
         </member>
-        <member name="M:Expenses.API.Migrations.Add_UserId_Column.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserLoginRequest.Email">
+            <summary>
+            A valid email address is required for username authentication.
+            </summary>
         </member>
-        <member name="T:Expenses.API.Migrations.Add_FirstName_LastName_Columns">
-            <inheritdoc />
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserLoginRequest.Password">
+            <summary>
+            A password with a minimum length of 6 characters is required for password authentication.
+            </summary>
         </member>
-        <member name="M:Expenses.API.Migrations.Add_FirstName_LastName_Columns.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
+        <member name="T:Expenses.API.DTOs.UserAccounts.UserLoginResponse">
+            <summary>
+            Strongly typed result class to inform the client of a login attempt result, sending it the JWT if successful.
+            </summary>
         </member>
-        <member name="M:Expenses.API.Migrations.Add_FirstName_LastName_Columns.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
-            <inheritdoc />
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserLoginResponse.Success">
+            <summary>
+            Boolean variable indicating the success of the login attempt.
+            </summary>
         </member>
-        <member name="M:Expenses.API.Migrations.Add_FirstName_LastName_Columns.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
-            <inheritdoc />
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserLoginResponse.Message">
+            <summary>
+            Login attempt result message.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserLoginResponse.Token">
+            <summary>
+            The JWT token generated for the user if the login attempt is successful, or NULL otherwise.
+            </summary>
+        </member>
+        <member name="T:Expenses.API.DTOs.UserAccounts.UserRegisterRequest">
+            <summary>
+            This DTO aims to receive the user's credentials for account creation from the client.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserRegisterRequest.Email">
+            <summary>
+            Email to be used as a username must be in a valid email format
+            </summary>
+        </member>
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserRegisterRequest.Password">
+            <summary>
+            Password to be used for authentication must be at least 6 characters long
+            </summary>
+        </member>
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserRegisterRequest.PasswordConfirm">
+            <summary>
+            A required field intended to confirm the user's password during the account creation process. The value must
+            match the Password field.
+            </summary>
+        </member>
+        <member name="T:Expenses.API.DTOs.UserAccounts.UserUpdateRequest">
+            <summary>
+            A DTO containing part of user data
+            </summary>
+        </member>
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserUpdateRequest.Email">
+            <summary>
+            The email of the user
+            </summary>
+        </member>
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserUpdateRequest.FirstName">
+            <summary>
+            The first name of the user
+            </summary>
+        </member>
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserUpdateRequest.LastName">
+            <summary>
+            The last name of the user
+            </summary>
+        </member>
+        <member name="T:Expenses.API.Models.Base.BaseEntity">
+            <summary>
+            Class representing a base entity with common properties.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.Base.BaseEntity.Id">
+            <summary>
+            The unique identifier for the entity. This property is typically used as the primary key in a database and
+            should be assigned a unique value when a new entity is created. 
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.Base.BaseEntity.CreatedAt">
+            <summary>
+            The date and time when the entity was created. This property is automatically set when a new entity is
+            created and should not be modified afterward.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.Base.BaseEntity.UpdatedAt">
+            <summary>
+            The date and time when the entity was last updated. This property should be updated whenever the entity is
+            modified. It helps to track changes and maintain a history of updates for the entity.
+            </summary>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.Transactions.AlreadyExistsTransactionException">
+            <summary>
+            The exception that is thrown when a transaction with the same ID already exists in the storage, indicating
+            a conflict during creation or update operations.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.Transactions.AlreadyExistsTransactionException.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.Transactions.AlreadyExistsTransactionException"/> class with a specified
+            inner exception.
+            </summary>
+            <param name="innerException">The underlying cause of the caught error</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.Transactions.FailedTransactionServiceException">
+            <summary>
+            This exception is thrown when a transaction service operation fails, indicating an issue that requires attention
+            and support. It encapsulates the underlying exception that caused the failure, providing a clear message for
+            troubleshooting.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.Transactions.FailedTransactionServiceException.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.Transactions.FailedTransactionServiceException"/> class with a specified
+            inner exception.
+            </summary>
+            <param name="innerException">The underlying cause of the caught error</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.Transactions.FailedTransactionStorageException">
+            <summary>
+            The exception that is thrown when there is an error while trying to store a transaction in the database.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.Transactions.FailedTransactionStorageException.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.Transactions.FailedTransactionStorageException"/> class with a specified
+            inner exception.
+            </summary>
+            <param name="innerException">The underlying cause of the caught error</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.Transactions.InvalidTransactionException">
+            <summary>
+            The exception that is thrown when transaction data/input is invalid.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.Transactions.InvalidTransactionException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.Transactions.InvalidTransactionException"/> class with a default error message.
+            </summary>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.Transactions.InvalidTransactionIdException">
+            <summary>
+            Represents an exception thrown when a transaction ID is invalid.
+            </summary>
+            <remarks>
+            This exception should be used to indicate issues related to invalid input for transaction IDs,
+            such as when the format or content of the provided ID does not meet the expected requirements.
+            </remarks>
+            <example>
+            This exception might be used in scenarios such as validating user input or database queries
+            when a transaction ID is expected to be a valid GUID but fails to meet that expectation.
+            </example>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.Transactions.InvalidTransactionIdException.#ctor">
+            <summary>
+            Represents an exception thrown when a transaction ID is invalid.
+            </summary>
+            <remarks>
+            This exception is intended to be used for scenarios where the provided
+            transaction ID does not meet expected requirements, such as format or validity.
+            </remarks>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.Transactions.InvalidTransactionReferenceException">
+            <summary>
+            This exception is thrown when an invalid transaction reference is encountered, indicating that the provided
+            reference does not correspond to any existing transaction. This could occur due to a typo, an outdated reference,
+            or an attempt to access a transaction that has been deleted. 
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.Transactions.InvalidTransactionReferenceException.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the InvalidTransactionReferenceException class with a specified error message
+            and a reference to the inner exception that is the cause of this exception.
+            </summary>
+            <param name="innerException">The underlying cause of the caught error</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.Transactions.LockedTransactionException">
+            <summary>
+            This exception is thrown when an operation attempts to access or modify a transaction record that is currently
+            locked, indicating that the record is being used by another process or user. The message provides guidance to the
+            user to try the operation again later.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.Transactions.LockedTransactionException.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the LockedTransactionException class with a specified inner exception that
+            caused this exception to be thrown.
+            </summary>
+            <param name="innerException">The underlying cause of the caught error</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.Transactions.NotFoundTransactionException">
+            <summary>
+            The exception that is thrown when a transaction with a specified identifier is not found.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.Transactions.NotFoundTransactionException.#ctor(System.Guid)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.Transactions.NotFoundTransactionException"/> class with a specified transaction
+            ID that was not found. 
+            </summary>
+            <param name="transactionId">The underlying cause of the caught error</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.Transactions.NullTransactionException">
+            <summary>
+            The exception that is thrown when a transaction is null, indicating that the expected transaction object was not
+            provided or found. This exception is used to signal issues related to null references in transaction operations,
+            such as when attempting to retrieve, update, or delete a transaction that does not exist in the storage.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.Transactions.NullTransactionException.#ctor">
+            <summary>
+            Initializes a new instance of the NullTransactionException with a default error message indicating that
+            the transaction is null.
+            </summary>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyException">
+            <summary>
+            The exception that is thrown when a transaction dependency error occurs, such as issues with the database or
+            external services that the transaction relies on. 
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyException.#ctor(Xeptions.Xeption)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyException"/> class with a specified
+            inner exception.
+            </summary>
+            <param name="innerException">The underlying cause of the caught error</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyValidationException">
+            <summary>
+            The exception that is thrown when a transaction dependency validation error occurs, such as when a related entity
+            is not found or when there is a conflict with existing data. It indicates that the transaction cannot be processed
+            due to issues with its dependencies, and the user should try again after resolving the underlying issues.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyValidationException.#ctor(Xeptions.Xeption)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyValidationException"/> class with a specified
+            inner exception.
+            </summary>
+            <param name="innerException">The underlying cause of the caught error.</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.Transactions.TransactionServiceException">
+            <summary>
+            This exception is thrown when an error occurs within the Transaction Service, indicating a failure in processing
+            transactions. It serves as a wrapper for underlying exceptions, providing a user-friendly message while preserving
+            the original exception details for debugging purposes.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.Transactions.TransactionServiceException.#ctor(Xeptions.Xeption)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionServiceException"/> class with a specified inner exception.
+            </summary>
+            <param name="innerException">The underlying cause of the caught error</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.Transactions.TransactionValidationException">
+            <summary>
+            The exception that is thrown when a transaction validation error occurs.
+            This exception is used to indicate that the ModelState of a transaction is invalid and requires corrections.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.Transactions.TransactionValidationException.#ctor(Xeptions.Xeption)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.Transactions.FailedTransactionStorageException"/> object with a specified
+            inner exception and a message that describes the error.
+            </summary>
+            <param name="innerException">The underlying cause of the caught error</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.UserAccounts.AlreadyExistsUserAccountException">
+            <summary>
+            Exception that is thrown when attempting to create or add a user account with an ID that already exists in the system.
+            </summary>
+            <remarks>
+            This exception is typically used to signal a conflict when a duplicate key or identifier for a user account is
+            detected during operations such as creation or addition. It wraps an inner exception that provides additional
+            context about the root cause of the issue.
+            </remarks>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.UserAccounts.AlreadyExistsUserAccountException.#ctor(System.Exception)">
+            <summary>
+            Exception that is thrown when attempting to create or add a user account with an ID that already exists in the system.
+            </summary>
+            <param name="innerException">The underlying cause of the caught error</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.UserAccounts.FailedUserAccountServiceException">
+            <summary>
+            Represents an exception thrown when a failure occurs in the user account service.
+            This exception typically indicates issues within the service that are not related  to validation or dependency
+            errors and requires further attention or investigation from support personnel for resolution beyond validation or
+            dependency concerns.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.UserAccounts.FailedUserAccountServiceException.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.FailedUserAccountServiceException"/> class with a specified inner
+            exception.
+            </summary>
+            <param name="innerException">The underlying exception that caused the failure in the user account service.</param>   
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.UserAccounts.FailedUserAccountStorageException">
+            <summary>
+            Represents an exception thrown when there is a failure in storing a user account in the storage system.
+            </summary>
+            <remarks>
+            This exception is typically used to wrap issues caused by critical dependencies, such as database-related errors,
+            or issues with the underlying storage system. It provides encapsulation for unexpected errors that occur during
+            user account storage operations and should be logged or handled appropriately.
+            </remarks>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.UserAccounts.FailedUserAccountStorageException.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.FailedUserAccountStorageException"/> class with a specified inner
+            exception.
+            </summary>
+            <paramref name="innerException">The underlying exception that caused the failure to store the user account.</paramref>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.UserAccounts.InvalidUserAccountException">
+            <summary>
+            Represents an exception thrown when invalid user account data is provided.
+            </summary>
+            <remarks>
+            This exception is used to indicate that the user account data does not meet the required validation criteria.
+            It is thrown when operations on user accounts involve invalid input or parameters.
+            </remarks>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.UserAccounts.InvalidUserAccountException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.InvalidUserAccountException"/> class with a default error message.
+            </summary>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.UserAccounts.InvalidUserAccountReferenceException">
+            <summary>
+            Represents an exception thrown when a user account contains invalid or incorrect reference details that violate
+            database constraints or integrity rules.
+            </summary>
+            <remarks>
+            This exception typically occurs in scenarios involving foreign key conflicts or invalid reference relationships
+            during user account operations. The exception is used to signal dependency validation issues, allowing the
+            application to handle such problems gracefully and ensure proper error reporting.
+            </remarks>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.UserAccounts.InvalidUserAccountReferenceException.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.InvalidUserAccountReferenceException"/> class with a specified inner
+            exception that provides details about the underlying cause of the error.
+            </summary>
+            <param name="innerException">The exception that caused the current exception.</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.UserAccounts.LockedUserAccountException">
+            <summary>
+            Exception that is thrown when a user account is locked and cannot be accessed. This exception typically occurs in
+            scenarios where database-level concurrency or locking conflicts prevent the user account from being updated or
+            accessed. It signals that further attempts to interact with the user account should be deferred until the lock is
+            resolved, or additional actions should be taken by contacting support.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.UserAccounts.LockedUserAccountException.#ctor(System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.LockedUserAccountException"/> class with a specified inner exception.
+            </summary>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.UserAccounts.NotFoundUserAccountException">
+            <summary>
+            Exception that is thrown when a user account with the specified identifier is not found.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.UserAccounts.NotFoundUserAccountException.#ctor(System.Object[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.NotFoundUserAccountException"/> class with a default error message
+            that includes the identifier of the user account that was not found. 
+            </summary>
+            <param name="objectIds">
+            The identifier of the user account that was not found. That could be a Guid identifier or
+            an email string.
+            </param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.UserAccounts.NullUserAccountException">
+            <summary>
+            Exception that is thrown when a null UserAccount object is encountered.
+            </summary>
+            <remarks>
+            This exception is typically used to signal that a UserAccount object is expected but was found to be null during
+            operations such as retrieval, creation, or update. It indicates a validation error where the absence of a
+            UserAccount object is not acceptable and requires attention to ensure that the necessary data is provided for the
+            operation to proceed successfully.
+            </remarks>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.UserAccounts.NullUserAccountException.#ctor">
+            <summary>
+            Exception that is thrown when a null <see cref="T:Expenses.API.Models.UserAccount"/> object is encountered.
+            </summary>
+            <remarks>
+            This exception is triggered during operations where a <see cref="T:Expenses.API.Models.UserAccount"/> object is expected but found to be null.
+            It serves to identify validation errors related to the absence of a <see cref="T:Expenses.API.Models.UserAccount"/> instance,
+            which is required for processes like data retrieval, creation, or update to ensure the functionality proceeds correctly.
+            </remarks>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.UserAccounts.NullUserAccountIdException">
+            <summary>
+            The exception that is thrown when the user ID context is null, indicating that the current user is not
+            authenticated or authorized to perform certain actions. 
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.UserAccounts.NullUserAccountIdException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.NullUserAccountIdException"/> class with a default error message
+            indicating that the user ID context is null and access is forbidden. 
+            </summary>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyException">
+            <summary>
+            Represents an exception thrown when a dependency-related error occurs during operations involving user accounts.
+            </summary> <remarks>
+            This exception is intended to be used for scenarios where an underlying dependency,
+            such as a database or external service, encounters an error while processing user account operations. It serves as
+            a wrapper for exceptions that may arise from dependencies, providing a consistent error message to the caller while
+            preserving the original exception details for debugging purposes.
+            </remarks>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyException.#ctor(Xeptions.Xeption)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyException"/> class with a default error
+            message and an inner exception. 
+            </summary>
+            <param name="innerException">The exception that caused the current exception.</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyValidationException">
+            <summary>
+            Represents an exception thrown when a dependency validation error occurs in the user account process.
+            </summary>
+            <remarks>
+            This exception is typically used to indicate issues related to
+            invalid inputs or validation errors in dependent components or services
+            during operations with user accounts.
+            </remarks>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyValidationException.#ctor(Xeptions.Xeption)">
+            <summary>
+            Represents an exception that occurs when a dependency validation error is encountered
+            during operations involving user accounts.
+            </summary>
+            <param name="innerException">The underlying exception that caused the dependency validation error.</param>
+            <remarks>
+            This exception is used to signal issues resulting from validation errors
+            in dependent components or services, such as input validation in the user account flow.
+            </remarks>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountServiceException">
+            <summary>
+            Represents an exception thrown to indicate a failure during the execution of user account service operations.
+            </summary>
+            <remarks>
+            This exception is designed to encapsulate errors/issues occuring within a user account service-related functionality.
+            Common scenarios for throwing this exception include failures in service-layer operations (often due to dependency
+            failures, incorrect logic) or unhandled exceptions propagated from dependent services or components. It serves as a
+            uniform way to propagate and log such errors, providing a consistent error message to the caller while preserving
+            the original exception details for debugging purposes.    
+            </remarks>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.UserAccounts.UserAccountServiceException.#ctor(Xeptions.Xeption)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountServiceException"/> class with a specified inner exception.
+            </summary>
+            <param name="innerException">The underlying exception that caused the failure in the user account service.</param>
+        </member>
+        <member name="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountValidationException">
+            <summary>
+            Represents an exception that occurs during the validation of user account data.
+            </summary>
+            <remarks>
+            This exception is triggered when invalid user account data is provided. It encapsulates the details of the error
+            and serves as a wrapper for the inner exception that caused the validation failure.
+            </remarks>
+        </member>
+        <member name="M:Expenses.API.Models.Exceptions.UserAccounts.UserAccountValidationException.#ctor(Xeptions.Xeption)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountValidationException"/> class with a specified
+            inner exception.
+            </summary>
+            <param name="innerException">The exception that caused the current exception.</param>
+        </member>
+        <member name="T:Expenses.API.Models.Transaction">
+            <summary>
+            Transaction entity representing a financial transaction, which can be either an income or an expense.
+            Each transaction is associated with a user and contains details such as type, amount, and category.
+            </summary>
         </member>
         <member name="P:Expenses.API.Models.Transaction.Type">
             <summary>
@@ -485,35 +1253,966 @@
             The user entity used for navigation
             </summary>
         </member>
-        <member name="T:Expenses.API.Models.User">
+        <member name="T:Expenses.API.Models.UserAccount">
             <summary>
-            User entity representing an application user
+            UserAccount entity representing an application user
             </summary>
         </member>
-        <member name="P:Expenses.API.Models.User.Email">
+        <member name="P:Expenses.API.Models.UserAccount.Email">
             <summary>
             Email of the user
             </summary>
         </member>
-        <member name="P:Expenses.API.Models.User.Password">
+        <member name="P:Expenses.API.Models.UserAccount.NormalizedEmail">
             <summary>
-            Password of the user
+            Stores the normalized version of the user's email address.
+            This is typically used for case-insensitive comparisons or lookups.
             </summary>
         </member>
-        <member name="P:Expenses.API.Models.User.FirstName">
+        <member name="P:Expenses.API.Models.UserAccount.PasswordHash">
+            <summary>
+            Password of the user, stored as a hash for security reasons. The actual password should never be stored in plain
+            text. The length requirement ensures that the password is of enough complexity to provide security, while also
+            allowing for a reasonable maximum length to prevent excessively long passwords that could cause performance issues. 
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.UserAccount.FirstName">
             <summary>
             The first name of the user
             </summary>
         </member>
-        <member name="P:Expenses.API.Models.User.LastName">
+        <member name="P:Expenses.API.Models.UserAccount.LastName">
             <summary>
             The last name of the user
             </summary>
         </member>
-        <member name="P:Expenses.API.Models.User.Transactions">
+        <member name="P:Expenses.API.Models.UserAccount.NormalizedFullName">
+            <summary>
+            Normalized representation of the user's full name combining first and last name.
+            Typically used for consistency and searches.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.UserAccount.DateOfBirth">
+            <summary>
+            The date of birth of the user
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.UserAccount.IsAdmin">
+            <summary>
+            Indicates whether the user has administrative privileges.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.UserAccount.RecentLoginTimes">
+            <summary>
+            List of timestamps representing the most recent login times of the user.
+            </summary>
+        </member>
+        <member name="P:Expenses.API.Models.UserAccount.Transactions">
             <summary>
             List of transactions associated with the user
             </summary>
+        </member>
+        <member name="T:Expenses.API.Services.Foundations.Accounts.IUserAccountService">
+            <summary>
+            Represents the service contract for managing user accounts.
+            </summary>
+            <remarks>
+            This interface defines the operations related to user account management, including retrieval, creation,
+            identification, updating, and deletion of user accounts. It serves as a contract for implementing the
+            business logic associated with user accounts in the Expenses API.
+            </remarks>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.IUserAccountService.IsEmailAvailableAsync(System.String)">
+            <summary>
+            Checks if an email is already registered in the storage system
+            </summary>
+            <param name="email">Email to check availability in the database</param>
+            <returns>The user account associated with the given email, indicating that the email is already registered.
+            Or null if no user account is found, indicating that the email is available for registration.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.IUserAccountService.AddUserAccountAsync(Expenses.API.DTOs.UserAccounts.UserRegisterRequest)">
+            <summary>
+            Adds a new user to the system
+            </summary>
+            <param name="userRegisterRequest">A DTO representing user's data</param>
+            <returns>The resulting user account created by the creation operation</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.IUserAccountService.IdentifyUserAccountAsync(Expenses.API.DTOs.UserAccounts.UserLoginRequest)">
+            <summary>
+            Identifies the user by email and password. 
+            </summary>
+            <param name="userLogin">A DTO representing a user's credentials to identify</param>
+            <returns>the user entity if found, or NULL otherwise.</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.IUserAccountService.RetrieveUserProfileAsync(System.String)">
+            <summary>
+            Gets the profile of a user from his email
+            </summary>
+            <param name="email">The unique email of a user</param>
+            <returns>The specified user identified by the given email</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.IUserAccountService.ModifyUserProfileAsync(System.Guid,Expenses.API.DTOs.UserAccounts.UserUpdateRequest)">
+            <summary>
+            Updates the user data in the database
+            </summary>
+            <param name="userId">The unique ID of a user in the database</param>
+            <param name="userUpdateRequest">A DTO containing modified user data</param>
+            <returns>The newly modified data in the database</returns>
+        </member>
+        <member name="T:Expenses.API.Services.Foundations.Accounts.UserAccountService">
+            <summary>
+            This service handles user account-related operations such as registration, login, and
+            email availability checks.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Services.Foundations.Accounts.UserAccountService._storageBroker">
+            <summary>
+            Broker interface for handling storage-specific operations related to accounts,
+            transactions, and other entities within the Expenses API.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Services.Foundations.Accounts.UserAccountService._passwordHasher">
+            <summary>
+            Password hasher for securely hashing and verifying passwords.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Services.Foundations.Accounts.UserAccountService._loggingBroker">
+            <summary>
+            Broker responsible for logging operations such as recording informational, trace, debug, warning, error, and
+            critical messages.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Services.Foundations.Accounts.UserAccountService._dateTimeBroker">
+            <summary>
+            Broker interface for handling date and time operations, such as retrieving
+            the current date and time, used across various services within the application.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.#ctor(Expenses.API.Brokers.Storages.IStorageBroker,Microsoft.AspNetCore.Identity.PasswordHasher{Expenses.API.Models.UserAccount},Expenses.API.Brokers.Loggings.ILoggingBroker,Expenses.API.Brokers.DateTimes.IDateTimeBroker)">
+            <summary>
+            Constructor to initialize the AccountService with necessary dependencies.
+            </summary>
+            <param name="storageBroker"></param>
+            <param name="passwordHasher">Password hasher to initialize the service constructor</param>
+            <param name="loggingBroker"></param>
+            <param name="dateTimeBroker"></param>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.IsEmailAvailableAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.AddUserAccountAsync(Expenses.API.DTOs.UserAccounts.UserRegisterRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.IdentifyUserAccountAsync(Expenses.API.DTOs.UserAccounts.UserLoginRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.RetrieveUserProfileAsync(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.ModifyUserProfileAsync(System.Guid,Expenses.API.DTOs.UserAccounts.UserUpdateRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Expenses.API.Services.Foundations.Accounts.UserAccountService.ReturningUserAccountFunction">
+            <summary>
+            A delegate representing a function that retrieves a user account
+            and returns its details encapsulated within a <see cref="T:Expenses.API.DTOs.UserAccounts.UserAccountResponse"/> object.
+            </summary>
+            <remarks>
+            This delegate is designed to handle asynchronous operations for retrieving
+            user account information, which may include details such as user email, name,
+            date of birth, recent login times, and associated transactions.
+            </remarks>
+        </member>
+        <member name="T:Expenses.API.Services.Foundations.Accounts.UserAccountService.ReturningUserAccountsFunction">
+            <summary>
+            A delegate that defines a function for retrieving a collection of user accounts,
+            represented as an <see cref="T:System.Linq.IQueryable`1"/> of <see cref="T:Expenses.API.DTOs.UserAccounts.UserAccountResponse"/> objects.
+            </summary>
+            <remarks>
+            This delegate is intended to encapsulate logic for retrieving user account data, allowing
+            for flexible and reusable querying of accounts. The returned collection may include
+            user details such as email, name, date of birth, account creation dates, recent login times,
+            and associated transactions.
+            </remarks>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.TryCatch(Expenses.API.Services.Foundations.Accounts.UserAccountService.ReturningUserAccountFunction)">
+            <summary>
+            Executes the given function within a try-catch block to handle exceptions
+            related to user account operations.
+            </summary>
+            <param name="returningUserAccountFunction">The delegate function to execute, which returns a <see cref="T:Expenses.API.DTOs.UserAccounts.UserAccountResponse"/>.</param>
+            <returns>A <see cref="T:Expenses.API.DTOs.UserAccounts.UserAccountResponse"/> resulting from the delegate function.</returns>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountValidationException">Thrown when a validation error occurs.</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyException">Thrown when a critical dependency error occurs.</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyValidationException">Thrown when a dependency validation error occurs.</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountServiceException">Thrown when a general service error occurs.</exception>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.TryCatch(Expenses.API.Services.Foundations.Accounts.UserAccountService.ReturningUserAccountsFunction)">
+            <summary>
+            Executes the provided delegate within a try-catch block to handle exceptions
+            related to querying user account data.
+            </summary>
+            <param name="returningUserAccountsFunction">
+            The delegate function to execute, which returns an <see cref="T:System.Linq.IQueryable`1"/>.
+            </param>
+            <returns>
+            A queryable collection of <see cref="T:Expenses.API.DTOs.UserAccounts.UserAccountResponse"/> returned by the provided delegate.
+            </returns>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyException">
+            Thrown when a critical dependency error occurs, such as a database connectivity issue.
+            </exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountServiceException">
+            Thrown when a general service error occurs during the execution of the delegate.
+            </exception>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.CreateAndLogServiceException(Xeptions.Xeption)">
+            <summary>
+            Creates and logs a service exception based on the provided exception.
+            </summary>
+            <param name="exception">The exception that caused the service error.</param>
+            <returns>A <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountServiceException"/> representing the service error.</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.CreateAndLogDependencyException(Xeptions.Xeption)">
+            <summary>
+            Creates a dependency exception for user account operations and logs the exception details.
+            </summary>
+            <param name="exception">The original exception that caused the dependency error.</param>
+            <returns>A <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyException"/> that wraps the provided exception.</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.CreateAndLogDependencyValidationException(Xeptions.Xeption)">
+            <summary>
+            Creates and logs a dependency validation exception based on the given exception.
+            </summary>
+            <param name="exception">The exception that caused the dependency validation failure.</param>
+            <returns>A <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyValidationException"/> representing the dependency validation error.</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.CreateAndLogCriticalDependencyException(Xeptions.Xeption)">
+            <summary>
+            Creates and logs a critical dependency exception based on the given exception.
+            </summary>
+            <param name="exception">The exception that triggered this critical dependency exception.</param>
+            <returns>A <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyException"/> representing the critical dependency failure.</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.CreateAndLogValidationException(Xeptions.Xeption)">
+            <summary>
+            Creates and logs a validation exception based on the given exception.
+            </summary>
+            <param name="exception">The exception that triggered this validation exception.</param>
+            <returns>A <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountValidationException"/> representing the validation failure.</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.EmailRegex">
+            <remarks>
+            Pattern:<br/>
+            <code>^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$</code><br/>
+            Options:<br/>
+            <code>RegexOptions.IgnoreCase</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match if at the beginning of the string.<br/>
+            ○ Match a character in the set [%+\-.0-9A-Z_a-z\u212A] atomically at least once.<br/>
+            ○ Match '@'.<br/>
+            ○ Match a character in the set [\-.0-9A-Za-z\u212A] greedily at least once.<br/>
+            ○ Match '.'.<br/>
+            ○ Match a character in the set [A-Za-z\u212A] atomically at least twice.<br/>
+            ○ Match if at the end of the string or if before an ending newline.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.ValidateUserAccountNotAlreadyExists(Expenses.API.Models.UserAccount)">
+            <summary>
+            Validates that a user account does not already exist in the system. If the provided user account is not null,
+            it indicates that a user account with the same identifier already exists, and an
+            <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.AlreadyExistsUserAccountException"/> is thrown to signal this condition.    
+            </summary>
+            <param name="userAccount"></param>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.AlreadyExistsUserAccountException"></exception>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Accounts.UserAccountService.ValidateStorageUserAccountPassword(Expenses.API.Models.UserAccount,System.String,System.String)">
+            <summary>
+            Validates the provided user account password against the stored password hash.
+            Ensures the entered password matches the hashed password in storage.
+            </summary>
+            <param name="userAccount">
+            The user account object to validate, containing account-related details.
+            </param>
+            <param name="storedPasswordHash">
+            The hashed password previously stored for the specified user account.
+            </param>
+            <param name="enteredPassword">
+            The password entered by the user during the authentication process.
+            </param>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.NotFoundUserAccountException">
+            Thrown when the user account is null, the stored password hash or entered password is not provided,
+            or when the entered password fails to match the stored password hash.
+            </exception>
+        </member>
+        <member name="T:Expenses.API.Services.Foundations.Admin.AdminService">
+            <summary>
+            Provides implementation for administrative functionalities including management of user accounts
+            and retrieval of transaction data.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.AdminService.RetrieveUserAccountAsync(System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.AdminService.RetrieveAllUserAccounts(System.Int32,System.Int32)">
+            <summary>
+            Retrieves all user accounts with pagination support.
+            </summary>
+            <param name="pageNumber">The page number to retrieve starting from 1.</param>
+            <param name="pageSize">The number of user accounts to include in a single page.</param>
+            <returns>
+            An <see cref="T:System.Linq.IQueryable`1"/> collection of <see cref="T:Expenses.API.DTOs.UserAccounts.UserAccountResponse"/> instances representing the user
+            accounts.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.AdminService.DeleteUserAccountAsync(System.Guid)">
+            <summary>
+            Deletes a user account based on the specified user account ID.
+            </summary>
+            <param name="userAccountId">The unique identifier of the user account to be deleted.</param>
+            <returns>
+            A task that represents the asynchronous operation. The task result contains the deleted user account details.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.AdminService.RetrieveAllTransactions(System.Int32,System.Int32)">
+            <summary>
+            Retrieves all transactions from the database with pagination support.
+            </summary>
+            <param name="pageNumber">The number of the page to retrieve, starting from 1.</param>
+            <param name="pageSize">The number of transactions per page.</param>
+            <returns>
+            An <see cref="T:System.Linq.IQueryable`1"/> containing the transactions on the specified page.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.AdminService.RetrieveTransactionByIdAsync(System.Guid)">
+            <summary>
+            Retrieves a specific transaction by its unique identifier.
+            </summary>
+            <param name="transactionId">The unique identifier of the transaction to retrieve.</param>
+            <returns>A <see cref="T:Expenses.API.DTOs.Transactions.TransactionResponse"/> representing the details of the retrieved transaction.</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.AdminService.TryCatch(Expenses.API.Services.Foundations.Admin.AdminService.ReturningUserAccountFunction)">
+            <summary>
+            Executes a function that returns a <see cref="T:Expenses.API.DTOs.UserAccounts.UserAccountResponse"/> and handles known exceptions.
+            </summary>
+            <param name="returningUserAccountFunction">
+            The delegate function that returns a value task of <see cref="T:Expenses.API.DTOs.UserAccounts.UserAccountResponse"/>.
+            </param>
+            <returns>
+            A value task containing the result of the provided function.
+            </returns>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.NullUserAccountException">
+            Thrown when the provided delegate results in a null user account.
+            </exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.InvalidUserAccountException">
+            Thrown when the provided delegate results in an invalid user account.
+            </exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.NotFoundUserAccountException">
+            Thrown when the provided delegate cannot find the requested user account.
+            </exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.AlreadyExistsUserAccountException">
+            Thrown when the provided delegate detects a duplicate user account.
+            </exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.InvalidUserAccountReferenceException">
+            Thrown when the provided delegate detects an invalid user account reference.
+            </exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.LockedUserAccountException">
+            Thrown when the provided delegate detects a concurrency conflict.
+            </exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.FailedUserAccountStorageException">
+            Thrown when the provided delegate encounters an issue with database storage.
+            </exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.FailedUserAccountServiceException">
+            Thrown for any general error that occurs during the execution of the delegate.
+            </exception>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.AdminService.TryCatch(Expenses.API.Services.Foundations.Admin.AdminService.ReturningUserAccountsFunction)">
+            <summary>
+            Executes a function that returns an <see cref="T:System.Linq.IQueryable`1"/>
+            and handles expected exceptions during its execution.
+            </summary>
+            <param name="returningUserAccountsFunction">
+            The delegate function that returns an <see cref="T:System.Linq.IQueryable`1"/>.
+            </param>
+            <returns>
+            An <see cref="T:System.Linq.IQueryable`1"/> containing the result of the function execution.
+            </returns>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.FailedUserAccountStorageException">
+            Thrown when a database-related issue occurs during the function execution.
+            </exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.FailedUserAccountServiceException">
+            Thrown when a general error occurs during the function execution.
+            </exception>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.AdminService.CreateAndLogValidationException(Xeptions.Xeption)">
+            <summary>
+            Creates a <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountValidationException"/> using the given <see cref="T:Xeptions.Xeption"/>
+            and logs the error.
+            </summary>
+            <param name="exception">
+            The <see cref="T:Xeptions.Xeption"/> that caused the validation failure.
+            </param>
+            <returns>
+            A <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountValidationException"/> representing the validation error.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.AdminService.CreateAndLogCriticalDependencyException(Xeptions.Xeption)">
+            <summary>
+            Creates and logs a critical dependency exception for a user account operation.
+            </summary>
+            <param name="exception">
+            The original exception that triggered the critical dependency error.
+            </param>
+            <returns>
+            A <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyException"/> representing the critical dependency exception.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.AdminService.CreateAndLogDependencyValidationException(Xeptions.Xeption)">
+            <summary>
+            Creates and logs a <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyValidationException"/> based on the provided exception.
+            </summary>
+            <param name="exception">
+            The <see cref="T:Xeptions.Xeption"/> instance to wrap in a <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyValidationException"/>.
+            </param>
+            <returns>
+            A <see cref="T:Expenses.API.Models.Exceptions.UserAccounts.UserAccountDependencyValidationException"/> containing the provided exception.
+            </returns>
+        </member>
+        <member name="T:Expenses.API.Services.Foundations.Admin.IAdminService">
+            <summary>
+            Provides administrative functionalities for managing user accounts.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.IAdminService.RetrieveUserAccountAsync(System.Guid)">
+            <summary>
+            Find the user account by its unique identifier
+            </summary>
+            <param name="userId">The unique user account identifier</param>
+            <returns>The user account represented by the identifier entered if found, or NULL otherwise</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.IAdminService.RetrieveAllUserAccounts(System.Int32,System.Int32)">
+            <summary>
+            Retrieve a paginated collection of all user accounts.
+            </summary>
+            <param name="pageNumber">The page number to retrieve.</param>
+            <param name="pageSize">The number of user accounts to include in a single page.</param>
+            <returns>An IQueryable collection of user account data transfer objects.</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.IAdminService.DeleteUserAccountAsync(System.Guid)">
+            <summary>
+            Removes a user profile by the specified user ID.
+            </summary>
+            <param name="userAccountId">The unique identifier of the user whose profile is to be removed.</param>
+            <returns>The user account details of the removed profile if successful, or NULL if the profile does not exist.</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.IAdminService.LockUserAccountAsync(System.Guid)">
+            <summary>
+            Locks a user account to prevent further access.
+            </summary>
+            <param name="userAccountId">The unique identifier of the user account to be locked.</param>
+            <returns>
+            The locked user account data transfer object if the lock operation is successful, or NULL otherwise.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.IAdminService.UnlockUserAccountAsync(System.Guid)">
+            <summary>
+            Unlocks a user account that was previously locked.
+            </summary>
+            <param name="userAccountId">The unique identifier of the user account to be unlocked.</param>
+            <returns>The updated user account details after being unlocked.</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.IAdminService.RetrieveAllTransactions(System.Int32,System.Int32)">
+            <summary>
+            Retrieves all transactions with pagination support.
+            </summary>
+            <param name="pageNumber">The page number for paginated results.</param>
+            <param name="pageSize">The number of transactions to retrieve per page.</param>
+            <returns>An <see cref="T:System.Linq.IQueryable`1"/> containing the transactions for the specified page and size.</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Admin.IAdminService.RetrieveTransactionByIdAsync(System.Guid)">
+            <summary>
+            Find the transaction by its unique identifier.
+            </summary>
+            <param name="transactionId">The unique transaction identifier.</param>
+            <returns>The transaction represented by the identifier entered if found, or NULL otherwise.</returns>
+        </member>
+        <member name="T:Expenses.API.Services.Foundations.JWToken.IJwtHandler">
+            <summary>
+            Contrat for generating a Web JSON Token
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.JWToken.IJwtHandler.GenerateJwtToken(Expenses.API.DTOs.UserAccounts.UserAccountResponse)">
+            <summary>
+            Generates a JSON Web Token (JWT) for the specified user ID.
+            </summary>
+            <param name="userAccount">The user for whom the token is being generated.</param>
+            <returns>A JWT as a string.</returns>
+        </member>
+        <member name="T:Expenses.API.Services.Foundations.JWToken.JwtHandler">
+            <summary>
+            Service class for handling JWT operations
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.JWToken.JwtHandler.#ctor(Microsoft.Extensions.Configuration.IConfiguration,Microsoft.Extensions.Logging.ILogger{Expenses.API.Services.Foundations.JWToken.JwtHandler})">
+            <summary>
+            JWT Handler constructor
+            </summary>
+            <param name="configuration">Configuration object to inject in the constructor</param>
+            <param name="logger">Logger object to inject to the constructor</param>
+            <exception cref="T:System.ArgumentNullException">Exception generated if object injected is null.</exception>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.JWToken.JwtHandler.GenerateJwtToken(Expenses.API.DTOs.UserAccounts.UserAccountResponse)">
+            <summary>
+             Generates a JWT token for the authenticated user.
+            </summary>
+            <param name="userAccount">User for whom JWT token is generated</param>
+            <returns>String representing the token</returns>
+        </member>
+        <member name="T:Expenses.API.Services.Foundations.Transactions.ITransactionService">
+            <summary>
+            Service contract for handling transactions CRUD operations
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.ITransactionService.AddTransactionAsync(Expenses.API.DTOs.Transactions.TransactionCreateRequest)">
+            <summary>
+            Creates and adds a new transaction for an authenticated user
+            </summary>
+            <param name="transactionCreate">TDO object representing transaction info</param>
+            <returns>Transaction created in the database or null if not created</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.ITransactionService.RetrieveAllTransactions">
+            <summary>
+            Retrieves all transactions for an authenticated user
+            </summary>
+            <returns>List of transactions created by the current authenticated user</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.ITransactionService.RetrieveAllTransactions(System.Int32,System.Int32)">
+            <summary>
+            Retrieve all transactions 
+            </summary>
+            <param name="pageNumber">The page number to retrieve</param>
+            <param name="pageSize">The number of transactions per page</param>
+            <returns>Paginated list of transactions created by the current authenticated user</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.ITransactionService.RetrieveTransactionByIdAsync(System.Guid)">
+            <summary>
+            Retrieves a transaction by its ID
+            </summary>
+            <param name="transactionId">ID of transaction to fetch</param>
+            <returns>The unique transaction represented by the given ID</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.ITransactionService.ModifyTransactionAsync(System.Guid,Expenses.API.DTOs.Transactions.TransactionUpdateRequest)">
+            <summary>
+            Updates an existing transaction
+            </summary>
+            <param name="transactionId">Unique ID of transaction to modify</param>
+            <param name="transactionUpdate">A DTO containing transaction data to modify</param>
+            <returns>The transaction updated</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.ITransactionService.RemoveTransactionByIdAsync(System.Guid)">
+            <summary>
+            Deletes a transaction with a given ID
+            </summary>
+            <param name="transactionId">The unique ID of the transaction to be removed from the database</param>
+            <returns>Deleted transaction if deletion is successful or null if the transaction does not exist in the system.</returns>
+        </member>
+        <member name="T:Expenses.API.Services.Foundations.Transactions.TransactionService">
+            <summary>
+            Service for managing transactions in the Expenses application.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Services.Foundations.Transactions.TransactionService._storageBroker">
+            <summary>
+            The storage broker for interacting with the database.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Services.Foundations.Transactions.TransactionService._dateTimeBroker">
+            <summary>
+            The date time broker for handling date and time operations.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Services.Foundations.Transactions.TransactionService._loggingBroker">
+            <summary>
+            The logging broker for logging information and errors.
+            </summary>
+        </member>
+        <member name="F:Expenses.API.Services.Foundations.Transactions.TransactionService._httpContextAccessor">
+            <summary>
+            Provides access to the current HTTP context for retrieving user-specific information, such as user claims and
+            request metadata.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.#ctor(Expenses.API.Brokers.Storages.IStorageBroker,Expenses.API.Brokers.DateTimes.IDateTimeBroker,Expenses.API.Brokers.Loggings.ILoggingBroker,Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+            <summary>
+            Constructor for the TransactionService class, initializing the storage broker, date time broker, and logging
+            broker.
+            </summary>
+            <param name="storageBroker">The Storage Broker for all interactions with the database</param>
+            <param name="dateTimeBroker">The DateTime Broker to create time corresponding to the local zone</param>
+            <param name="loggingBroker">The logging Broker to manage logging across layers</param>
+            <param name="httpContextAccessor">The accessor to the current HttpContext, if one is available</param>
+            <exception cref="T:System.ArgumentNullException">Exception thrown if an argument is null during creation</exception>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.AddTransactionAsync(Expenses.API.DTOs.Transactions.TransactionCreateRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.RetrieveAllTransactions">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.RetrieveAllTransactions(System.Int32,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.RetrieveTransactionByIdAsync(System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.ModifyTransactionAsync(System.Guid,Expenses.API.DTOs.Transactions.TransactionUpdateRequest)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.RemoveTransactionByIdAsync(System.Guid)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Expenses.API.Services.Foundations.Transactions.TransactionService.ReturningTransactionFunction">
+            <summary>
+            Delegate that defines a function returning a single Transaction, used for centralizing exception handling logic
+            in the service methods.
+            </summary>
+        </member>
+        <member name="T:Expenses.API.Services.Foundations.Transactions.TransactionService.ReturningTransactionsFunction">
+            <summary>
+            Delegate that defines a function returning a collection of Transactions, used for centralizing exception
+            handling logic.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.TryCatch(Expenses.API.Services.Foundations.Transactions.TransactionService.ReturningTransactionFunction)">
+            <summary>
+            Centralized method for handling exceptions that may occur during service operations that return a single
+            Transaction.
+            </summary>
+            <param name="returningTransactionFunction">A delegate that returns a transaction object</param>
+            <returns>The instance of the transaction</returns>
+            <exception cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionValidationException"></exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyException"></exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyValidationException"></exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionServiceException"></exception>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.TryCatch(Expenses.API.Services.Foundations.Transactions.TransactionService.ReturningTransactionsFunction)">
+            <summary>
+            Centralized method for handling exceptions that may occur during service operations that return a collection
+            of Transactions.
+            </summary>
+            <param name="returningTransactionsFunction">A delegate that returns a collection of transactions</param>
+            <returns>A list of TransactionDto objects</returns>
+            <exception cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyException">#</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionServiceException">#</exception>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.CreateAndLogValidationException(Xeptions.Xeption)">
+            <summary>
+            Creates a <see cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionValidationException"/> and logs the exception using the logging broker.
+            </summary>
+            <param name="exception">The exception causing the validation error.</param>
+            <returns>
+            A new instance of <see cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionValidationException"/> encapsulating the provided exception.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.CreateAndLogCriticalDependencyException(Xeptions.Xeption)">
+            <summary>
+            Creates and logs a critical dependency exception based on the provided exception and returns the newly created
+            exception.
+            </summary>
+            <param name="exception">The exception that caused the critical dependency error.</param>
+            <returns>A <see cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyException"/> that encapsulates the original exception.</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.CreateAndLogDependencyValidationException(Xeptions.Xeption)">
+            <summary>
+            Creates and logs a <see cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyValidationException"/> based on the provided exception.
+            </summary>
+            <param name="exception">
+            The exception that triggered the creation of the dependency validation exception.
+            </param>
+            <returns>
+            An instance of <see cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyValidationException"/> containing the logged error details.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.CreateAndLogDependencyException(Xeptions.Xeption)">
+            <summary>
+            Creates a new instance of the <see cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyException"/> with the specified exception,
+            logs the error using the logging broker, and returns the exception instance.
+            </summary>
+            <param name="exception">The exception that triggered the dependency exception.</param>
+            <returns>An instance of <see cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionDependencyException"/>.</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.CreateAndLogServiceException(Xeptions.Xeption)">
+            <summary>
+            Creates and logs a service exception specific to TransactionService by wrapping the provided exception
+            and logging its details for diagnostic purposes.
+            </summary>
+            <param name="exception">The exception to be wrapped and logged</param>
+            <returns>A new instance of <see cref="T:Expenses.API.Models.Exceptions.Transactions.TransactionServiceException"/> containing the wrapped exception</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.ValidateTransactionOnAdd(Expenses.API.Models.Transaction)">
+            <summary>
+            Validates the provided transaction, before insertion in the database, by checking if it is null and then validating
+            its properties such as ID, Type, Category, Amount, CreatedAt, and UpdatedAt. It also checks if the UpdatedAt
+            date is the same as the CreatedAt date and if the CreatedAt date is recent. If any of the validations fail,
+            it throws an InvalidTransactionException with the corresponding error messages. This method is used to ensure
+            that the transaction being added to the system meets the required criteria and prevents invalid data from being
+            processed or stored in the database. 
+            </summary>
+            <param name="transaction">Transaction to be validated</param>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.ValidateTransactionOnModify(Expenses.API.Models.Transaction)">
+            <summary>
+            Validates the provided transaction, before update in the database, by checking if it is null and then validating
+            its properties such as ID, Type, Category, Amount, CreatedAt, and UpdatedAt. It also checks if the UpdatedAt
+            date is the same as the CreatedAt date and if the UpdatedAt date is recent. If any of the validations fail, it
+            throws an InvalidTransactionException with the corresponding error messages. This method is used to ensure that
+            the transaction being modified in the system meets the required criteria and prevents invalid data from being
+            processed or stored in the database. 
+            </summary>
+            <param name="transaction">Transaction to be validated</param>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.ValidateTransactionId(System.Guid)">
+            <summary>
+            Validates if the provided transaction ID is invalid by checking if it is equal to an empty GUID. An empty GUID
+            is considered invalid because it does not represent a valid transaction ID. This validation is used to ensure
+            that a transaction has a valid identifier before it is processed or stored in the database. 
+            </summary>
+            <param name="transactionId">ID of a transaction</param>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.ValidateStorageTransaction(Expenses.API.Models.Transaction,System.Guid)">
+            <summary>
+            Validates if the provided transaction exists in the storage by checking if it is null. If the transaction is null,
+            it throws a NotFoundTransactionException with the provided transaction ID. This validation is used to ensure
+            that a transaction with the specified ID exists in the database before performing any operations on it, such
+            as updating or deleting. It helps to prevent operations on non-existent transactions and ensures that the
+            system behaves correctly when a transaction is not found. 
+            </summary>
+            <param name="maybeTransaction">Transaction</param>
+            <param name="transactionId">The transaction ID of the transaction to be updated or deleted</param>
+            <exception cref="T:Expenses.API.Models.Exceptions.Transactions.NotFoundTransactionException">Thrown when the transaction with the specified ID was not found.</exception>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.ValidateUserAccountIdIsNotNull(Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+            <summary>
+            Validates that the user initiating the transaction creation or retrieval process has a non-null UserId.
+            This method extracts the user identifier from the claims in the HTTP context. If the HTTP context or
+            the claims identifier is null, or if the extracted UserId is invalid, it throws exceptions to indicate
+            the issue.
+            </summary>
+            <param name="httpContextAccessor">
+            The accessor to the current HTTP context, which provides access to the user's claims and session details
+            necessary for validation.
+            </param>
+            <returns>The GUID representing the valid UserId of the initiating user.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when the provided HTTP context accessor is null.</exception>
+            <exception cref="T:Expenses.API.Models.Exceptions.UserAccounts.NullUserAccountIdException">
+            Thrown when the UserId is missing or cannot be parsed as a valid GUID.
+            </exception>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.ValidateTransactionIsNotNull(Expenses.API.Models.Transaction)">
+            <summary>
+            Validates if the provided transaction is null. If the transaction is null, it throws a NullTransactionException.
+            This validation is used to ensure that a transaction object is not null before it is processed or stored in the
+            database. It helps to prevent null reference exceptions and ensures that the system behaves correctly when a
+            transaction is expected but not provided. 
+            </summary>
+            <param name="transaction">The transaction object to validate for null.</param>
+            <exception cref="T:Expenses.API.Models.Exceptions.Transactions.NullTransactionException"></exception>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.IsInvalid(System.Guid)">
+            <summary>
+            Validates if the provided transaction ID is invalid by checking if it is equal to an empty GUID. An empty GUID is
+            considered invalid because it does not represent a valid transaction ID. This validation is used to ensure that
+            a transaction has a valid identifier before it is processed or stored in the database.  
+            </summary>
+            <param name="transactionId">The transaction identifier to validate.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.IsInvalid(System.Double)">
+            <summary>
+            Validates if the provided transaction type is invalid by checking if it is equal to the default value of the
+            TransactionType enum. An invalid transaction type is considered to be the default value because it does not
+            represent a valid transaction type. This validation is used to ensure that a transaction has a valid type
+            before it is processed or stored in the database. 
+            </summary>
+            <param name="transactionAmount">Amount of the transaction to be validated</param>
+            <returns></returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.IsInvalid(System.DateTimeOffset)">
+            <summary>
+            Validates if the provided transaction date is invalid by checking if it is equal to the default value of
+            DateTimeOffset. An invalid transaction date is considered to be the default value because it does not represent
+            a valid date and time. This validation is used to ensure that a transaction has a valid date before it is
+            processed or stored in the database. 
+            </summary>
+            <param name="transactionDate">Date to be validated</param>
+            <returns></returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.IsInvalid(System.String)">
+            <summary>
+            Determines if the provided input is invalid based on specific business rule checks.
+            This method is overloaded to handle different types of inputs, including Guid, double, and string.
+            </summary>
+            <param name="typeCategory">A category of a transaction</param>
+            <returns>
+            A dynamic object containing a boolean condition indicating whether the input is invalid,
+            as well as an error message highlighting the validation failure.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.IsNotSame(System.DateTimeOffset,System.DateTimeOffset,System.String)">
+            <summary>
+            Validates that the specified dates are different. This method compares a given date to a second date
+            and ensures that they are different. If both dates are the same, the validation passes; otherwise, it
+            returns a validation failure with an appropriate error message.
+            </summary>
+            <param name="firstDate">The first date to compare.</param>
+            <param name="secondDate">The second date to compare against the first date.</param>
+            <param name="secondDateName">The name of the second date parameter, used in the error message.</param>
+            <returns>
+            A dynamic object containing a validation condition and an error message. The condition is true if the
+            dates are the same, indicating a validation failure, and the message provides details about the failure.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.IsNotRecent(System.DateTimeOffset)">
+            <summary>
+            Validates if the provided date is not recent by checking if the difference between the current date and the
+            provided date is greater than one minute. This validation is used to ensure that the transaction date is
+            within a reasonable time frame, preventing the creation of transactions with dates that are too far in
+            the past or future.
+            </summary>
+            <param name="date">Date to be validated</param>
+            <returns></returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.IsNotNull(System.Guid)">
+            <summary>
+            Checks if the provided userId is not null or empty by verifying if it equals Guid.Empty.
+            Constructs and returns a result indicating whether the validation failed and provides an
+            appropriate error message.
+            </summary>
+            <param name="userId">The identifier of the user to validate</param>
+            <returns>
+            A dynamic object containing a Condition indicating whether the userId is invalid,
+            and a Message with a descriptive validation error if applicable.
+            </returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.IsDateNotRecent(System.DateTimeOffset)">
+            <summary>
+            Checks if the provided date is not recent by comparing it to the current date and time. A date is considered
+            not recent if the difference between the current date and the provided date is greater than one minute.
+            </summary>
+            <param name="date">Date to be checked</param>
+            <returns>return true if the date is not recent, false otherwise</returns>
+        </member>
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.Validate(System.ValueTuple{System.Object,System.String}[])">
+            <summary>
+            Validates the provided rules and parameters by iterating through each rule and checking if the condition is
+            true. If a condition is true, it adds the corresponding message to an InvalidTransactionException.
+            After validating all rules, it throws the InvalidTransactionException if it contains any errors.
+            This method is used to centralize the validation logic for transactions and ensure that all necessary
+            validations are performed before processing a transaction.    
+            </summary>
+            <param name="validations">An array of rules to be validated</param>
+            <exception cref="T:Expenses.API.Models.Exceptions.Transactions.InvalidTransactionException">Thrown if any of the validation rules fail.</exception>
+        </member>
+        <member name="T:Program">
+            <summary>
+            Auto-generated public partial Program class for top-level statement apps.
+            </summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.EmailRegex_0">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the EmailRegex method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.EmailRegex_0.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.EmailRegex_0.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.EmailRegex_0.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.EmailRegex_0.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.EmailRegex_0.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.EmailRegex_0.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.EmailRegex_0.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.EmailRegex_0.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.Utilities">
+            <summary>Helper methods used by generated <see cref="T:System.Text.RegularExpressions.Regex"/>-derived implementations.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout">
+            <summary>Default timeout value set in <see cref="T:System.AppContext"/>, or <see cref="F:System.Text.RegularExpressions.Regex.InfiniteMatchTimeout"/> if none was set.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_hasTimeout">
+            <summary>Whether <see cref="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout"/> is non-infinite.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_asciiLettersAndDigitsAndDashDotKelvinSign">
+            <summary>Supports searching for characters in or not in "-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzK".</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_asciiLettersAndKelvinSign">
+            <summary>Supports searching for characters in or not in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzK".</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_nonAscii_9D887F42D4125FF97C50D1A7C38CA6681E5E3C194771F207692B4B4A87144C7A">
+            <summary>Supports searching for characters in or not in "%+-.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyzK".</summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type)">
+            <summary>
+            Generates a documentation comment ID for a type.
+            Example: T:Namespace.Outer+Inner`1 becomes T:Namespace.Outer.Inner`1
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.PropertyInfo)">
+            <summary>
+            Generates a documentation comment ID for a property.
+            Example: P:Namespace.ContainingType.PropertyName or for an indexer P:Namespace.ContainingType.Item(System.Int32)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type,System.String)">
+            <summary>
+            Generates a documentation comment ID for a property given its container type and property name.
+            Example: P:Namespace.ContainingType.PropertyName
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.MethodInfo)">
+            <summary>
+            Generates a documentation comment ID for a method (or constructor).
+            For example:
+              M:Namespace.ContainingType.MethodName(ParamType1,ParamType2)~ReturnType
+              M:Namespace.ContainingType.#ctor(ParamType)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.GetTypeDocId(System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Generates a documentation ID string for a type.
+            This method handles nested types (replacing '+' with '.'),
+            generic types, arrays, pointers, by-ref types, and generic parameters.
+            The <paramref name="includeGenericArguments"/> flag controls whether
+            constructed generic type arguments are emitted, while <paramref name="omitGenericArity"/>
+            controls whether the generic arity marker (e.g. "`1") is appended.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.NormalizeDocId(System.String)">
+            <summary>
+            Normalizes a documentation comment ID to match the compiler-style format.
+            Strips the return type suffix for ordinary methods but retains it for conversion operators.
+            </summary>
+            <param name="docId">The documentation comment ID to normalize.</param>
+            <returns>The normalized documentation comment ID.</returns>
         </member>
     </members>
 </doc>

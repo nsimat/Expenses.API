@@ -52,7 +52,7 @@ export class AuthService {
     const params = new Map();
     params.set('email', email);
 
-    return this.http.get<boolean>(`${this.apiAuthUrl}/IsEmailAlreadyTaken?email=`+ email)
+    return this.http.get<boolean>(`${this.apiAuthUrl}/isEmailAlreadyTaken?email=`+ email)
       .pipe(
         map((isTaken) => {
           console.log(`Email:${email} is registered:`, isTaken);
@@ -71,18 +71,18 @@ export class AuthService {
 
   // Get a user from his email
   getUser(email: string): Observable<User>{
-    return this.http.get<User>(`${this.apiAuthUrl}/UserProfile?email=${email}`);
+    return this.http.get<User>(`${this.apiAuthUrl}/profile?email=${email}`);
   }
 
   // Update the profile of a user
   updateUserProfile(id: number, user: User): Observable<User>{
-    return this.http.put<User>(`${this.apiAuthUrl}/UpdateUserProfile/${id}`, user);
+    return this.http.put<User>(`${this.apiAuthUrl}/updateProfile/${id}`, user);
   }
 
   // Authenticate the user and store the token
   login(credentials: LoginRequest): Observable<LoginResult> {
     console.log('Login in the system...');
-    const url = this.apiAuthUrl + '/Login';
+    const url = this.apiAuthUrl + '/login';
 
     return this.http.post<LoginResult>(url, credentials).pipe(
       tap((loginResult) => {
@@ -100,7 +100,7 @@ export class AuthService {
   register(credentials: LoginRequest): Observable<any> {
     console.log('Registering user with credentials: ', credentials);
 
-    const url = this.apiAuthUrl + '/Register';
+    const url = this.apiAuthUrl + '/register';
     return this.http.post<any>(url, credentials).pipe(
       tap((response) => {
         localStorage.setItem(this.tokenKey, response.token);

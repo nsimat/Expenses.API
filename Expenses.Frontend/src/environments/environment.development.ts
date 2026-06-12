@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiTransactionsUrl: 'https://localhost:7063/api/Transactions',
-  apiAuthUrl: 'https://localhost:7063/api/Account'
+  apiTransactionsUrl: 'https://localhost:7063/api/v1/transactions',
+  apiAuthUrl: 'https://localhost:7063/api/v1/users'
 };
