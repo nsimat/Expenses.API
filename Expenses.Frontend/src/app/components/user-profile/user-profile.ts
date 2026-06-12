@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {AuthService} from '../../services/auth-service';
 import {Router} from '@angular/router';
 
@@ -9,6 +9,7 @@ import {User} from '../../models/user';
   selector: 'app-user-profile',
   imports: [ReactiveFormsModule],
   templateUrl: './user-profile.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './user-profile.css'
 })
 export class UserProfile implements OnInit {

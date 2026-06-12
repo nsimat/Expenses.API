@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {NgOptimizedImage} from '@angular/common';
 import {AuthService} from '../../services/auth-service';
@@ -9,6 +9,7 @@ import {Subject, takeUntil} from 'rxjs';
   selector: 'app-header',
   imports: [RouterLink, NgOptimizedImage],
   templateUrl: './header.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './header.css'
 })
 export class Header implements OnInit, OnDestroy {

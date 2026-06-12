@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TransactionService } from '../../services/transaction-service';
@@ -8,6 +8,7 @@ import { TransactionService } from '../../services/transaction-service';
   selector: 'app-transaction-form',
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './transaction-form.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './transaction-form.css',
 })
 export class TransactionForm implements OnInit {

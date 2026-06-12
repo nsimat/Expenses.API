@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectionStrategy} from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -18,6 +18,7 @@ import {map, Observable} from 'rxjs';
   selector: 'app-signup',
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './signup.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './signup.css'
 })
 export class Signup {

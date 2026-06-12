@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Transaction } from '../../models/transaction';
 import { CommonModule } from '@angular/common';
 import { TransactionService } from '../../services/transaction-service';
@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   selector: 'app-transaction-list',
   imports: [CommonModule],
   templateUrl: './transaction-list.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './transaction-list.css',
 })
 export class TransactionList implements OnInit {

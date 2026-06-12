@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ChangeDetectionStrategy} from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faChartLine,
@@ -12,6 +12,7 @@ import {RouterLink} from '@angular/router';
   selector: 'app-sidebar',
   imports: [FontAwesomeModule, RouterLink],
   templateUrl: './sidebar.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './sidebar.css'
 })
 export class Sidebar {
