@@ -92,7 +92,7 @@ public class TransactionsController : RESTFulController
 
             // Returns a 201 Created response with the location header of the newly created transaction.
             return CreatedAtAction(nameof(GetTransactionById),
-                new { id = createdTransaction.Id }, createdTransaction);
+                new { transactionId = createdTransaction.Id }, createdTransaction);
             
             // List of possible exceptions and their handling:
             // 1- NullTransactionException --> TransactionValidationException(NullTransactionIdException)
