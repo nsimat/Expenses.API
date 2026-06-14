@@ -30,13 +30,12 @@ public partial class TransactionService
             (Rule: IsInvalid(transaction.UserId), Parameter: nameof(Transaction.UserId)),
             (Rule: IsInvalid(transaction.CreatedAt), Parameter: nameof(Transaction.CreatedAt)),
             (Rule: IsInvalid(transaction.UpdatedAt), Parameter: nameof(Transaction.UpdatedAt)),
-            (Rule: IsNotSame(
-                firstDate: transaction.UpdatedAt,
-                secondDate: transaction.CreatedAt,
-                secondDateName: nameof(Transaction.CreatedAt)),
-                Parameter: nameof(Transaction.UpdatedAt)),
-            (Rule: IsNotRecent(transaction.CreatedAt), Parameter: nameof(Transaction.CreatedAt))
-            //(Rule: IsModelInvalid(), Parameter: nameof(Model))
+            (Rule: IsCreationDateLaterThanUpdate(
+                firstDate: transaction.CreatedAt,
+                secondDate: transaction.UpdatedAt,
+                secondDateName: nameof(Transaction.UpdatedAt)),
+                Parameter: nameof(Transaction.CreatedAt)),
+            (Rule: IsNotRecent(transaction.UpdatedAt), Parameter: nameof(Transaction.UpdatedAt))
         );
     }
 
@@ -61,11 +60,11 @@ public partial class TransactionService
             (Rule: IsInvalid(transaction.UserId), Parameter: nameof(Transaction.UserId)),
             (Rule: IsInvalid(transaction.CreatedAt), Parameter: nameof(Transaction.CreatedAt)),
             (Rule: IsInvalid(transaction.UpdatedAt), Parameter: nameof(Transaction.UpdatedAt)),
-            (Rule: IsNotSame(
-                firstDate: transaction.UpdatedAt,
-                secondDate: transaction.CreatedAt,
-                secondDateName: nameof(Transaction.CreatedAt)),
-                Parameter: nameof(Transaction.UpdatedAt)),
+            (Rule: IsCreationDateLaterThanUpdate(
+                firstDate: transaction.CreatedAt,
+                secondDate: transaction.UpdatedAt,
+                secondDateName: nameof(Transaction.UpdatedAt)),
+                Parameter: nameof(Transaction.CreatedAt)),
             (Rule: IsNotRecent(transaction.UpdatedAt), Parameter: nameof(Transaction.UpdatedAt))
        );
     }
@@ -78,12 +77,6 @@ public partial class TransactionService
     /// <param name="transactionId">ID of a transaction</param>
     private void ValidateTransactionId(Guid transactionId) =>
         Validate((Rule: IsInvalid(transactionId), Parameter: nameof(Transaction.Id)));
-    /*{
-        if(transactionId == Guid.Empty || !Guid.TryParse(transactionId.ToString(), out _))
-        {
-            throw new InvalidTransactionIdException();// ? What must be the return http code? 400 Bad Request
-        }
-    }*/
 
     /// <summary>
     /// Validates if the provided transaction exists in the storage by checking if it is null. If the transaction is null,
@@ -99,7 +92,7 @@ public partial class TransactionService
     {
         if (maybeTransaction is null || !maybeTransaction.Id.Equals(transactionId))
         {
-            throw new NotFoundTransactionException(transactionId); // ? What must be the return http code? 404 Not Found    
+            throw new NotFoundTransactionException(transactionId);    
         }
     }
     
@@ -125,7 +118,7 @@ public partial class TransactionService
         {
             throw new TransactionServiceException(new Xeption(message: "HTTP context accessor is null."));
         }
-        //ArgumentNullException.ThrowIfNull(httpContextAccessor);// ? What must be the return http code? 500 Internal Server Error
+        //ArgumentNullException.ThrowIfNull(httpContextAccessor);
 
         var claimsIdentifier = httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -149,7 +142,7 @@ public partial class TransactionService
     {
         if (transaction is null)
         {
-            throw new NullTransactionException(); // ? What must be the return http code? 400 Bad Request
+            throw new NullTransactionException();
         }
     }
 
@@ -221,11 +214,14 @@ public partial class TransactionService
     /// A dynamic object containing a validation condition and an error message. The condition is true if the
     /// dates are the same, indicating a validation failure, and the message provides details about the failure.
     /// </returns>
-    private static dynamic IsNotSame(DateTimeOffset firstDate, DateTimeOffset secondDate, string secondDateName) => new
+    private static dynamic IsCreationDateLaterThanUpdate(
+        DateTimeOffset firstDate, 
+        DateTimeOffset secondDate, 
+        string secondDateName) => new
     {
-        Condition = firstDate != secondDate && secondDate >= firstDate,
-        Message = $"Date is not the same as {secondDateName}. The creation date must be earlier than the update date."
-    };// to review this method!!!!
+        Condition = firstDate >= secondDate,
+        Message = $"The creation date of a transaction must be earlier than the update date."
+    };
     
     /// <summary>
     /// Validates if the provided date is not recent by checking if the difference between the current date and the
@@ -290,7 +286,9 @@ public partial class TransactionService
                 invalidTransactionException.UpsertDataList(
                     key: parameter,
                     value: rule.Message
+                    ?? throw new InvalidOperationException("Rule is not a valid dynamic object.")
                 );
+                Console.WriteLine($"Transaction validation failed for {parameter}: {rule.Message}!!!");
             }
         }
         invalidTransactionException.ThrowIfContainsErrors();
