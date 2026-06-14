@@ -64,7 +64,7 @@ public partial class UserAccountService
     {
         DateTimeOffset currentDateTime = DateTimeOffset.UtcNow;
         TimeSpan timeDifference = currentDateTime.Subtract(date);
-        Console.WriteLine($"Time difference: {timeDifference}");
+        Console.WriteLine($"Time difference: {timeDifference}");// check pertinence of this line!!!
         return timeDifference.Duration() > TimeSpan.FromMinutes(1);
     }
 
@@ -142,7 +142,9 @@ public partial class UserAccountService
     /// Thrown when the user account is null, the stored password hash or entered password is not provided,
     /// or when the entered password fails to match the stored password hash.
     /// </exception>
-    private void ValidateStorageUserAccountPassword(UserAccount userAccount, string storedPasswordHash,
+    private void ValidateStorageUserAccountPassword(
+        UserAccount userAccount, 
+        string storedPasswordHash,
         string enteredPassword)
     {
         if (userAccount is null ||
@@ -180,10 +182,13 @@ public partial class UserAccountService
         Message = "Date is required and should be in a valid format."
     };
 
-    private static dynamic IsCreationDateLaterThanUpdate(DateTimeOffset firstDate, DateTimeOffset secondDate, string secondName) => new
+    private static dynamic IsCreationDateLaterThanUpdate(
+        DateTimeOffset firstDate, 
+        DateTimeOffset secondDate, 
+        string secondName) => new
     {
         Condition = firstDate >= secondDate,
-        Message = $"Creation date cannot be later than update date, {secondName}."
+        Message = $"The creation date of a user account must be earlier than the update date {secondName}."
     };
 
 
@@ -197,8 +202,10 @@ public partial class UserAccountService
             {
                 invalidUserAccountException.UpsertDataList(
                     key: parameter,
-                    value: rule.ToString());
-                Console.WriteLine($"Validation failed for {parameter}: {rule.Message}!!!");
+                    value: rule.Message
+                    ?? throw new InvalidOperationException("Rule is not a valid dynamic object.") 
+                );
+                Console.WriteLine($"User account validation failed for {parameter}: {rule.Message}!!!");
             }
         }
 
