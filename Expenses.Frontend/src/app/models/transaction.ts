@@ -1,8 +1,9 @@
 export interface Transaction {
-  id: number;
+  id: string;
   type: string;
   amount: number;
   category: string;
+  creatorId: string | null;
   createdAt: Date;
-  updateAt: Date;
+  updatedAt: Date;
 }
