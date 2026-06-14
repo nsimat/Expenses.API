@@ -13,32 +13,62 @@ import {User} from '../models/user';
 export class AuthService {
   // Dependency Injections using inject() function
   private readonly http = inject(HttpClient);
+
+  // Base URL for authentication-related API endpoints, sourced from environment configuration
   private readonly apiAuthUrl = environment.apiAuthUrl;
+
+  // Router for navigation after login/logout actions
   private readonly router = inject(Router);
 
   // Key to store the token in local storage
   private tokenKey: string = "token";
+
   // Public field to receive the email of the logged-in user
   private userEmail: string = 'userEmail';
+
   // BehaviorSubject to manage authentication status
   private _authStatus = new BehaviorSubject<boolean>(false);
+
+  // Observable to allow other components to subscribe to authentication status changes
   public authStatus$ = this._authStatus.asObservable();
 
   // check if the user is authenticated by checking if the token exists in local storage
+  /**
+   * Checks whether the user is authenticated by verifying the presence of a token.
+   *
+   * @return {boolean} True if a token exists, otherwise false.
+   */
   isAuthenticated(): boolean {
     return this.getToken() !== null; // Returns true if token exists, false otherwise
   }
 
   // get the user email
+  /**
+   * Retrieves the user's email address from local storage.
+   *
+   * @return {string|null} The user's email address if found, or null if not present.
+   */
   getUserEmail(): string | null {
     return localStorage.getItem('userEmail');
   }
+
   // Retrieve the token from local storage
+  /**
+   * Retrieves the token stored in the local storage.
+   *
+   * @return {string | null} The token as a string if it exists, or null if not found.
+   */
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
   // Initialize the authentication status on service creation
+  /**
+   * Initializes the authentication status by checking the user's authentication state
+   * and updating the relevant status accordingly.
+   *
+   * @return {void} No return value.
+   */
   initializeAuthStatus(): void {
     const isAuth = this.isAuthenticated();
     this.setAuthStatus(isAuth);
@@ -70,16 +100,36 @@ export class AuthService {
   }
 
   // Get a user from his email
+  /**
+   * Fetches the user profile associated with the given email.
+   *
+   * @param {string} email - The email address of the user whose profile is to be retrieved.
+   * @return {Observable<User>} An observable containing the user's profile data.
+   */
   getUser(email: string): Observable<User>{
     return this.http.get<User>(`${this.apiAuthUrl}/profile?email=${email}`);
   }
 
   // Update the profile of a user
-  updateUserProfile(id: number, user: User): Observable<User>{
+  /**
+   * Updates the profile of an existing user.
+   *
+   * @param {string} id - The unique identifier of the user whose profile is being updated.
+   * @param {User} user - An object containing the updated profile information of the user.
+   * @return {Observable<User>} An observable that emits the updated user information upon success.
+   */
+  updateUserProfile(id: string, user: User): Observable<User>{
     return this.http.put<User>(`${this.apiAuthUrl}/updateProfile/${id}`, user);
   }
 
   // Authenticate the user and store the token
+  /**
+   * Authenticates a user by sending their credentials to the server.
+   *
+   * @param {LoginRequest} credentials - The login credentials containing the user's email and password.
+   * @return {Observable<LoginResult>} An observable emitting the result of the login attempt, including success status
+   * and token if successful.
+   */
   login(credentials: LoginRequest): Observable<LoginResult> {
     console.log('Login in the system...');
     const url = this.apiAuthUrl + '/login';
@@ -97,6 +147,12 @@ export class AuthService {
   }
 
   // Register by creating a new user and store the token
+  /**
+   * Registers a new user using the provided credentials.
+   *
+   * @param {LoginRequest} credentials - The login credentials containing user information required for registration.
+   * @return {Observable<any>} An observable that emits the server response upon successful registration.
+   */
   register(credentials: LoginRequest): Observable<any> {
     console.log('Registering user with credentials: ', credentials);
 
@@ -110,6 +166,12 @@ export class AuthService {
   }
 
   // Logout by clearing the token and navigate to the login page
+  /**
+   * Logs out the currently authenticated user by clearing user data from local storage,
+   * updating the authentication status, and navigating to the login page.
+   *
+   * @return {void} No return value.
+   */
   logout(): void {
     // Implement logout logic if needed, e.g., clear tokens, notify server, etc.
     console.log('LoginRequest logged out...');
@@ -120,6 +182,12 @@ export class AuthService {
   }
 
   // Update the authentication status
+  /**
+   * Updates the authentication status of the user.
+   *
+   * @param {boolean} isAuthenticated - Indicates whether the user is authenticated.
+   * @return {void} This method does not return a value.
+   */
   private setAuthStatus(isAuthenticated: boolean): void {
     this._authStatus.next(isAuthenticated);
   }
