@@ -31,7 +31,7 @@ export class Signup {
   // Error message to display if signup fails, initialized to null
   errorMessage: string | null = null;
 
-  //
+  // Injecting FormBuilder, AuthService, and Router into the component
   private readonly formBuilder = inject(FormBuilder);
   private readonly apiService = inject(AuthService);
   private readonly router = inject(Router);
