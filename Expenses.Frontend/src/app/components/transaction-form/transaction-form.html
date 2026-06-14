@@ -44,9 +44,20 @@
             <div class="mb-4">
               <label for="createdAt" class="form-label fw-medium"><i>Date</i></label>
               @if(isEditMode) {
-                <input type="date" class="form-control form-control-lg" id="createdAt" formControlName="createdAt" [value]="$safeNavigationMigration(transactionForm.get('createdAt')?.value) | date : 'yyyy-MM-dd'" />
+                <input
+                  type="date"
+                  class="form-control form-control-lg"
+                  id="createdAt"
+                  formControlName="createdAt"
+                  [value]="transactionForm.get('createdAt')?.value | date : 'yyyy-MM-dd'"
+                />
               } @else {
-                <input type="date" class="form-control form-control-lg" id="createdAt" formControlName="createdAt"/>
+                <input
+                  type="date"
+                  class="form-control form-control-lg"
+                  id="createdAt"
+                  formControlName="createdAt"
+                />
               }
             </div>
 

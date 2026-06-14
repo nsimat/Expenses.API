@@ -56,7 +56,7 @@ export class TransactionForm implements OnInit {
 
   isEditMode: boolean = false;
 
-  transactionId?: number;
+  transactionId?: string;
 
   constructor(
     private fb: FormBuilder,
@@ -84,12 +84,12 @@ export class TransactionForm implements OnInit {
     if (id) {
       console.log('Edit mode for transaction with id: ', id);
       this.isEditMode = true;
-      this.transactionId = +id;
+      this.transactionId = id; //+id
       this.loadTransaction(this.transactionId);
     }
   }
 
-  private loadTransaction(id: number): void {
+  private loadTransaction(id: string): void {
 
     this.transactionService.getTransactionById(id).subscribe({
       next: (transaction) => {
@@ -102,7 +102,7 @@ export class TransactionForm implements OnInit {
           type: transaction.type,
           category: transaction.category,
           amount: transaction.amount,
-          createdAt: new Date(transaction.createdAt),
+          createdAt: transaction.createdAt,
         });
         console.log('Patching form with: ', this.transactionForm.value);
         // Disable the createdAt field to prevent editing
