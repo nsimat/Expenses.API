@@ -809,6 +809,11 @@
             The last name of the user
             </summary>
         </member>
+        <member name="P:Expenses.API.DTOs.UserAccounts.UserUpdateRequest.DateOfBirth">
+            <summary>
+            The date of birth of the user.
+            </summary>
+        </member>
         <member name="T:Expenses.API.Models.Base.BaseEntity">
             <summary>
             Class representing a base entity with common properties.
@@ -2060,7 +2065,7 @@
             as well as an error message highlighting the validation failure.
             </returns>
         </member>
-        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.IsNotSame(System.DateTimeOffset,System.DateTimeOffset,System.String)">
+        <member name="M:Expenses.API.Services.Foundations.Transactions.TransactionService.IsCreationDateLaterThanUpdate(System.DateTimeOffset,System.DateTimeOffset,System.String)">
             <summary>
             Validates that the specified dates are different. This method compares a given date to a second date
             and ensures that they are different. If both dates are the same, the validation passes; otherwise, it
