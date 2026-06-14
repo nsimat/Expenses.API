@@ -105,6 +105,8 @@ public partial class TransactionService : ITransactionService
         {
             // Step 0. Checks if the client is the current user initiating the retrieval of transactions
             var currentUserId = ValidateUserAccountIdIsNotNull(_httpContextAccessor);
+            
+            _loggingBroker.LogInformation($"Attempting to retrieve all transactions for user with ID: {currentUserId}...");
 
             // Step 1. Retrieves all transactions for the current user from the storage and returns them as a queryable collection
             var transactions = _storageBroker
