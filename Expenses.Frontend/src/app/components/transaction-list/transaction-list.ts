@@ -12,6 +12,16 @@ import { Router } from '@angular/router';
   styleUrl: './transaction-list.css',
 })
 export class TransactionList implements OnInit {
+  /*transaction: Transaction = {
+    id: '',
+    type: 'Expense',
+    amount: 0,
+    category: '',
+    creatorId: '',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };*/
+
   transactions: Transaction[] = [];
 
   constructor(private transactionService: TransactionService, private router: Router) {}

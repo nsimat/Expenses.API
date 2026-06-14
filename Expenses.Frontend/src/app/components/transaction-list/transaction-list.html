@@ -75,7 +75,7 @@
       <tbody>
         @for(transaction of transactions; track transaction.id) {
         <tr>
-          <td><i>{{ transaction.createdAt | date : 'dd/MM/yyyy' }}</i></td>
+          <td><i>{{ transaction.createdAt | date : 'dd-MM-yyyy' }}</i></td>
           <td [ngClass]="transaction.type === 'Income' ? 'text-success' : 'text-danger'"><i>{{ transaction.type }}</i></td>
           <td><i>{{ transaction.category }}</i></td>
           <td [ngClass]="transaction.type === 'Income' ? 'text-success' : 'text-danger'"><i>{{ transaction.amount | currency: 'EUR'}}</i></td>
