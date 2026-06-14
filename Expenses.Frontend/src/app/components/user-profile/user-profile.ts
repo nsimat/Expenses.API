@@ -16,10 +16,13 @@ export class UserProfile implements OnInit {
 
   userProfileForm: FormGroup;
   user: User = {
-    id: 0,
+    id: '',
     email: '',
     firstName: '',
     lastName: '',
+    dateOfBirth: '',
+    dateOfRegistration: '',
+    dateOfLastLogin: ''
   };
   errorMessage: string | null = null;
 
@@ -31,7 +34,10 @@ export class UserProfile implements OnInit {
     this.userProfileForm = this.fb.group({
       email:['', [Validators.required, Validators.email]],
       firstName:['', [Validators.required, Validators.minLength(3)]],
-      lastName:['', [Validators.required, Validators.minLength(3)]]
+      lastName:['', [Validators.required, Validators.minLength(3)]],
+      dateOfBirth:['', [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]],
+      dateOfRegistration:['', [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]],
+      dateOfLastLogin:['', [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]]
     });
   }
 
