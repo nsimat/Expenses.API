@@ -25,17 +25,25 @@ export class Sidebar {
   transactionsLog = faEye;
   transaction = faMoneyBill1Wave;
 
-
+  // Optional title for the sidebar, initialized to 'Dashboard'
   title?: string = 'Dashboard';
 
+  // Method to get the current title of the sidebar, returns 'Dashboard' if title is not set
   getTitle(): string {
     return this.title || 'Dashboard';
   }
 
+  // Method to set a new title for the sidebar
   setTitle(newTitle: string): void {
     this.title = newTitle;
   }
 
+  /**
+   * Updates the title with the specified item.
+   *
+   * @param {string} item - The new title to set.
+   * @return {void} This method does not return a value.
+   */
   updateTitle(item: string): void {
     this.setTitle(item);
   }
