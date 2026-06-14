@@ -21,8 +21,8 @@ export class UserProfile implements OnInit {
     firstName: '',
     lastName: '',
     dateOfBirth: '',
-    dateOfRegistration: '',
-    dateOfLastLogin: ''
+    createdAt: '',
+    updatedAt: ''
   };
   errorMessage: string | null = null;
 
