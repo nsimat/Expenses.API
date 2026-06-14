@@ -8,5 +8,6 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   styleUrl: './footer.css',
 })
 export class Footer {
+  // Property to hold the current year, initialized to the current year using JavaScript's Date object
   currentYear: number = new Date().getFullYear();
 }
