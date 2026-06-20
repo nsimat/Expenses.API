@@ -18,8 +18,12 @@
             <!-- Use Email -->
             <div class="mb-4">
               <label for="type" class="form-label fw-medium"><i>Email</i></label>
-              <input type="email" class="form-control form-control-lg" id="email" formControlName="email"
-                     placeholder="Enter your email"/>
+              <input type="email"
+                     class="form-control form-control-lg"
+                     id="email"
+                     formControlName="email"
+                     placeholder="Enter your email"
+              />
               @if (hasError('email', 'required')) {
                 <div class="text-danger">Email is required.</div>
               } @else if (hasError('email', 'email')) {
@@ -30,8 +34,12 @@
             <!-- First Name -->
             <div class="mb-4">
               <label for="category" class="form-label fw-medium"><i>First Name</i></label>
-              <input type="text" class="form-control form-control-lg" id="firstName" formControlName="firstName"
-                     placeholder="Enter your first name"/>
+              <input type="text"
+                     class="form-control form-control-lg"
+                     id="firstName"
+                     formControlName="firstName"
+                     placeholder="Enter your first name"
+              />
               @if (hasError('firstName', 'required')) {
                 <div class="text-danger">FirstName is required.</div>
               }
@@ -43,13 +51,35 @@
             <!-- Last Name -->
             <div class="mb-4">
               <label for="amount" class="form-label fw-medium"><i>Last Name</i></label>
-              <input type="text" class="form-control form-control-lg" id="lastName" formControlName="lastName"
-                     placeholder="Enter your last name"/>
+              <input type="text"
+                     class="form-control form-control-lg"
+                     id="lastName"
+                     formControlName="lastName"
+                     placeholder="Enter your last name"
+              />
               @if (hasError('lastName', 'required')) {
                 <div class="text-danger">LastName is required.</div>
               }
               @if (hasError('lastName', 'minlength')) {
                 <div class="text-danger">LastName should be 3 characters min.</div>
+              }
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="mb-4">
+              <label for="createdAt" class="form-label fw-medium"><i>Date of Birth</i></label>
+              <input  type="date"
+                      class="form-control form-control-lg"
+                      id="dateOfBirth"
+                      formControlName="dateOfBirth"
+                      placeholder="Enter your date of birth"
+                      [value]="userProfileForm.get('dateOfBirth')?.value | date : 'yyyy-MM-dd'"
+              />
+              @if (hasError('dateOfBirth', 'required')) {
+                <div class="text-danger">Date of Birth is required.</div>
+              }
+              @if (hasError('dateOfBirth', 'ageRequirement')) {
+                <div class="text-danger">You must be at least 18 years old.</div>
               }
             </div>
 

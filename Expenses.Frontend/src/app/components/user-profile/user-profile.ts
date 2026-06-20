@@ -4,10 +4,11 @@ import {Router} from '@angular/router';
 
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {User} from '../../models/user';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-user-profile',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, DatePipe],
   templateUrl: './user-profile.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './user-profile.css'
@@ -15,6 +16,7 @@ import {User} from '../../models/user';
 export class UserProfile implements OnInit {
 
   userProfileForm: FormGroup;
+
   user: User = {
     id: '',
     email: '',
@@ -27,17 +29,15 @@ export class UserProfile implements OnInit {
   errorMessage: string | null = null;
 
   constructor(
-    private fb: FormBuilder,
-    private authService: AuthService,
-    private router: Router
+    private readonly fb: FormBuilder,
+    private readonly authService: AuthService,
+    private readonly router: Router
   ) {
     this.userProfileForm = this.fb.group({
       email:['', [Validators.required, Validators.email]],
       firstName:['', [Validators.required, Validators.minLength(3)]],
       lastName:['', [Validators.required, Validators.minLength(3)]],
-      dateOfBirth:['', [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]],
-      dateOfRegistration:['', [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]],
-      dateOfLastLogin:['', [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]]
+      dateOfBirth:['', [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]]
     });
   }
 
@@ -56,12 +56,14 @@ export class UserProfile implements OnInit {
           this.user.email = userdata.email;
           this.user.firstName = userdata.firstName;
           this.user.lastName = userdata.lastName;
+          this.user.dateOfBirth = userdata.dateOfBirth;
 
           // Patch form values
           this.userProfileForm.patchValue({
             email: this.user.email,
             firstName: this.user.firstName,
             lastName: this.user.lastName,
+            dateOfBirth: this.user.dateOfBirth
           });
           console.log('Patching form with:', this.userProfileForm.value)
           // Disable the email field to prevent modification
