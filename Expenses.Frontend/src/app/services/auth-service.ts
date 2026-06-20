@@ -21,13 +21,13 @@ export class AuthService {
   private readonly router = inject(Router);
 
   // Key to store the token in local storage
-  private tokenKey: string = "token";
+  private readonly tokenKey: string = "token";
 
   // Public field to receive the email of the logged-in user
-  private userEmail: string = 'userEmail';
+  private readonly userEmail: string = 'userEmail';
 
   // BehaviorSubject to manage authentication status
-  private _authStatus = new BehaviorSubject<boolean>(false);
+  private readonly _authStatus = new BehaviorSubject<boolean>(false);
 
   // Observable to allow other components to subscribe to authentication status changes
   public authStatus$ = this._authStatus.asObservable();
@@ -77,7 +77,6 @@ export class AuthService {
   // Check if an email is already registered
   isEmailRegistered(email: string): Observable<boolean>{
     console.log(`Checking if ${email} is already registered...`);
-    //let emailPattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$';
 
     const params = new Map();
     params.set('email', email);
@@ -119,7 +118,7 @@ export class AuthService {
    * @return {Observable<User>} An observable that emits the updated user information upon success.
    */
   updateUserProfile(id: string, user: User): Observable<User>{
-    return this.http.put<User>(`${this.apiAuthUrl}/updateProfile/${id}`, user);
+    return this.http.put<User>(`${this.apiAuthUrl}/${id}/update-profile`, user);
   }
 
   // Authenticate the user and store the token
