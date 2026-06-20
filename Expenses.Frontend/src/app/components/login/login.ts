@@ -31,7 +31,8 @@ export class Login {
   protected readonly loginForm = this.formBuilder.group({
     email: ['', [
       Validators.required,
-      Validators.email
+      Validators.email,
+      Validators.pattern(String.raw`^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`)
     ]],
     password: ['', [
       Validators.required,
