@@ -14,6 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+// Add Health Checks to the service collection, enabling the application to report its health status for monitoring and
+// diagnostics purposes.
+builder.Services.AddHealthChecks();
+
 // Register PasswordHasher as a scoped service
 builder.Services.AddScoped<PasswordHasher<UserAccount>>();
 
@@ -135,6 +139,8 @@ builder.Services.AddHttpContextAccessor();
 
 // Build the WebApplication, which will be used to configure the HTTP request pipeline and routes.
 var app = builder.Build();
+
+app.MapHealthChecks("/health"); // Exposes a health check endpoint at /health
 
 #region Configure the HTTP request pipeline and routes.
 
