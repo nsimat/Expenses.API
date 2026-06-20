@@ -26,6 +26,9 @@
               @if (hasError('email', 'email')) {
                 <div class="text-danger">Please, enter a valid email address.</div>
               }
+              @if (hasError('email', 'pattern')) {
+                <div class="text-danger">Please, enter a correct email address format.</div>
+              }
             </div>
             <div class="mb-3">
               <i class="bi bi-person-fill-lock"></i>
