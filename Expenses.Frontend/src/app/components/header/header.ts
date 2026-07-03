@@ -1,4 +1,4 @@
-import {Component, inject, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
+import {Component, OnDestroy, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {NgOptimizedImage} from '@angular/common';
 import {AuthService} from '../../services/auth-service';
@@ -15,13 +15,13 @@ import {Subject, takeUntil} from 'rxjs';
 export class Header implements OnInit, OnDestroy {
 
   // Subject to manage the lifecycle of subscriptions and prevent memory leaks
-  private destroySubject = new Subject();
+  private readonly destroySubject = new Subject();
 
   // Boolean flag to indicate if the user is logged in
   isLoggedIn: boolean = false;
 
-  // Store the email of the logged-in user, initialized to null
-  loggedInUserEmail: string | null = null;
+  // Store the email or full name of the logged-in user, initialized to null
+  currentIdentifiedUser: string | null = null;
 
   // Injecting AuthService and Router into the component
   /**
@@ -31,12 +31,15 @@ export class Header implements OnInit, OnDestroy {
    * @param {Router} router - Router service to navigate between application routes.
    * @return {void} Initializes the component and sets up authentication status subscription.
    */
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private readonly authService: AuthService,
+    private readonly router: Router) {
     this.authService.authStatus$
       .pipe(takeUntil(this.destroySubject))
       .subscribe(result => {
         this.isLoggedIn = result;
-        this.loggedInUserEmail = result ? this.authService.getUserEmail() : null;
+        this.currentIdentifiedUser = result ? this.authService.getUserFullName() ?? this.authService.getUserEmail() : null;
+        console.log('User Full Name in Header:', this.authService.getUserFullName());
       });
   }
 

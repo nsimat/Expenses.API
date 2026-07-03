@@ -23,7 +23,7 @@
       </div>
     } @else {
       <div class="ms-auto">
-        <a class="btn-outline-light me-2 text-white" [routerLink]="['/userprofile']">Welcome {{loggedInUserEmail}}!</a>
+        <a class="btn-outline-light me-2 text-white" [routerLink]="['/userprofile']">Welcome {{currentIdentifiedUser}}!</a>
         <!--a class="btn btn-outline-light me-2" [routerLink]="['/add']">
           <i class="fa-solid fa-circle-plus"></i>
           <i><strong> Add Transaction</strong></i>
