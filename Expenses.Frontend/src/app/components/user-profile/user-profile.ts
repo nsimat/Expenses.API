@@ -97,7 +97,10 @@ export class UserProfile implements OnInit {
       this.authService.updateUserProfile(this.user.id, modifiedUser).subscribe({
         next: (userdata) => {
           console.log('And this is the update result:', userdata);
-          alert("Your user profile has been modified!")
+          if(userdata.firstName && userdata.lastName) {
+            localStorage.setItem('userFullName', `${userdata.firstName} ${userdata.lastName}`);
+          }
+          alert("Your user profile has been modified!");
           this.router.navigate(['/transactions']);
         },
         error: (error) => {
