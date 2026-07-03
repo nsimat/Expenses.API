@@ -15,6 +15,7 @@ export interface User {
   email: string;
   firstName: string | null;
   lastName: string | null;
+  fullName?: string | null; // Optional property for full name
   dateOfBirth: string | null;
   createdAt: string | null;
   updatedAt: string | null;
