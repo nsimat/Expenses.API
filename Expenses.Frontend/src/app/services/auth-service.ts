@@ -26,6 +26,9 @@ export class AuthService {
   // Public field to receive the email of the logged-in user
   private readonly userEmail: string = 'userEmail';
 
+  // Public field to receive the full name of the logged-in user
+  private readonly userFullName: string = 'userFullName';
+
   // BehaviorSubject to manage authentication status
   private readonly _authStatus = new BehaviorSubject<boolean>(false);
 
@@ -50,6 +53,15 @@ export class AuthService {
    */
   getUserEmail(): string | null {
     return localStorage.getItem('userEmail');
+  }
+
+  /**
+   * Retrieves the full name of the user from local storage.
+   *
+   * @return {string | null} The full name of the user if it exists in local storage; otherwise, null.
+   */
+  getUserFullName(): string | null {
+    return localStorage.getItem('userFullName');
   }
 
   // Retrieve the token from local storage
@@ -176,6 +188,7 @@ export class AuthService {
     console.log('LoginRequest logged out...');
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userEmail);
+    localStorage.removeItem(this.userFullName);
     this.setAuthStatus(false);
     this.router.navigate(['/login']);
   }
@@ -189,5 +202,6 @@ export class AuthService {
    */
   private setAuthStatus(isAuthenticated: boolean): void {
     this._authStatus.next(isAuthenticated);
+
   }
 }

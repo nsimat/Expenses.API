@@ -66,14 +66,23 @@ export class Login {
     this.errorMessage = null;// Clear previous error messages
 
     if (this.loginForm.valid) {
-      const loginData = this.loginForm.value;
+      const loginData = this.loginForm.getRawValue();
       console.log('Form submitted is valid:', loginData);
-      this.apiService.login(<LoginRequest>loginData).subscribe(
+      this.apiService
+        .login(<LoginRequest>loginData)
+        .subscribe(
         {
           next: (loginResult) => {
             console.log('Login successful, navigating to dashboard...');
             if (loginResult.success) {
               console.log('Login accepted for:', loginData.email);
+
+              // Store the user's full name in local storage for later use
+              this.setFullName(<string>loginData.email);
+              const fullName = this.apiService.getUserFullName();
+              console.log('User Full Name in Login:', fullName);
+
+              // Navigate to the transactions page after successful login
               this.router.navigate(['/transactions']);
             }
           },
@@ -90,4 +99,29 @@ export class Login {
       console.log('Form submitted is invalid:', this.loginForm.errors);
     }
   }
+
+  /**
+   * Sets the full name of a user in local storage by fetching their details using the provided email.
+   *
+   * @param {string} email - The email address of the user whose full name is to be retrieved and stored.
+   * @return {void} This method does not return a value.
+   */
+  private setFullName(email: string): void {
+    this.apiService
+      .getUser(email)
+      .subscribe({
+      next: (user) => {
+        if(user.firstName && user.lastName){
+          // Store the full name in local storage
+          const fullName = `${user.firstName} ${user.lastName}`;
+          localStorage.setItem('userFullName', fullName);
+          console.log('User full name set in local storage:', fullName);
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching user profile: ', error);
+      }
+    });
+  }
+
 }
