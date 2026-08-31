@@ -9,6 +9,18 @@
             Class responsible for providing date and time information.
             </summary>
         </member>
+        <member name="F:Expenses.API.Brokers.DateTimes.DateTimeBroker._timeProvider">
+            <summary>
+            Provides an abstraction for managing and accessing date and time, enabling easier testing and
+            better control over time-dependent operations within the application.
+            </summary>
+        </member>
+        <member name="M:Expenses.API.Brokers.DateTimes.DateTimeBroker.#ctor(System.TimeProvider)">
+            <summary>
+            Provides an implementation of the <see cref="T:Expenses.API.Brokers.DateTimes.IDateTimeBroker"/> interface to manage and access date and time
+            functionality. Facilitates better testability and abstraction over time-based operations.
+            </summary>
+        </member>
         <member name="M:Expenses.API.Brokers.DateTimes.DateTimeBroker.GetCurrentDateTimeOffset">
             <inheritdoc/>
         </member>
