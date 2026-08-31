@@ -14,6 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+// Register TimeProvider as a singleton service for consistent time management across the application.
+builder.Services.AddSingleton(TimeProvider.System); 
+
+
 // Add Health Checks to the service collection, enabling the application to report its health status for monitoring and
 // diagnostics purposes.
 builder.Services.AddHealthChecks();
