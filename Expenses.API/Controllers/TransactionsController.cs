@@ -370,13 +370,13 @@ public class TransactionsController : RESTFulController
     //  checks to prevent unauthorized access). -->???
     // -Add filtering to Web API (Backend) and Transactions Page (Frontend) -->???
     // -Add sorting to Web API (Backend) and Transactions Page (Frontend) -->???
-    // -Add pagination to Web API (Backend) and Transactions Page (Frontend) -->???
+    // -Add pagination to Web API (Backend) and Transactions Page (Frontend) -->Done
     // -Add unit tests for the controller and the service.
     // -Add integration tests for the controller and the service.
-    // -Add more logging to capture important events and errors in the controller and the service. -->ok
+    // -Add more logging to capture important events and errors in the controller and the service. -->Done
     // -Add caching to improve performance for frequently accessed data.
-    // -Add validation to ensure that the data being sent to the API is valid and meets the required criteria. -->ok
-    // -Add error handling to gracefully handle exceptions and return appropriate error responses to the client. -->ok
+    // -Add validation to ensure that the data being sent to the API is valid and meets the required criteria. -->Done
+    // -Add error handling to gracefully handle exceptions and return appropriate error responses to the client. -->Done
     // -Add monitoring and logging to track the performance and health of the application. -->??
     // -Add security measures to protect against unauthorized access to sensitive data. -->??
     // -Add support for different data formats and media types to support different clients and devices. -->??
@@ -384,6 +384,4 @@ public class TransactionsController : RESTFulController
     // -Add support for different authentication methods and protocols to secure the API. -->??
     // -Add support for different storage mechanisms to store and retrieve data efficiently. -->??
     // -Add support for different caching strategies to improve performance and reduce a load on the database. -->??
-    // -Add support for different logging mechanisms to track and analyze application performance and errors. -->??
-    // -Add support for different monitoring and alerting mechanisms to notify developers of potential issues. -->??
 }
